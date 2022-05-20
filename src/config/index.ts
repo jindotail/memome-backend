@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 const envFound = dotenv.config();
 if (envFound.error) {
@@ -8,9 +8,9 @@ if (envFound.error) {
 }
 
 export default {
-  port: parseInt(process.env.PORT, 8080),
+  port: parseInt(process.env.PORT, 10),
 
   api: {
-    prefix: '/api',
+    prefix: "/api",
   },
 };
