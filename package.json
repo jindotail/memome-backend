@@ -1,0 +1,22 @@
+{
+  "name": "guest-book-backend",
+  "version": "1.0.0",
+  "description": "방명록 프로젝트 백엔드",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jindotail/guest-book-backend.git"
+  },
+  "author": "mimseong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jindotail/guest-book-backend/issues"
+  },
+  "homepage": "https://github.com/jindotail/guest-book-backend#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
