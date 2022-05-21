@@ -1,4 +1,5 @@
 import express from "express";
+import "reflect-metadata";
 import config from "./config";
 
 async function startServer() {
