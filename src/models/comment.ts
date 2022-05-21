@@ -8,7 +8,7 @@ export default class CommentModel {
   }
 
   public find(userId: string) {
-    const res = ["find", "result"];
+    const res = [userId, "find", "result"];
     return res;
   }
 }

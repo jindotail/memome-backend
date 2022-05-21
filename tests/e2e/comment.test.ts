@@ -1,5 +1,5 @@
-import "reflect-metadata";
 import express from "express";
+import "reflect-metadata";
 import { default as request } from "supertest";
 import loaders from "../../src/loaders";
 
@@ -11,8 +11,14 @@ beforeAll(async () => {
 
 describe("comment", () => {
   test("should return 200", async () => {
-    const answer = ["find", "result"];
-    const res = await request(app).get("/api/comment").send();
+    const userId = "mimseong";
+    const answer = [userId, "find", "result"];
+
+    const res = await request(app)
+      .get("/api/comment")
+      .query({ userId: userId })
+      .send();
+
     expect(res.status).toEqual(200);
     expect(res.body.comments).toEqual(answer);
   });
