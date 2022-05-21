@@ -1,7 +1,8 @@
-import express from "express";
-import cors from "cors";
 import routes from "@/api";
 import config from "@/config";
+import bodyParser from "body-parser";
+import cors from "cors";
+import express from "express";
 
 export default ({ app }: { app: express.Application }) => {
   app.get("/status", (req, res) => {
@@ -11,6 +12,7 @@ export default ({ app }: { app: express.Application }) => {
     res.status(200).end();
   });
 
+  app.use(bodyParser.json());
   app.use(cors());
   app.use(express.json());
   app.use(config.api.prefix, routes());
