@@ -5,13 +5,13 @@ import CommentModel from "../models/comment";
 export default class CommentService {
   constructor(@Inject() private commentModel: CommentModel) {}
 
-  public async create(userId: number, comment: string) {
-    const res = await this.commentModel.create(userId, comment);
+  public async create(userIdx: number, comment: string) {
+    const res = await this.commentModel.create(userIdx, comment);
     return res;
   }
 
-  public async getComments(userId: number) {
-    const res = await this.commentModel.find(userId);
+  public async getComments(userIdx: number) {
+    const res = await this.commentModel.find(userIdx);
     return res;
   }
 }

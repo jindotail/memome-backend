@@ -4,21 +4,21 @@ import * as db from "./mysql";
 
 @Service()
 export default class CommentModel {
-  public async create(userId: number, comment: string) {
+  public async create(userIdx: number, comment: string) {
     const insertQuery = "INSERT INTO comment (??,??) VALUES (?,?)";
     const sql = mysql.format(insertQuery, [
-      "user_id",
+      "user_idx",
       "comment",
-      userId,
+      userIdx,
       comment,
     ]);
     const res = await db.query(sql);
     return res;
   }
 
-  public async find(userId: number) {
-    const insertQuery = "SELECT * FROM comment WHERE user_id = ?";
-    const sql = mysql.format(insertQuery, [userId]);
+  public async find(userIdx: number) {
+    const insertQuery = "SELECT * FROM comment WHERE ?? = ?";
+    const sql = mysql.format(insertQuery, ["user_idx", userIdx]);
     const res = await db.query(sql);
     return res;
   }
