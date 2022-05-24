@@ -7,17 +7,22 @@ const route = Router();
 export default (app: Router) => {
   app.use("/comment", route);
 
-  route.get("/", (req: Request, res: Response) => {
+  route.post("/", async (req: Request, res: Response) => {
     const commentServiceInstance = Container.get(CommentService);
-    return res.status(200).json({
-      comments: commentServiceInstance.getComments(req.query.userId as string),
+    const result = await commentServiceInstance.create(
+      req.body.id,
+      req.body.comment
+    );
+    return res.status(201).json({
+      body: result,
     });
   });
 
-  route.post("/", (req: Request, res: Response) => {
+  route.get("/", async (req: Request, res: Response) => {
     const commentServiceInstance = Container.get(CommentService);
-    return res
-      .status(201)
-      .json({ body: commentServiceInstance.create(req.body.comment) });
+    const result = await commentServiceInstance.getComments(1); // req.query.userId
+    return res.status(200).json({
+      comments: result,
+    });
   });
 };
