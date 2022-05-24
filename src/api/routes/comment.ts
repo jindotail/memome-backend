@@ -7,10 +7,10 @@ const route = Router();
 export default (app: Router) => {
   app.use("/comment", route);
 
-  route.post("/", async (req: Request, res: Response) => {
+  route.post("/:userId", async (req: Request, res: Response) => {
     const commentServiceInstance = Container.get(CommentService);
     const result = await commentServiceInstance.create(
-      req.body.id,
+      parseInt(req.params.userId, 10),
       req.body.comment
     );
     return res.status(201).json({
@@ -18,9 +18,11 @@ export default (app: Router) => {
     });
   });
 
-  route.get("/", async (req: Request, res: Response) => {
+  route.get("/:userId", async (req: Request, res: Response) => {
     const commentServiceInstance = Container.get(CommentService);
-    const result = await commentServiceInstance.getComments(1); // req.query.userId
+    const result = await commentServiceInstance.getComments(
+      parseInt(req.params.userId, 10)
+    );
     return res.status(200).json({
       comments: result,
     });
