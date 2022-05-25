@@ -25,9 +25,9 @@ describe("comment", () => {
   });
 
   test("should return 200", async () => {
-    const comments = ["comment1", "comment2"];
+    const comments = [{ comment: "comment1" }, { comment: "comment2" }];
     comments.forEach(async (comment) => {
-      await dummy.comment(user._idx, comment);
+      await dummy.comment(user._idx, comment.comment);
     });
 
     const res = await request(app).get(`/api/comment/${user.id}`).send();

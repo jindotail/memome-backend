@@ -4,3 +4,8 @@ export interface IComment {
   comment: string;
   created_at: string;
 }
+
+export interface ICommentResponse {
+  comment: string;
+  created_at: string;
+}
