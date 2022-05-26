@@ -1,4 +1,5 @@
 import { Inject, Service } from "typedi";
+import { Logger } from "winston";
 import { IUserSignUpDTO } from "../interfaces/IUser";
 import UserModel from "../models/user";
 
@@ -6,7 +7,7 @@ import UserModel from "../models/user";
 export default class AuthService {
   constructor(
     @Inject("userModel") private UserModel: UserModel,
-    @Inject("logger") private logger
+    @Inject("logger") private logger: Logger
   ) {}
 
   public async signUp(userSignUpDTO: IUserSignUpDTO) {
