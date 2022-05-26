@@ -1,3 +1,4 @@
+import { ICommentResponse } from "@/interfaces/IComment";
 import { Inject, Service } from "typedi";
 import CommentModel from "../models/comment";
 
@@ -10,8 +11,13 @@ export default class CommentService {
     return res;
   }
 
-  public async getComments(userIdx: number) {
+  public async getComments(userIdx: number): Promise<ICommentResponse[]> {
     const res = await this.commentModel.find(userIdx);
-    return res;
+    return res.map((comment) => {
+      return {
+        comment: comment.comment,
+        created_at: comment.created_at.getTime(),
+      } as ICommentResponse;
+    });
   }
 }

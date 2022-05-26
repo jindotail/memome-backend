@@ -3,7 +3,7 @@ export interface IUser {
   id: string;
   password: string;
   nickname: string;
-  created_at: string;
+  created_at: Date;
 }
 
 export interface IUserSignUpDTO {
