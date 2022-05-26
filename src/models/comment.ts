@@ -1,9 +1,7 @@
 import { IComment } from "@/interfaces/IComment";
 import mysql from "mysql";
-import { Service } from "typedi";
 import * as db from "./mysql";
 
-@Service()
 export default class CommentModel {
   public async create(userIdx: number, comment: string) {
     const insertQuery = "INSERT INTO comment (??,??) VALUES (?,?)";

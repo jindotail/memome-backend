@@ -5,7 +5,7 @@ import UserModel from "../models/user";
 @Service()
 export default class AuthService {
   constructor(
-    @Inject() private UserModel: UserModel,
+    @Inject("userModel") private UserModel: UserModel,
     @Inject("logger") private logger
   ) {}
 

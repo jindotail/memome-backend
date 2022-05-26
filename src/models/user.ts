@@ -1,9 +1,7 @@
 import mysql from "mysql";
-import { Service } from "typedi";
 import { IUserSignUpDTO } from "../interfaces/IUser";
 import * as db from "./mysql";
 
-@Service()
 export default class UserModel {
   public async create(userSignUpDTO: IUserSignUpDTO) {
     const insertQuery = "INSERT INTO user (??, ??, ??) VALUES (?, ?, ?)";

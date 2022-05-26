@@ -5,7 +5,7 @@ import CommentModel from "../models/comment";
 @Service()
 export default class CommentService {
   constructor(
-    @Inject() private commentModel: CommentModel,
+    @Inject("commentModel") private commentModel: CommentModel,
     @Inject("logger") private logger
   ) {}
 

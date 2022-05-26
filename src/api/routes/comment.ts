@@ -11,7 +11,7 @@ export default (app: Router) => {
   app.use("/comment", route);
   const logger: Logger = Container.get("logger");
   const getUserIdxById = async (userId: string): Promise<number> => {
-    const userModelInstance = Container.get(UserModel);
+    const userModelInstance: UserModel = Container.get("userModel");
     const user = await userModelInstance.findById(userId);
 
     return user[0].idx;
