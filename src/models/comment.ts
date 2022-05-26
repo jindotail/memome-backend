@@ -3,22 +3,25 @@ import mysql from "mysql";
 import * as db from "./mysql";
 
 export default class CommentModel {
-  public async create(userIdx: number, comment: string) {
+  private createSql(userIdx: number, comment: string): string {
     const insertQuery = "INSERT INTO comment (??,??) VALUES (?,?)";
-    const sql = mysql.format(insertQuery, [
-      "user_idx",
-      "comment",
-      userIdx,
-      comment,
-    ]);
+    return mysql.format(insertQuery, ["user_idx", "comment", userIdx, comment]);
+  }
+
+  public async create(userIdx: number, comment: string) {
+    const sql = this.createSql(userIdx, comment);
     const res = await db.query(sql);
-    return res;
+    return res; // TODO - 생성 시 return 값 어떻게 보낼지 정하기
+  }
+
+  private findSql(userIdx: number): string {
+    const insertQuery =
+      "SELECT idx, user_idx, comment, CONVERT_TZ(created_at,'+00:00','+09:00') as created_at FROM comment WHERE ?? = ?";
+    return mysql.format(insertQuery, ["user_idx", userIdx]);
   }
 
   public async find(userIdx: number): Promise<IComment[]> {
-    const insertQuery =
-      "SELECT idx, user_idx, comment, CONVERT_TZ(created_at,'+00:00','+09:00') as created_at FROM comment WHERE ?? = ?";
-    const sql = mysql.format(insertQuery, ["user_idx", userIdx]);
+    const sql = this.findSql(userIdx);
     const res = (await db.query(sql)) as IComment[];
     return res;
   }

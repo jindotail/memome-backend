@@ -1,4 +1,4 @@
-import { ICommentResponse } from "@/interfaces/IComment";
+import { IComment, ICommentResponse } from "@/interfaces/IComment";
 import { Inject, Service } from "typedi";
 import CommentModel from "../models/comment";
 
@@ -17,14 +17,20 @@ export default class CommentService {
     return res;
   }
 
-  public async getComments(userIdx: number): Promise<ICommentResponse[]> {
-    this.logger.silly(`[CommentService] getComments userIdx: ${userIdx}`);
-    const res = await this.commentModel.find(userIdx);
-    return res.map((comment) => {
+  private convertCommentToCommentResponse(
+    comments: IComment[]
+  ): ICommentResponse[] {
+    return comments.map((comment) => {
       return {
         comment: comment.comment,
         created_at: comment.created_at.getTime(),
-      } as ICommentResponse;
+      };
     });
+  }
+
+  public async getComments(userIdx: number): Promise<ICommentResponse[]> {
+    this.logger.silly(`[CommentService] getComments userIdx: ${userIdx}`);
+    const res = await this.commentModel.find(userIdx);
+    return this.convertCommentToCommentResponse(res);
   }
 }

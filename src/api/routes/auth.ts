@@ -9,6 +9,8 @@ const route = Router();
 
 export default (app: Router) => {
   app.use("/auth", route);
+  const logger: Logger = Container.get("logger");
+  const authServiceInstance = Container.get(AuthService);
 
   route.post(
     "/signup",
@@ -20,10 +22,7 @@ export default (app: Router) => {
       }),
     }),
     async (req: Request, res: Response) => {
-      const logger: Logger = Container.get("logger");
       logger.debug("Calling Sign-Up endpoint with body: %o", req.body);
-
-      const authServiceInstance = Container.get(AuthService);
       const result = await authServiceInstance.signUp(
         req.body as IUserSignUpDTO
       );

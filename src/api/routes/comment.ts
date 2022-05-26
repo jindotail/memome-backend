@@ -10,10 +10,11 @@ const route = Router();
 export default (app: Router) => {
   app.use("/comment", route);
   const logger: Logger = Container.get("logger");
-  const getUserIdxById = async (userId: string): Promise<number> => {
-    const userModelInstance: UserModel = Container.get("userModel");
-    const user = await userModelInstance.findById(userId);
+  const userModelInstance: UserModel = Container.get("userModel");
+  const commentServiceInstance = Container.get(CommentService);
 
+  const getUserIdxById = async (userId: string): Promise<number> => {
+    const user = await userModelInstance.findById(userId);
     return user[0].idx;
   };
 
@@ -30,7 +31,6 @@ export default (app: Router) => {
         req.body
       );
       const userIdx = await getUserIdxById(req.params.userId as string);
-      const commentServiceInstance = Container.get(CommentService);
       const result = await commentServiceInstance.create(
         userIdx,
         req.body.comment
@@ -44,7 +44,6 @@ export default (app: Router) => {
   route.get("/:userId", async (req: Request, res: Response) => {
     logger.debug(`Calling get /comment/${req.params.userId} endpoint`);
     const userIdx = await getUserIdxById(req.params.userId as string);
-    const commentServiceInstance = Container.get(CommentService);
     const result = await commentServiceInstance.getComments(userIdx);
     return res.status(200).json({
       comments: result,
