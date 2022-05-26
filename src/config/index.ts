@@ -22,4 +22,8 @@ export default {
   api: {
     prefix: "/api",
   },
+
+  logs: {
+    level: process.env.LOG_LEVEL || "debug",
+  },
 };

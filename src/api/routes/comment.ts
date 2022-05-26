@@ -3,12 +3,13 @@ import CommentService from "@/services/comment";
 import { celebrate, Joi } from "celebrate";
 import { Request, Response, Router } from "express";
 import { Container } from "typedi";
+import { Logger } from "winston";
 
 const route = Router();
 
 export default (app: Router) => {
   app.use("/comment", route);
-
+  const logger: Logger = Container.get("logger");
   const getUserIdxById = async (userId: string): Promise<number> => {
     const userModelInstance = Container.get(UserModel);
     const user = await userModelInstance.findById(userId);
@@ -24,6 +25,10 @@ export default (app: Router) => {
       }),
     }),
     async (req: Request, res: Response) => {
+      logger.debug(
+        `Calling post /comment/${req.params.userId} endpoint with body: %o`,
+        req.body
+      );
       const userIdx = await getUserIdxById(req.params.userId as string);
       const commentServiceInstance = Container.get(CommentService);
       const result = await commentServiceInstance.create(
@@ -37,6 +42,7 @@ export default (app: Router) => {
   );
 
   route.get("/:userId", async (req: Request, res: Response) => {
+    logger.debug(`Calling get /comment/${req.params.userId} endpoint`);
     const userIdx = await getUserIdxById(req.params.userId as string);
     const commentServiceInstance = Container.get(CommentService);
     const result = await commentServiceInstance.getComments(userIdx);
