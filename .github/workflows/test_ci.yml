@@ -22,5 +22,5 @@ jobs:
       - name: GitHub Action for Yarn
         uses: Borales/actions-yarn@v2.3.0
       - run: cp ./env/.env.example ./env/.env
-      - run: docker-compose up
+      - run: docker-compose up -d
       - run: yarn test
