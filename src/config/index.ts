@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 process.env.NODE_ENV = process.env.NODE_ENV || "dev";
 
 const envFound = dotenv.config({ path: "./env/.env" });
-if (envFound.error) {
+if (process.env.NODE_ENV == "dev" && envFound.error) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
