@@ -29,6 +29,7 @@ export const user = async (id: string, createdAt: Date): Promise<IUser> => {
     id: id,
     password: password,
     nickname: nickname,
+    iso_time: createdAt.toISOString(),
     created_at: createdAt,
   };
 };
@@ -53,6 +54,7 @@ export const comment = async (
     _idx: result.insertId,
     user_idx: userIdx,
     comment: content,
+    iso_time: createdAt.toISOString(),
     created_at: createdAt,
   };
 };

@@ -33,8 +33,8 @@ describe("comment", () => {
       await dummy.comment(user._idx, comment.comment, date);
     });
     const commentsTimestamp = [
-      { comment: "comment1", created_at: date.getTime() },
-      { comment: "comment2", created_at: date.getTime() },
+      { comment: "comment1", iso_time: date.toISOString() },
+      { comment: "comment2", iso_time: date.toISOString() },
     ];
 
     const res = await request(app).get(`/api/comment/${user.id}`).send();

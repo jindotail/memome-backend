@@ -24,7 +24,7 @@ export default class CommentService {
     return comments.map((comment) => {
       return {
         comment: comment.comment,
-        created_at: comment.created_at.getTime(),
+        iso_time: comment.iso_time,
       };
     });
   }

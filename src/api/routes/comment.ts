@@ -45,8 +45,11 @@ export default (app: Router) => {
     logger.debug(`Calling get /comment/${req.params.userId} endpoint`);
     const userIdx = await getUserIdxById(req.params.userId as string);
     const result = await commentServiceInstance.getComments(userIdx);
+    logger.silly(
+      `[CommentRoute] getComments result: ${JSON.stringify(result)}`
+    );
     return res.status(200).json({
-      comments: result,
+      body: result,
     });
   });
 };

@@ -3,6 +3,7 @@ CREATE TABLE user (
     id VARCHAR(30) NOT NULL,
     password VARCHAR(30) NOT NULL,
     nickname VARCHAR(30) NOT NULL,
+    iso_time VARCHAR(30) NOT NULL,
     created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
     PRIMARY KEY(idx)
 ) CHARSET=utf8;
@@ -11,6 +12,7 @@ CREATE TABLE comment (
     idx INT NOT NULL AUTO_INCREMENT,
     user_idx INT NOT NULL,
     comment VARCHAR(30) NOT NULL,
+    iso_time VARCHAR(30) NOT NULL,
     created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
     PRIMARY KEY(idx),
     FOREIGN KEY (user_idx) REFERENCES user(idx) ON UPDATE CASCADE

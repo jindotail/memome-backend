@@ -6,7 +6,6 @@ services:
       dockerfile: ./docker/node.dockerfile
     environment:
       - NODE_ENV=stage
-      - LOG_LEVEL=debug
     env_file:
       - ./env/.env
     ports:

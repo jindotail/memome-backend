@@ -4,8 +4,15 @@ import * as db from "./mysql";
 
 export default class CommentModel {
   private createSql(userIdx: number, comment: string): string {
-    const insertQuery = "INSERT INTO comment (??,??) VALUES (?,?)";
-    return mysql.format(insertQuery, ["user_idx", "comment", userIdx, comment]);
+    const insertQuery = "INSERT INTO comment (??, ??, ??) VALUES (?, ?, ?)";
+    return mysql.format(insertQuery, [
+      "user_idx",
+      "comment",
+      "iso_time",
+      userIdx,
+      comment,
+      new Date().toISOString(),
+    ]);
   }
 
   public async create(userIdx: number, comment: string) {
@@ -16,7 +23,7 @@ export default class CommentModel {
 
   private findSql(userIdx: number): string {
     const insertQuery =
-      "SELECT idx, user_idx, comment, CONVERT_TZ(created_at,'+00:00','+09:00') as created_at FROM comment WHERE ?? = ?";
+      "SELECT idx, user_idx, comment, iso_time FROM comment WHERE ?? = ?";
     return mysql.format(insertQuery, ["user_idx", userIdx]);
   }
 

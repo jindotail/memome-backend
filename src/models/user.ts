@@ -4,14 +4,16 @@ import * as db from "./mysql";
 
 export default class UserModel {
   public async create(userSignUpDTO: IUserSignUpDTO) {
-    const insertQuery = "INSERT INTO user (??, ??, ??) VALUES (?, ?, ?)";
+    const insertQuery = "INSERT INTO user (??, ??, ??, ??) VALUES (?, ?, ?, ?)";
     const sql = mysql.format(insertQuery, [
       "id",
       "password",
       "nickname",
+      "iso_time",
       userSignUpDTO.id,
       userSignUpDTO.password,
       userSignUpDTO.nickname,
+      new Date().toISOString()
     ]);
     const res = await db.query(sql);
     return res;
