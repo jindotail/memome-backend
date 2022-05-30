@@ -8,6 +8,8 @@ if (process.env.NODE_ENV == "dev" && envFound.error) {
 }
 
 export default {
+  node_env: process.env.NODE_ENV,
+
   port: parseInt(process.env.API_PORT, 10),
 
   db: {
