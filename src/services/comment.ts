@@ -23,6 +23,7 @@ export default class CommentService {
   ): ICommentResponse[] {
     return comments.map((comment) => {
       return {
+        idx: comment.idx,
         comment: comment.comment,
         iso_time: comment.iso_time,
       };

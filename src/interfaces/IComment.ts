@@ -1,5 +1,5 @@
 export interface IComment {
-  _idx: number;
+  idx: number;
   user_idx: number;
   comment: string;
   iso_time: string;
@@ -7,6 +7,7 @@ export interface IComment {
 }
 
 export interface ICommentResponse {
+  idx: number;
   comment: string;
   iso_time: string;
 }
