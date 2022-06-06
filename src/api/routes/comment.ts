@@ -1,5 +1,5 @@
-import UserModel from "@/models/user";
 import CommentService from "@/services/comment";
+import UserService from "@/services/user";
 import { celebrate, Joi } from "celebrate";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
@@ -13,13 +13,8 @@ export default (app: Router) => {
   app.use("/comment", middlewares.withError);
 
   const logger: Logger = Container.get("logger");
-  const userModelInstance: UserModel = Container.get("userModel");
   const commentServiceInstance = Container.get(CommentService);
-
-  const getUserIdxById = async (userId: string): Promise<number> => {
-    const user = await userModelInstance.findById(userId);
-    return user[0].idx;
-  };
+  const userServiceInstance = Container.get(UserService);
 
   route.post(
     "/:userId",
@@ -35,7 +30,9 @@ export default (app: Router) => {
       );
 
       try {
-        const userIdx = await getUserIdxById(req.params.userId as string);
+        const userIdx = await userServiceInstance.getUserIdxById(
+          req.params.userId as string
+        );
         const result = await commentServiceInstance.create(
           userIdx,
           req.body.comment
@@ -54,7 +51,9 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug(`Calling get /comment/${req.params.userId} endpoint`);
       try {
-        const userIdx = await getUserIdxById(req.params.userId as string);
+        const userIdx = await userServiceInstance.getUserIdxById(
+          req.params.userId as string
+        );
         const result = await commentServiceInstance.getComments(userIdx);
         logger.silly(
           `[CommentRoute] getComments result: ${JSON.stringify(result)}`
