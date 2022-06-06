@@ -5,13 +5,15 @@ services:
       context: ./
       dockerfile: ./docker/node.dockerfile
     environment:
-      - NODE_ENV=stage
+      - NODE_ENV=dev
     env_file:
       - ./env/.env
     ports:
       - "8080:8080"
     depends_on:
       - db
+    command:
+      - yarn run start:dev
   db:
     platform: linux/x86_64
     image: "guestbook-mysql"

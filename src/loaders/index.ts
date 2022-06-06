@@ -25,7 +25,7 @@ const getModelList = (
 
 export default async ({ expressApp }) => {
   const modelList =
-    config.node_env === "dev"
+    config.node_env === "local"
       ? getModelList(new MockUserModel(), new MockCommentModel())
       : getModelList(new UserModel(), new CommentModel());
 
