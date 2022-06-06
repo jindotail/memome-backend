@@ -33,3 +33,17 @@ const isTrustedError = (error: Error) => {
   }
   return false;
 };
+
+process.on("unhandledRejection", (reason: Error, promise: Promise<any>) => {
+  logger.error("unhandledRejection");
+
+  throw reason;
+});
+
+process.on("uncaughtException", (error: Error) => {
+  logger.error("uncaughtException");
+
+  if (!isTrustedError(error)) {
+    process.exit(1);
+  }
+});
