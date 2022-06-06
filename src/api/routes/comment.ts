@@ -40,11 +40,11 @@ export default (app: Router) => {
           userIdx,
           req.body.comment
         );
-        return res.status(201).json({
+        res.status(201).json({
           body: result,
         });
       } catch (err) {
-        return next(err);
+        next(err);
       }
     }
   );

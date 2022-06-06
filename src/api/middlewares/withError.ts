@@ -1,5 +1,7 @@
+import { HttpStatusCode } from "@/common/http";
 import BaseError from "@/errors/baseError";
-import { errorHandler } from "@/errors/ErrorHandler";
+import logger from "@/loaders/logger";
+import { isCelebrateError } from "celebrate";
 import { NextFunction, Request, Response } from "express";
 
 export const withError = async (
@@ -8,10 +10,26 @@ export const withError = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (!errorHandler.isTrustedError(err)) {
-    next(err);
+  logger.error(err);
+
+  if (isCelebrateError(err)) {
+    res.status(HttpStatusCode.BAD_REQUEST);
+    res.json({
+      error: err.message,
+    });
+  } else if (isTrustedError(err)) {
+    res.status((err as BaseError).httpCode);
+    res.json({
+      error: err.message,
+    });
   }
-  await errorHandler.handleError(err);
-  res.status((err as BaseError).httpCode);
-  res.send((err as BaseError).message);
+
+  next();
+};
+
+const isTrustedError = (error: Error) => {
+  if (error instanceof BaseError) {
+    return error.isOperational;
+  }
+  return false;
 };
