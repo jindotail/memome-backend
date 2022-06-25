@@ -1,6 +1,6 @@
 import mysql from "mysql";
 import { ResultSetHeader } from "mysql2";
-import { IUserSignUpDTO } from "../interfaces/IUser";
+import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
 import * as db from "./mysql";
 
 export default class UserModel {
@@ -26,10 +26,10 @@ export default class UserModel {
     return res as ResultSetHeader;
   }
 
-  public async findById(id: string) {
+  public async findById(id: string): Promise<IUser[]> {
     const insertQuery = "SELECT * FROM user WHERE id = ?";
     const sql = mysql.format(insertQuery, [id]);
-    const res = await db.query(sql);
+    const res = (await db.query(sql)) as IUser[];
     return res;
   }
 }

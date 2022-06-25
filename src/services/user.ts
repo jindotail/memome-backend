@@ -12,7 +12,7 @@ export default class UserService {
   ) {}
 
   public async getUserIdxById(userId: string): Promise<number> {
-    this.logger.silly(`[UserService] signUp ${userId}`);
+    this.logger.silly(`[UserService] getUserIdxById ${userId}`);
 
     const user = await this.UserModel.findById(userId);
     if (user[0]?.idx === undefined)

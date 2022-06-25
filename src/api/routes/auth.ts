@@ -2,7 +2,7 @@ import { celebrate, Joi } from "celebrate";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
-import { IUserSignUpDTO } from "../../interfaces/IUser";
+import { IUserLoginDTO, IUserSignUpDTO } from "../../interfaces/IUser";
 import AuthService from "../../services/auth";
 import middlewares from "../middlewares";
 
@@ -28,12 +28,34 @@ export default (app: Router) => {
       logger.debug("Calling Sign-Up endpoint with body: %o", req.body);
 
       try {
-        const { accessToken, refreshToken } = await authServiceInstance.signUp(
-          req.body as IUserSignUpDTO
+        await authServiceInstance.signUp(req.body as IUserSignUpDTO);
+        return res.status(201).json({
+          body: "SUCCESS",
+        });
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  route.post(
+    "/login",
+    celebrate({
+      body: Joi.object({
+        id: Joi.string().required(),
+        password: Joi.string().required(),
+      }),
+    }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug("Calling Login endpoint with body: %o", req.body);
+
+      try {
+        const { accessToken, refreshToken } = await authServiceInstance.login(
+          req.body as IUserLoginDTO
         );
         res.cookie("accessToken", accessToken);
         res.cookie("refreshToken", refreshToken);
-        return res.status(201).json({
+        return res.status(200).json({
           body: "SUCCESS",
         });
       } catch (err) {
