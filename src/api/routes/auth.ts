@@ -63,4 +63,17 @@ export default (app: Router) => {
       }
     }
   );
+
+  route.post(
+    "/logout",
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug("Calling Logout endpoint");
+
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+      return res.status(200).json({
+        body: "SUCCESS",
+      });
+    }
+  );
 };

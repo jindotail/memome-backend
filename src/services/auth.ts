@@ -62,7 +62,6 @@ export default class AuthService {
     const exp = new Date(today);
     exp.setDate(today.getDate() + days);
 
-    this.logger.silly(`Sign JWT for userId: ${idx}`);
     return jwt.sign(
       {
         idx: idx,
