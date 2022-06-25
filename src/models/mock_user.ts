@@ -1,3 +1,4 @@
+import { ResultSetHeader } from "mysql2";
 import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
 
 export default class UserModel {
@@ -21,7 +22,7 @@ export default class UserModel {
     },
   ];
 
-  public async create(userSignUpDTO: IUserSignUpDTO) {
+  public async create(userSignUpDTO: IUserSignUpDTO): Promise<ResultSetHeader> {
     console.log(
       `[MockUserModel] create id: ${userSignUpDTO.id} nickname: ${userSignUpDTO.nickname}`
     );
@@ -34,7 +35,14 @@ export default class UserModel {
       iso_time: new Date().toISOString(),
       created_at: new Date(),
     });
-    return "SUCCESS";
+    return {
+      fieldCount: 0,
+      affectedRows: 1,
+      insertId: this.idx,
+      info: "",
+      serverStatus: 2,
+      warningStatus: 0,
+    } as ResultSetHeader;
   }
 
   public async findById(id: string) {

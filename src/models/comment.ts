@@ -1,5 +1,7 @@
 import { IComment } from "@/interfaces/IComment";
 import mysql from "mysql";
+import { ResultSetHeader } from "mysql2";
+
 import * as db from "./mysql";
 
 export default class CommentModel {
@@ -15,10 +17,13 @@ export default class CommentModel {
     ]);
   }
 
-  public async create(userIdx: number, comment: string) {
+  public async create(
+    userIdx: number,
+    comment: string
+  ): Promise<ResultSetHeader> {
     const sql = this.createSql(userIdx, comment);
     const res = await db.query(sql);
-    return res; // TODO - 생성 시 return 값 어떻게 보낼지 정하기
+    return res as ResultSetHeader;
   }
 
   private findSql(userIdx: number): string {
