@@ -1,2 +1,2 @@
-INSERT INTO user(id, password, nickname, salt, iso_time) VALUES ("jindo", "1234", "진도", "salt", "2022-05-29T07:27:35.639Z");
-INSERT INTO user(id, password, nickname, salt, iso_time) VALUES ("tail", "1234", "꼬리", "salt", "2022-05-29T07:27:35.639Z");
+INSERT INTO user(id, password, nickname, salt, iso_time) VALUES ("jindo", "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg", "진도", "salt", "2022-05-29T07:27:35.639Z");
+INSERT INTO user(id, password, nickname, salt, iso_time) VALUES ("tail", "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg", "꼬리", "salt", "2022-05-29T07:27:35.639Z");
