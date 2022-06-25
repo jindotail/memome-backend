@@ -34,7 +34,7 @@ export default class AuthService {
           HttpStatusCode.BAD_REQUEST,
           "duplicate user id"
         );
-      }
+      } else throw e;
     }
   }
 
