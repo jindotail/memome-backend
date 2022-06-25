@@ -28,11 +28,13 @@ export default (app: Router) => {
       logger.debug("Calling Sign-Up endpoint with body: %o", req.body);
 
       try {
-        const result = await authServiceInstance.signUp(
+        const { accessToken, refreshToken } = await authServiceInstance.signUp(
           req.body as IUserSignUpDTO
         );
+        res.cookie("accessToken", accessToken);
+        res.cookie("refreshToken", refreshToken);
         return res.status(201).json({
-          body: result,
+          body: "SUCCESS",
         });
       } catch (err) {
         return next(err);
