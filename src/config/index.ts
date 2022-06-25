@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 
-process.env.NODE_ENV = process.env.NODE_ENV || "dev";
+process.env.NODE_ENV = process.env.NODE_ENV || "local";
 
 const envFound = dotenv.config({ path: "./env/.env" });
-if (process.env.NODE_ENV == "dev" && envFound.error) {
+if (process.env.NODE_ENV == "local" && envFound.error) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
@@ -28,4 +28,6 @@ export default {
   logs: {
     level: process.env.LOG_LEVEL || "debug",
   },
+
+  jwtSecret: process.env.JWT_SECRET,
 };
