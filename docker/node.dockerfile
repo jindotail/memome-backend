@@ -11,5 +11,3 @@ COPY jest.config.js .
 COPY ./src ./src
 
 EXPOSE 8080
-
-CMD [ "yarn", "start" ]
