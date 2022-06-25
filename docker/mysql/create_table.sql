@@ -1,11 +1,13 @@
 CREATE TABLE user (
     idx INT NOT NULL AUTO_INCREMENT,
     id VARCHAR(30) NOT NULL,
-    password VARCHAR(30) NOT NULL,
+    password VARCHAR(100) NOT NULL,
     nickname VARCHAR(30) NOT NULL,
+    salt VARCHAR(50) NOT NULL,
     iso_time VARCHAR(30) NOT NULL,
     created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
-    PRIMARY KEY(idx)
+    PRIMARY KEY(idx),
+    UNIQUE (id)
 ) CHARSET=utf8;
 
 CREATE TABLE comment (
