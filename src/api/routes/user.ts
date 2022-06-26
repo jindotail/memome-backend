@@ -13,15 +13,30 @@ export default (app: Router) => {
   const logger: Logger = Container.get("logger");
   const userServiceInstance = Container.get(UserService);
 
-  route.get(
+  route.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+    logger.debug(`Calling get /user/${req.params.id} endpoint`);
+
+    try {
+      const user = await userServiceInstance.getUserInfo(
+        req.params.id as string
+      );
+      return res.status(200).json({
+        nickname: user.nickname,
+      });
+    } catch (err) {
+      return next(err);
+    }
+  });
+
+  route.delete(
     "/:id",
     async (req: Request, res: Response, next: NextFunction) => {
-      logger.debug(`Calling get /user/${req.params.id} endpoint`);
+      logger.debug(`Calling delete /user/${req.params.id} endpoint`);
 
       try {
-        const user = await userServiceInstance.getUserInfo(req.params.id as string);
+        await userServiceInstance.deleteUserById(req.params.id as string);
         return res.status(200).json({
-          nickname: user.nickname,
+          body: "SUCCESS",
         });
       } catch (err) {
         return next(err);

@@ -36,4 +36,10 @@ export default class UserService {
       );
     return { nickname: user[0].nickname };
   }
+
+  public async deleteUserById(userId: string) {
+    this.logger.silly(`[UserService] deleteUserById: ${userId}`);
+    const res = await this.UserModel.disable(userId);
+    return res;
+  }
 }

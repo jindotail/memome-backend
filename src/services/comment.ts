@@ -36,7 +36,7 @@ export default class CommentService {
     return this.convertCommentToCommentResponse(res);
   }
 
-  public async deleteCommentByIdx(idx: number): Promise<ICommentResponse[]> {
+  public async deleteCommentByIdx(idx: number) {
     this.logger.silly(`[CommentService] deleteCommentByIdx: ${idx}`);
     const res = await this.commentModel.disable(idx);
     return res;

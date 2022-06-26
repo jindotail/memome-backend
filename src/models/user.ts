@@ -32,4 +32,15 @@ export default class UserModel {
     const res = (await db.query(sql)) as IUser[];
     return res;
   }
+
+  private disableSql(id: string): string {
+    const insertQuery = "UPDATE user SET is_disabled = 1 WHERE ?? = ?";
+    return mysql.format(insertQuery, ["id", id]);
+  }
+
+  public async disable(id: string) {
+    const sql = this.disableSql(id);
+    const res = await db.query(sql);
+    return res;
+  }
 }

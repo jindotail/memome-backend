@@ -44,7 +44,7 @@ export default class CommentModel {
 
   public async disable(idx: number) {
     const sql = this.disableSql(idx);
-    const res = (await db.query(sql)) as IComment[];
+    const res = await db.query(sql);
     return res;
   }
 }

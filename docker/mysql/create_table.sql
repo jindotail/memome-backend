@@ -4,6 +4,7 @@ CREATE TABLE user (
     password VARCHAR(100) NOT NULL,
     nickname VARCHAR(30) NOT NULL,
     salt VARCHAR(50) NOT NULL,
+    is_disabled TINYINT DEFAULT 0,
     iso_time VARCHAR(30) NOT NULL,
     created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
     PRIMARY KEY(idx),
