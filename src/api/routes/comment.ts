@@ -1,3 +1,5 @@
+import { HttpStatusCode } from "@/common/http";
+import APIError from "@/errors/APIError";
 import CommentService from "@/services/comment";
 import UserService from "@/services/user";
 import { celebrate, Joi } from "celebrate";
@@ -60,6 +62,38 @@ export default (app: Router) => {
         );
         return res.status(200).json({
           body: result,
+        });
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  route.delete(
+    "/:userId/:commentIdx",
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug(
+        `Calling delete /comment/${req.params.userId}/${req.params.commentIdx} endpoint`
+      );
+
+      if (
+        isNaN(Number(req.params.commentIdx)) === true ||
+        Number(req.params.commentIdx) < 0
+      )
+        throw new APIError(
+          "CommentRouter",
+          HttpStatusCode.BAD_REQUEST,
+          "invalid comment id"
+        );
+
+      try {
+        commentServiceInstance.deleteCommentByIdx(
+          Number(req.params.commentIdx)
+        );
+
+        return res.status(200).json({
+          body: req.params.userId,
+          idx: req.params.commentIdx,
         });
       } catch (err) {
         return next(err);

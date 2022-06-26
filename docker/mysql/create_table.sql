@@ -14,6 +14,7 @@ CREATE TABLE comment (
     idx INT NOT NULL AUTO_INCREMENT,
     user_idx INT NOT NULL,
     comment VARCHAR(30) NOT NULL,
+    is_disabled TINYINT DEFAULT 0,
     iso_time VARCHAR(30) NOT NULL,
     created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
     PRIMARY KEY(idx),

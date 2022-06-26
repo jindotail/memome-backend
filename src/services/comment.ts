@@ -35,4 +35,10 @@ export default class CommentService {
     const res = await this.commentModel.find(userIdx);
     return this.convertCommentToCommentResponse(res);
   }
+
+  public async deleteCommentByIdx(idx: number): Promise<ICommentResponse[]> {
+    this.logger.silly(`[CommentService] deleteCommentByIdx: ${idx}`);
+    const res = await this.commentModel.disable(idx);
+    return res;
+  }
 }
