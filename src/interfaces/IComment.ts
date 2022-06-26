@@ -2,6 +2,7 @@ export interface IComment {
   idx: number;
   user_idx: number;
   comment: string;
+  is_disabled: number;
   iso_time: string;
   created_at: Date;
 }

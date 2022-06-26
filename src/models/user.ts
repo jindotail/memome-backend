@@ -38,9 +38,9 @@ export default class UserModel {
     return mysql.format(insertQuery, ["id", id]);
   }
 
-  public async disable(id: string) {
+  public async disable(id: string): Promise<ResultSetHeader> {
     const sql = this.disableSql(id);
-    const res = await db.query(sql);
+    const res = (await db.query(sql)) as ResultSetHeader;
     return res;
   }
 }

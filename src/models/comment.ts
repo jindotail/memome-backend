@@ -42,9 +42,9 @@ export default class CommentModel {
     return mysql.format(insertQuery, ["idx", idx]);
   }
 
-  public async disable(idx: number) {
+  public async disable(idx: number): Promise<ResultSetHeader> {
     const sql = this.disableSql(idx);
-    const res = await db.query(sql);
+    const res = (await db.query(sql)) as ResultSetHeader;
     return res;
   }
 }

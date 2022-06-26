@@ -1,5 +1,6 @@
 import { HttpStatusCode } from "@/common/http";
 import APIError from "@/errors/APIError";
+import e from "express";
 import { ResultSetHeader } from "mysql2";
 import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
 
@@ -13,6 +14,7 @@ export default class UserModel {
         "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
       nickname: "진도",
       salt: "salt",
+      is_disabled: 0,
       iso_time: new Date().toISOString(),
       created_at: new Date(),
     },
@@ -23,6 +25,7 @@ export default class UserModel {
         "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
       nickname: "Tail",
       salt: "salt",
+      is_disabled: 0,
       iso_time: new Date().toISOString(),
       created_at: new Date(),
     },
@@ -52,6 +55,7 @@ export default class UserModel {
       password: userSignUpDTO.password,
       nickname: userSignUpDTO.nickname,
       salt: "salt",
+      is_disabled: 0,
       iso_time: new Date().toISOString(),
       created_at: new Date(),
     });
@@ -68,5 +72,35 @@ export default class UserModel {
   public async findById(id: string) {
     console.log(`[MockUserModel] findById id: ${id}`);
     return this.userList.filter((e) => e.id == id);
+  }
+
+  public async disable(id: string): Promise<ResultSetHeader> {
+    this.userList = this.userList.map((e) => {
+      if (e.id == id)
+        return {
+          ...e,
+          is_disabled: 1,
+        };
+      return e;
+    });
+
+    return {
+      fieldCount: 0,
+      affectedRows: 1,
+      insertId: 0,
+      info: "Rows matched: 1  Changed: 1  Warnings: 0",
+      serverStatus: 16386,
+      warningStatus: 0,
+      stateChanges: {
+        systemVariables: {
+          character_set_results: "utf8",
+          character_set_connection: "utf8",
+          character_set_client: "utf8",
+        },
+        schema: null,
+        trackStateChange: null,
+      },
+      changedRows: 1,
+    } as ResultSetHeader;
   }
 }
