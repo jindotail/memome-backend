@@ -21,6 +21,7 @@ export default (app: Router) => {
         req.params.id as string
       );
       return res.status(200).json({
+        id: user.id,
         nickname: user.nickname,
       });
     } catch (err) {

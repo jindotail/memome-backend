@@ -24,7 +24,9 @@ export default class UserService {
     return user[0]?.idx;
   }
 
-  public async getUserInfo(userId: string): Promise<{ nickname: string }> {
+  public async getUserInfo(
+    userId: string
+  ): Promise<{ id: string; nickname: string }> {
     this.logger.silly(`[UserService] getUserInfo ${userId}`);
 
     const user = await this.UserModel.findById(userId);
@@ -34,7 +36,7 @@ export default class UserService {
         HttpStatusCode.BAD_REQUEST,
         "user not found"
       );
-    return { nickname: user[0].nickname };
+    return { id: user[0].id, nickname: user[0].nickname };
   }
 
   public async deleteUserById(userId: string) {
