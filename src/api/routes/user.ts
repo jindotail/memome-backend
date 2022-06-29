@@ -1,3 +1,5 @@
+import { HttpStatusCode } from "@/common/http";
+import APIError from "@/errors/APIError";
 import UserService from "@/services/user";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
@@ -12,6 +14,34 @@ export default (app: Router) => {
 
   const logger: Logger = Container.get("logger");
   const userServiceInstance = Container.get(UserService);
+
+  route.get(
+    "/random",
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug(`Calling get /user/${req.query.count} endpoint`);
+
+      if (
+        isNaN(Number(req.query.count)) === true ||
+        Number(req.query.count) < 0
+      )
+        throw new APIError(
+          "CommentRouter",
+          HttpStatusCode.BAD_REQUEST,
+          "invalid user count"
+        );
+
+      try {
+        const { ids } = await userServiceInstance.getRandomUserId(
+          Number(req.query.count)
+        );
+        return res.status(200).json({
+          ids: ids,
+        });
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
 
   route.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
     logger.debug(`Calling get /user/${req.params.id} endpoint`);
@@ -28,6 +58,8 @@ export default (app: Router) => {
       return next(err);
     }
   });
+
+  
 
   route.delete(
     "/:id",

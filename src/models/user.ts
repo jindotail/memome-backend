@@ -33,6 +33,17 @@ export default class UserModel {
     return res;
   }
 
+  private findRandomUserSql(count: number): string {
+    const findQuery = "SELECT * FROM user ORDER BY rand() limit ?";
+    return mysql.format(findQuery, [count]);
+  }
+
+  public async findRandomUser(count: number): Promise<IUser[]> {
+    const sql = this.findRandomUserSql(count);
+    const res = (await db.query(sql)) as IUser[];
+    return res;
+  }
+
   private disableSql(id: string): string {
     const insertQuery = "UPDATE user SET is_disabled = 1 WHERE ?? = ?";
     return mysql.format(insertQuery, ["id", id]);
