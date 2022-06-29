@@ -70,8 +70,16 @@ export default class UserModel {
   }
 
   public async findById(id: string) {
-    console.log(`[MockUserModel] findById id: ${id}`);
     return this.userList.filter((e) => e.id == id);
+  }
+
+  private shuffleList(list: IUser[]) {
+    return list.sort(() => Math.random() - 0.5);
+  }
+
+  public async findRandomUser(count: number): Promise<IUser[]> {
+    const shuffledList = this.shuffleList(this.userList.slice());
+    return shuffledList.slice(-count);
   }
 
   public async disable(id: string): Promise<ResultSetHeader> {
