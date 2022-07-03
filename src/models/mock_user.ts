@@ -29,6 +29,39 @@ export default class UserModel {
       iso_time: new Date().toISOString(),
       created_at: new Date(),
     },
+    {
+      idx: this.idx++,
+      id: "aa",
+      password:
+        "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
+      nickname: "aa",
+      salt: "salt",
+      is_disabled: 0,
+      iso_time: new Date().toISOString(),
+      created_at: new Date(),
+    },
+    {
+      idx: this.idx++,
+      id: "bb",
+      password:
+        "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
+      nickname: "bb",
+      salt: "salt",
+      is_disabled: 0,
+      iso_time: new Date().toISOString(),
+      created_at: new Date(),
+    },
+    {
+      idx: this.idx++,
+      id: "cc",
+      password:
+        "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
+      nickname: "cc",
+      salt: "salt",
+      is_disabled: 0,
+      iso_time: new Date().toISOString(),
+      created_at: new Date(),
+    },
   ];
 
   private isIdExist(id: string): boolean {
