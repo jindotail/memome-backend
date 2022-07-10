@@ -68,6 +68,8 @@ export default (app: Router) => {
 
       try {
         await userServiceInstance.deleteUserById(req.params.id as string);
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
         return res.status(200).json({
           body: "SUCCESS",
         });
