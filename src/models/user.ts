@@ -27,7 +27,7 @@ export default class UserModel {
   }
 
   public async findById(id: string): Promise<IUser[]> {
-    const insertQuery = "SELECT * FROM user WHERE id = ?";
+    const insertQuery = "SELECT * FROM user WHERE id = ? and is_disabled = 0";
     const sql = mysql.format(insertQuery, [id]);
     const res = (await db.query(sql)) as IUser[];
     return res;

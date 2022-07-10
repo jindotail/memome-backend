@@ -65,7 +65,7 @@ export default class UserModel {
   ];
 
   private isIdExist(id: string): boolean {
-    const result = this.userList.filter((user) => user.id === id);
+    const result = this.userList.filter((user) => user.id === id && user.is_disabled == 0);
     if (result.length > 0) return true;
     return false;
   }
@@ -103,7 +103,7 @@ export default class UserModel {
   }
 
   public async findById(id: string) {
-    return this.userList.filter((e) => e.id == id);
+    return this.userList.filter((e) => e.id == id && e.is_disabled == 0);
   }
 
   private shuffleList(list: IUser[]) {
