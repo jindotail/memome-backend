@@ -21,3 +21,11 @@ CREATE TABLE comment (
     PRIMARY KEY(idx),
     FOREIGN KEY (user_idx) REFERENCES user(idx) ON UPDATE CASCADE
 ) CHARSET=utf8;
+
+CREATE TABLE token (
+    user_idx INT NOT NULL,
+    refresh_token VARCHAR(200) NOT NULL,
+    created_at DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6),
+    PRIMARY KEY(user_idx),
+    FOREIGN KEY (user_idx) REFERENCES user(idx) ON UPDATE CASCADE
+) CHARSET=utf8;

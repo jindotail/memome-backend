@@ -7,12 +7,15 @@ import { Inject, Service } from "typedi";
 import { Logger } from "winston";
 import { IUserLoginDTO, IUserSignUpDTO } from "../interfaces/IUser";
 import UserModel from "../models/user";
+import TokenModel from "../models/token";
 import config from "@/config";
+import { throws } from "assert";
 
 @Service()
 export default class AuthService {
   constructor(
     @Inject("userModel") private UserModel: UserModel,
+    @Inject("tokenModel") private TokenModel: TokenModel,
     @Inject("logger") private logger: Logger
   ) {}
 
@@ -64,6 +67,8 @@ export default class AuthService {
     this.logger.silly("Generating JWT");
     const accessToken = generateToken(user.idx, config.accessTokenExpire);
     const refreshToken = generateToken(user.idx, config.refreshTokenExpire);
+    this.TokenModel.create(user.idx, refreshToken);
+
     return { accessToken, refreshToken };
   }
 }

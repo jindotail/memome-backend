@@ -6,10 +6,12 @@ import dependencyInjectorLoader from "./dependencyInjector";
 import expressLoader from "./express";
 import Logger from "./logger";
 import config from "@/config";
+import TokenModel from "@/models/token";
 
 const getModelList = (
   userModel: any,
-  commentModel: any
+  commentModel: any,
+  tokenModel: any
 ): { name: string; model: any }[] => {
   return [
     {
@@ -20,14 +22,22 @@ const getModelList = (
       name: "commentModel",
       model: commentModel,
     },
+    {
+      name: "tokenModel",
+      model: tokenModel,
+    },
   ];
 };
 
 export default async ({ expressApp }) => {
   const modelList =
     config.node_env === "local"
-      ? getModelList(new MockUserModel(), new MockCommentModel())
-      : getModelList(new UserModel(), new CommentModel());
+      ? getModelList(
+          new MockUserModel(),
+          new MockCommentModel(),
+          new TokenModel()
+        )
+      : getModelList(new UserModel(), new CommentModel(), new TokenModel());
 
   dependencyInjectorLoader({
     models: modelList,
