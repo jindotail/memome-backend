@@ -1,15 +1,14 @@
 import { HttpStatusCode } from "@/common/http";
 import { generateToken } from "@/common/jwt";
+import config from "@/config";
 import APIError from "@/errors/APIError";
 import * as argon2 from "argon2";
 import { randomBytes } from "crypto";
 import { Inject, Service } from "typedi";
 import { Logger } from "winston";
 import { IUserLoginDTO, IUserSignUpDTO } from "../interfaces/IUser";
-import UserModel from "../models/user";
 import TokenModel from "../models/token";
-import config from "@/config";
-import { throws } from "assert";
+import UserModel from "../models/user";
 
 @Service()
 export default class AuthService {
@@ -65,8 +64,8 @@ export default class AuthService {
     }
     this.logger.silly("Password is valid!");
     this.logger.silly("Generating JWT");
-    const accessToken = generateToken(user.idx, config.accessTokenExpire);
-    const refreshToken = generateToken(user.idx, config.refreshTokenExpire);
+    const accessToken = generateToken(user.id, config.accessTokenExpire);
+    const refreshToken = generateToken(user.id, config.refreshTokenExpire);
     this.TokenModel.create(user.idx, refreshToken);
 
     return { accessToken, refreshToken };

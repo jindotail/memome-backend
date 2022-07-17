@@ -1,3 +1,5 @@
+import { generateToken, verifyToken } from "@/common/jwt";
+import config from "@/config";
 import { celebrate, Joi } from "celebrate";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
@@ -71,6 +73,35 @@ export default (app: Router) => {
 
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
+      return res.status(200).json({
+        body: "SUCCESS",
+      });
+    }
+  );
+
+  route.post(
+    "/token",
+    celebrate({
+      body: Joi.object({
+        id: Joi.string().required(),
+      }),
+    }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug("Calling token endpoint");
+
+      try {
+        verifyToken(req.cookies.refreshToken);
+      } catch (e) {
+        next(e);
+        return;
+      }
+
+      const accessToken = generateToken(
+        req.body.id as string,
+        config.accessTokenExpire
+      );
+      res.cookie("accessToken", accessToken);
+
       return res.status(200).json({
         body: "SUCCESS",
       });

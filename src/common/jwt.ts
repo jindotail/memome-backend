@@ -1,14 +1,29 @@
 import config from "@/config";
+import APIError from "@/errors/APIError";
 import * as jwt from "jsonwebtoken";
+import { HttpStatusCode } from "./http";
 
 export const verifyToken = (token: string) => {
+  if (token === undefined)
+    throw new APIError(
+      "verifyToken",
+      HttpStatusCode.UNAUTHORIZED,
+      "토큰이 존재하지 않습니다"
+    );
+
   try {
-    return jwt.verify(token, config.jwtSecret);
+    jwt.verify(token, process.env.JWT_SECRET);
   } catch (e) {
-    console.log(e);
+    if (e.name === "TokenExpiredError") {
+      throw new APIError(
+        "verifyToken",
+        HttpStatusCode.UNAUTHORIZED,
+        "토큰이 만료되었습니다"
+      );
+    }
   }
 };
 
-export const generateToken = (idx: number, expiresIn: string) => {
-  return jwt.sign({ idx: idx }, config.jwtSecret, { expiresIn: expiresIn });
+export const generateToken = (id: string, expiresIn: string) => {
+  return jwt.sign({ id: id }, config.jwtSecret, { expiresIn: expiresIn });
 };
