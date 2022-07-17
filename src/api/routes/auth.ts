@@ -55,9 +55,9 @@ export default (app: Router) => {
         const { accessToken, refreshToken } = await authServiceInstance.login(
           req.body as IUserLoginDTO
         );
-        res.cookie("accessToken", accessToken);
-        res.cookie("refreshToken", refreshToken);
         return res.status(200).json({
+          accessToken: accessToken,
+          refreshToken: refreshToken,
           body: "SUCCESS",
         });
       } catch (err) {
@@ -100,9 +100,9 @@ export default (app: Router) => {
         req.body.id as string,
         config.accessTokenExpire
       );
-      res.cookie("accessToken", accessToken);
 
       return res.status(200).json({
+        accessToken: accessToken,
         body: "SUCCESS",
       });
     }
