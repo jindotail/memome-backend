@@ -63,6 +63,7 @@ export default (app: Router) => {
 
   route.delete(
     "/:id",
+    middlewares.checkToken,
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug(`Calling delete /user/${req.params.id} endpoint`);
 

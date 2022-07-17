@@ -1,6 +1,7 @@
 import routes from "@/api";
 import config from "@/config";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 
@@ -13,6 +14,7 @@ export default ({ app }: { app: express.Application }) => {
   });
 
   app.use(bodyParser.json());
+  app.use(cookieParser());
   app.use(cors({ credentials: true, origin: "http://localhost:3000/" }));
   app.use(express.json());
   app.use(config.api.prefix, routes());
