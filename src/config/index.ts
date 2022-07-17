@@ -30,6 +30,6 @@ export default {
   },
 
   jwtSecret: process.env.JWT_SECRET,
-  accessTokenExpire: parseInt(process.env.ACCESS_TOKEN_EXPIRE, 10) || 60,
-  refreshTokenExpire: parseInt(process.env.REFRESH_TOKEN_EXPIRE, 10) || 120,
+  accessTokenExpire: process.env.ACCESS_TOKEN_EXPIRE || "15m",
+  refreshTokenExpire: process.env.REFRESH_TOKEN_EXPIRE || "15d",
 };
