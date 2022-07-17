@@ -29,6 +29,7 @@ export default class TokenModel {
     return mysql.format(findQuery, ["user_idx", userIdx]);
   }
 
+  // TODO - 공통적으로 string[]으로 넘기고 service에서 하나만 들고 오는게 나을듯
   public async find(userIdx: number): Promise<string> {
     const sql = this.findSql(userIdx);
     const res = await db.query(sql);

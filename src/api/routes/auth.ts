@@ -96,6 +96,8 @@ export default (app: Router) => {
         return;
       }
 
+      // TODO - DB의 refresh token과 같은지 확인
+
       const accessToken = generateToken(
         req.body.id as string,
         config.accessTokenExpire

@@ -2,6 +2,7 @@ import CommentModel from "../models/comment";
 import UserModel from "../models/user";
 import MockCommentModel from "../models/mock_comment";
 import MockUserModel from "../models/mock_user";
+import MockTokenModel from "../models/mock_token";
 import dependencyInjectorLoader from "./dependencyInjector";
 import expressLoader from "./express";
 import Logger from "./logger";
@@ -35,7 +36,7 @@ export default async ({ expressApp }) => {
       ? getModelList(
           new MockUserModel(),
           new MockCommentModel(),
-          new TokenModel()
+          new MockTokenModel()
         )
       : getModelList(new UserModel(), new CommentModel(), new TokenModel());
 
