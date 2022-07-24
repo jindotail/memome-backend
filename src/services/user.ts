@@ -39,11 +39,17 @@ export default class UserService {
     return { id: user[0].id, nickname: user[0].nickname };
   }
 
-  public async getRandomUserId(count: number): Promise<{ ids: string[] }> {
+  public async getRandomUserId(
+    count: number
+  ): Promise<{ users: { idx: number; id: string }[] }> {
     this.logger.silly(`[UserService] getRandomUserId count: ${count}`);
 
     const users = await this.UserModel.findRandomUser(count);
-    return { ids: users.map((user) => user.id) };
+    return {
+      users: users.map((user) => {
+        return { idx: user.idx, id: user.id };
+      }),
+    };
   }
 
   public async deleteUserById(userId: string) {

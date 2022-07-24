@@ -31,11 +31,11 @@ export default (app: Router) => {
         );
 
       try {
-        const { ids } = await userServiceInstance.getRandomUserId(
+        const { users } = await userServiceInstance.getRandomUserId(
           Number(req.query.count)
         );
         return res.status(200).json({
-          ids: ids,
+          users: users,
         });
       } catch (err) {
         return next(err);
