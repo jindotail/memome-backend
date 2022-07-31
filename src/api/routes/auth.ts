@@ -1,5 +1,7 @@
+import { HttpStatusCode } from "@/common/http";
 import { generateToken, verifyToken } from "@/common/jwt";
 import config from "@/config";
+import APIError from "@/errors/APIError";
 import { celebrate, Joi } from "celebrate";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
@@ -16,6 +18,12 @@ export default (app: Router) => {
 
   const logger: Logger = Container.get("logger");
   const authServiceInstance = Container.get(AuthService);
+  const ID_MIN_LENGTH = 3;
+  const ID_MAX_LENGTH = 10;
+  const PW_MIN_LENGTH = 3;
+  const PW_MAX_LENGTH = 20;
+  const NICKNAME_MIN_LENGTH = 1;
+  const NICKNAME_MAX_LENGTH = 10;
 
   route.post(
     "/signup",
@@ -28,6 +36,31 @@ export default (app: Router) => {
     }),
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug("Calling Sign-Up endpoint with body: %o", req.body);
+
+      const id: string = req.body.id;
+      const password: string = req.body.password;
+      const nickname: string = req.body.nickname;
+
+      if (id.length < ID_MIN_LENGTH || ID_MAX_LENGTH < id.length)
+        throw new APIError(
+          "CommentRouter",
+          HttpStatusCode.BAD_REQUEST,
+          "invalid id length"
+        );
+
+      if (password.length < PW_MIN_LENGTH || PW_MAX_LENGTH < password.length)
+        throw new APIError(
+          "CommentRouter",
+          HttpStatusCode.BAD_REQUEST,
+          "invalid password length"
+        );
+
+      if (nickname.length < NICKNAME_MIN_LENGTH || NICKNAME_MAX_LENGTH < nickname.length)
+        throw new APIError(
+          "CommentRouter",
+          HttpStatusCode.BAD_REQUEST,
+          "invalid nickname length"
+        );
 
       try {
         await authServiceInstance.signUp(req.body as IUserSignUpDTO);
