@@ -25,6 +25,28 @@ export default (app: Router) => {
   const NICKNAME_MIN_LENGTH = 1;
   const NICKNAME_MAX_LENGTH = 10;
 
+  function validationLength(
+    input: string,
+    minLength: number,
+    maxLength: number
+  ): void {
+    if (input.length < minLength || maxLength < input.length)
+      throw new APIError(
+        "AuthRouter",
+        HttpStatusCode.BAD_REQUEST,
+        "invalid length"
+      );
+  }
+
+  function validAlphabetOrNumber(input: string): void {
+    if (!input.match(/^[0-9a-z]+$/))
+      throw new APIError(
+        "AuthRouter",
+        HttpStatusCode.BAD_REQUEST,
+        "not alphanumeric"
+      );
+  }
+
   route.post(
     "/signup",
     celebrate({
@@ -37,32 +59,16 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug("Calling Sign-Up endpoint with body: %o", req.body);
 
-      const id: string = req.body.id;
-      const password: string = req.body.password;
-      const nickname: string = req.body.nickname;
-
-      if (id.length < ID_MIN_LENGTH || ID_MAX_LENGTH < id.length)
-        throw new APIError(
-          "CommentRouter",
-          HttpStatusCode.BAD_REQUEST,
-          "invalid id length"
-        );
-
-      if (password.length < PW_MIN_LENGTH || PW_MAX_LENGTH < password.length)
-        throw new APIError(
-          "CommentRouter",
-          HttpStatusCode.BAD_REQUEST,
-          "invalid password length"
-        );
-
-      if (nickname.length < NICKNAME_MIN_LENGTH || NICKNAME_MAX_LENGTH < nickname.length)
-        throw new APIError(
-          "CommentRouter",
-          HttpStatusCode.BAD_REQUEST,
-          "invalid nickname length"
-        );
-
       try {
+        const id: string = req.body.id;
+        const password: string = req.body.password;
+        const nickname: string = req.body.nickname;
+
+        validationLength(id, ID_MIN_LENGTH, ID_MAX_LENGTH);
+        validAlphabetOrNumber(id);
+        validationLength(password, PW_MIN_LENGTH, PW_MAX_LENGTH);
+        validationLength(nickname, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH);
+
         await authServiceInstance.signUp(req.body as IUserSignUpDTO);
         return res.status(201).json({
           body: "SUCCESS",
