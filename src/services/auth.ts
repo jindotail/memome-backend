@@ -18,7 +18,7 @@ export default class AuthService {
     @Inject("logger") private logger: Logger
   ) {}
 
-  public async signUp(userSignUpDTO: IUserSignUpDTO) {
+  public async signUp(userSignUpDTO: IUserSignUpDTO): Promise<void> {
     this.logger.silly(`[AuthService] signUp ${JSON.stringify(userSignUpDTO)}`);
     const salt = randomBytes(10);
     this.logger.silly("Hashing password");

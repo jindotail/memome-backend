@@ -13,7 +13,7 @@ initializeApp({
 
 const db = getFirestore();
 
-const saveDocument = async (collection: string, data: any) => {
+export const saveDocument = async (collection: string, data: any) => {
   await db.collection(collection).add({
     ...data,
     created_at: FieldValue.serverTimestamp(),
@@ -21,7 +21,7 @@ const saveDocument = async (collection: string, data: any) => {
   });
 };
 
-const saveDocumentWithId = async (
+export const saveDocumentWithId = async (
   collection: string,
   id: string,
   data: any
@@ -36,7 +36,11 @@ const saveDocumentWithId = async (
     });
 };
 
-const updateDocument = async (collection: string, id: string, data: any) => {
+export const updateDocument = async (
+  collection: string,
+  id: string,
+  data: any
+) => {
   await db
     .collection(collection)
     .doc(id)
@@ -46,11 +50,10 @@ const updateDocument = async (collection: string, id: string, data: any) => {
     });
 };
 
-const findCollection = async (
+export const findCollection = async (
   collection: string
 ): Promise<{ id: string; data: any }[]> => {
   const snapshot = await db.collection(collection).get();
-  if (snapshot.empty) throw new Error();
 
   const res = [];
   snapshot.forEach((doc) => {
@@ -62,7 +65,7 @@ const findCollection = async (
   return res;
 };
 
-const findCollectionWithCondition = async (
+export const findCollectionWithCondition = async (
   collection: string,
   condition: { fieldPath: string | FieldPath; opStr: WhereFilterOp; value: any }
 ): Promise<{ id: string; data: any }[]> => {
@@ -82,8 +85,50 @@ const findCollectionWithCondition = async (
   return res;
 };
 
-const findDocument = async (collection: string, id: string): Promise<any> => {
+export const findDocument = async (
+  collection: string,
+  id: string
+): Promise<any> => {
   const doc = await db.collection(collection).doc(id).get();
   if (!doc.exists) throw new Error();
   return doc.data();
 };
+
+export const deleteDocument = async (
+  collection: string,
+  id: string
+): Promise<void> => {
+  await db.collection(collection).doc(id).delete();
+};
+
+export const deleteCollection = async (
+  collection: string,
+  batchSize: number = 1000
+): Promise<void> => {
+  const collectionRef = db.collection(collection);
+  const query = collectionRef.orderBy("__name__").limit(batchSize);
+
+  return new Promise((resolve, reject) => {
+    deleteQueryBatch(db, query, resolve).catch(reject);
+  });
+};
+
+async function deleteQueryBatch(db, query, resolve) {
+  const snapshot = await query.get();
+
+  const batchSize = snapshot.size;
+  if (batchSize === 0) {
+    resolve();
+    return;
+  }
+
+  const batch = db.batch();
+  snapshot.docs.forEach((doc) => {
+    batch.delete(doc.ref);
+  });
+  await batch.commit();
+
+  process.nextTick(() => {
+    deleteQueryBatch(db, query, resolve);
+  });
+}
