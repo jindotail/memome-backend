@@ -1,5 +1,5 @@
 export interface IComment {
-  idx: number;
+  idx: string;
   user_idx: number;
   comment: string;
   is_disabled: number;
@@ -8,7 +8,7 @@ export interface IComment {
 }
 
 export interface ICommentResponse {
-  idx: number;
+  idx: string;
   comment: string;
   iso_time: string;
 }

@@ -10,7 +10,7 @@ export default class CommentService {
     @Inject("logger") private logger: Logger
   ) {}
 
-  public async create(userIdx: number, comment: string) {
+  public async create(userIdx: string, comment: string) {
     this.logger.silly(
       `[CommentService] create userIdx: ${userIdx}, comment: ${comment}`
     );
@@ -30,13 +30,13 @@ export default class CommentService {
     });
   }
 
-  public async getComments(userIdx: number): Promise<ICommentResponse[]> {
+  public async getComments(userIdx: string): Promise<ICommentResponse[]> {
     this.logger.silly(`[CommentService] getComments userIdx: ${userIdx}`);
     const res = await this.commentModel.find(userIdx);
     return this.convertCommentToCommentResponse(res);
   }
 
-  public async deleteCommentByIdx(idx: number) {
+  public async deleteCommentByIdx(idx: string) {
     this.logger.silly(`[CommentService] deleteCommentByIdx: ${idx}`);
     const res = await this.commentModel.disable(idx);
     return res;

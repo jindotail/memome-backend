@@ -11,7 +11,7 @@ export default class UserService {
     @Inject("logger") private logger: Logger
   ) {}
 
-  public async getUserIdxById(userId: string): Promise<number> {
+  public async getUserIdxById(userId: string): Promise<string> {
     this.logger.silly(`[UserService] getUserIdxById ${userId}`);
 
     const user = await this.UserModel.findById(userId);
@@ -41,7 +41,7 @@ export default class UserService {
 
   public async getRandomUserId(
     count: number
-  ): Promise<{ users: { idx: number; id: string }[] }> {
+  ): Promise<{ users: { idx: string; id: string }[] }> {
     this.logger.silly(`[UserService] getRandomUserId count: ${count}`);
 
     const users = await this.UserModel.findRandomUser(count);
@@ -54,7 +54,7 @@ export default class UserService {
 
   public async deleteUserById(userId: string) {
     this.logger.silly(`[UserService] deleteUserById: ${userId}`);
-    const res = await this.UserModel.disable(userId);
+    const res = await this.UserModel.delete(userId);
     return res;
   }
 }

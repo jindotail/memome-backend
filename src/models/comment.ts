@@ -1,50 +1,33 @@
 import { IComment } from "@/interfaces/IComment";
-import mysql from "mysql";
-import { ResultSetHeader } from "mysql2";
-import * as db from "./mysql";
+import {
+  deleteDocument,
+  findCollectionWithCondition,
+  saveDocument,
+} from "./firebase";
 
 export default class CommentModel {
-  private createSql(userIdx: number, comment: string): string {
-    const insertQuery = "INSERT INTO comment (??, ??, ??) VALUES (?, ?, ?)";
-    return mysql.format(insertQuery, [
-      "user_idx",
-      "comment",
-      "iso_time",
-      userIdx,
+  COLLECTION = "comment";
+
+  public async create(userIdx: string, comment: string): Promise<void> {
+    saveDocument(this.COLLECTION, {
+      user_idx: userIdx,
       comment,
-      new Date().toISOString(),
-    ]);
+      iso_time: new Date().toISOString(),
+    });
   }
 
-  public async create(
-    userIdx: number,
-    comment: string
-  ): Promise<ResultSetHeader> {
-    const sql = this.createSql(userIdx, comment);
-    const res = await db.query(sql);
-    return res as ResultSetHeader;
+  public async find(userIdx: string): Promise<IComment[]> {
+    const res = await findCollectionWithCondition(this.COLLECTION, {
+      fieldPath: "user_idx",
+      opStr: "==",
+      value: userIdx,
+    });
+    return res.map((e) => {
+      return { idx: e.id, ...e.data };
+    });
   }
 
-  private findSql(userIdx: number): string {
-    const findQuery =
-      "SELECT idx, user_idx, comment, iso_time FROM comment WHERE ?? = ? and is_disabled = 0";
-    return mysql.format(findQuery, ["user_idx", userIdx]);
-  }
-
-  public async find(userIdx: number): Promise<IComment[]> {
-    const sql = this.findSql(userIdx);
-    const res = (await db.query(sql)) as IComment[];
-    return res;
-  }
-
-  private disableSql(idx: number): string {
-    const insertQuery = "UPDATE comment SET is_disabled = 1 WHERE ?? = ?";
-    return mysql.format(insertQuery, ["idx", idx]);
-  }
-
-  public async disable(idx: number): Promise<ResultSetHeader> {
-    const sql = this.disableSql(idx);
-    const res = (await db.query(sql)) as ResultSetHeader;
-    return res;
+  public async disable(idx: string): Promise<void> {
+    deleteDocument(this.COLLECTION, idx);
   }
 }

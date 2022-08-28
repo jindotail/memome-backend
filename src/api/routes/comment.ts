@@ -88,9 +88,7 @@ export default (app: Router) => {
         );
 
       try {
-        commentServiceInstance.deleteCommentByIdx(
-          Number(req.params.commentIdx)
-        );
+        commentServiceInstance.deleteCommentByIdx(req.params.commentIdx);
 
         return res.status(200).json({
           body: req.params.userId,

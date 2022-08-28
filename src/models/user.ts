@@ -1,57 +1,51 @@
-import mysql from "mysql";
-import { ResultSetHeader } from "mysql2";
+import { shuffle } from "@/common/random";
 import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
-import * as db from "./mysql";
+import {
+  deleteDocument,
+  findCollection,
+  findCollectionWithCondition,
+  saveDocument,
+} from "./firebase";
 
 export default class UserModel {
+  COLLECTION = "user";
+
   public async create(
     userSignUpDTO: IUserSignUpDTO,
     slat: string
-  ): Promise<ResultSetHeader> {
-    const insertQuery =
-      "INSERT INTO user (??, ??, ??, ??, ??) VALUES (?, ?, ?, ?, ?)";
-    const sql = mysql.format(insertQuery, [
-      "id",
-      "password",
-      "nickname",
-      "salt",
-      "iso_time",
-      userSignUpDTO.id,
-      userSignUpDTO.password,
-      userSignUpDTO.nickname,
-      slat,
-      new Date().toISOString(),
-    ]);
-    const res = await db.query(sql);
-    return res as ResultSetHeader;
+  ): Promise<void> {
+    saveDocument(this.COLLECTION, {
+      id: userSignUpDTO.id,
+      password: userSignUpDTO.password,
+      nickname: userSignUpDTO.nickname,
+      iso_time: new Date().toISOString(),
+      salt: slat,
+    });
   }
 
   public async findById(id: string): Promise<IUser[]> {
-    const insertQuery = "SELECT * FROM user WHERE id = ? and is_disabled = 0";
-    const sql = mysql.format(insertQuery, [id]);
-    const res = (await db.query(sql)) as IUser[];
-    return res;
-  }
+    const res = await findCollectionWithCondition(this.COLLECTION, {
+      fieldPath: "id",
+      opStr: "==",
+      value: id,
+    });
 
-  private findRandomUserSql(count: number): string {
-    const findQuery = "SELECT * FROM user ORDER BY rand() limit ?";
-    return mysql.format(findQuery, [count]);
+    return res.map((e) => {
+      return { idx: e.id, ...e.data };
+    });
   }
 
   public async findRandomUser(count: number): Promise<IUser[]> {
-    const sql = this.findRandomUserSql(count);
-    const res = (await db.query(sql)) as IUser[];
-    return res;
+    const users = await findCollection(this.COLLECTION);
+
+    shuffle(users);
+
+    return users.slice(0, count).map((e) => {
+      return { idx: e.id, ...e.data };
+    });
   }
 
-  private disableSql(id: string): string {
-    const insertQuery = "UPDATE user SET is_disabled = 1 WHERE ?? = ?";
-    return mysql.format(insertQuery, ["id", id]);
-  }
-
-  public async disable(id: string): Promise<ResultSetHeader> {
-    const sql = this.disableSql(id);
-    const res = (await db.query(sql)) as ResultSetHeader;
-    return res;
+  public async delete(id: string): Promise<void> {
+    deleteDocument(this.COLLECTION, id);
   }
 }

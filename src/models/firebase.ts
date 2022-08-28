@@ -73,7 +73,6 @@ export const findCollectionWithCondition = async (
   const snapshot = await citiesRef
     .where(condition.fieldPath, condition.opStr, condition.value)
     .get();
-  if (snapshot.empty) throw new Error();
 
   const res = [];
   snapshot.forEach((doc) => {
@@ -90,7 +89,6 @@ export const findDocument = async (
   id: string
 ): Promise<any> => {
   const doc = await db.collection(collection).doc(id).get();
-  if (!doc.exists) throw new Error();
   return doc.data();
 };
 

@@ -24,20 +24,10 @@ export default class AuthService {
     this.logger.silly("Hashing password");
     const hashedPassword = await argon2.hash(userSignUpDTO.password, { salt });
 
-    try {
-      await this.UserModel.create(
-        { ...userSignUpDTO, password: hashedPassword },
-        salt.toString("hex")
-      );
-    } catch (e) {
-      if (e?.code === "ER_DUP_ENTRY") {
-        throw new APIError(
-          "AuthService",
-          HttpStatusCode.BAD_REQUEST,
-          "duplicate user id"
-        );
-      } else throw e;
-    }
+    await this.UserModel.create(
+      { ...userSignUpDTO, password: hashedPassword },
+      salt.toString("hex")
+    );
   }
 
   public async login(userLoginDTO: IUserLoginDTO) {
