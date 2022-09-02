@@ -2,7 +2,7 @@ import { IComment } from "../../../src/interfaces/IComment";
 import CommentModel from "../../../src/models/comment";
 import * as db from "../../../src/models/firebase";
 
-describe.only("auth", () => {
+describe("CommentModel", () => {
   const commentModel = new CommentModel();
 
   const userIdx1: string = "userIdx1";

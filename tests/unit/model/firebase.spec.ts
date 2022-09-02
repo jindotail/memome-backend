@@ -1,9 +1,9 @@
 // import "reflect-metadata";
-import * as db from "../../src/models/firebase";
+import * as db from "../../../src/models/firebase";
 
 beforeAll(async () => {});
 
-describe("auth", () => {
+describe("Firebase", () => {
   const id1 = "id1";
   const id2 = "id2";
   const name1 = "name1";
@@ -25,7 +25,6 @@ describe("auth", () => {
 
   test("delete document", async () => {
     const collection = "test delete document";
-    await db.deleteCollection(collection);
 
     await db.saveDocumentWithId(collection, id1, { name: name1 });
     await db.saveDocumentWithId(collection, id2, { name: name2 });
@@ -36,19 +35,19 @@ describe("auth", () => {
 
     expect(result[0].id).toEqual(id2);
     expect(result[0].data.name).toEqual(name2);
+    await db.deleteCollection(collection);
   });
 
   test("update document with id", async () => {
     const collection = "test update document";
-    await db.deleteCollection(collection);
 
     await db.saveDocumentWithId(collection, id1, { name: name1 });
     await db.updateDocument(collection, id1, { name: name2 });
+    await db.deleteCollection(collection);
   });
 
   test("find collection", async () => {
     const collection = "test find collection";
-    await db.deleteCollection(collection);
 
     await db.saveDocumentWithId(collection, id1, { name: name1 });
     await db.saveDocumentWithId(collection, id2, { name: name2 });
@@ -59,11 +58,11 @@ describe("auth", () => {
     expect(result[0].data.name).toEqual(name1);
     expect(result[1].id).toEqual(id2);
     expect(result[1].data.name).toEqual(name2);
+    await db.deleteCollection(collection);
   });
 
   test("find collection with condition", async () => {
     const collection = "test find collection with condition";
-    await db.deleteCollection(collection);
 
     await db.saveDocumentWithId(collection, id1, { name: name1 });
     await db.saveDocumentWithId(collection, id2, { name: name2 });
@@ -76,16 +75,17 @@ describe("auth", () => {
 
     expect(result[0].id).toEqual(id2);
     expect(result[0].data.name).toEqual(name2);
+    await db.deleteCollection(collection);
   });
 
   test("find document", async () => {
     const collection = "test find document";
-    await db.deleteCollection(collection);
 
     await db.saveDocumentWithId(collection, id1, { name: name1 });
 
     const result = await db.findDocument(collection, id1);
 
     expect(result.name).toEqual(name1);
+    await db.deleteCollection(collection);
   });
 });
