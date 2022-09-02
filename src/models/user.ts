@@ -5,22 +5,29 @@ import {
   findCollection,
   findCollectionWithCondition,
   saveDocument,
+  findDocument,
 } from "./firebase";
+import config from "@/config";
 
 export default class UserModel {
-  COLLECTION = "user";
+  COLLECTION = config.node_env == "test" ? "test_user" : "user";
 
+  // TODO - id가 중복인지 확인 필요
   public async create(
     userSignUpDTO: IUserSignUpDTO,
     slat: string
   ): Promise<void> {
-    saveDocument(this.COLLECTION, {
+    await saveDocument(this.COLLECTION, {
       id: userSignUpDTO.id,
       password: userSignUpDTO.password,
       nickname: userSignUpDTO.nickname,
       iso_time: new Date().toISOString(),
       salt: slat,
     });
+  }
+
+  public async find(idx: string): Promise<IUser> {
+    return findDocument(this.COLLECTION, idx);
   }
 
   public async findById(id: string): Promise<IUser[]> {
@@ -45,7 +52,7 @@ export default class UserModel {
     });
   }
 
-  public async delete(id: string): Promise<void> {
-    deleteDocument(this.COLLECTION, id);
+  public async delete(idx: string): Promise<void> {
+    await deleteDocument(this.COLLECTION, idx);
   }
 }
