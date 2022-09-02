@@ -4,19 +4,21 @@ import {
   findCollectionWithCondition,
   saveDocument,
 } from "./firebase";
+import config from "@/config";
 
 export default class CommentModel {
-  COLLECTION = "comment";
+  COLLECTION = config.node_env == "test" ? "test_comment" : "comment";
 
   public async create(userIdx: string, comment: string): Promise<void> {
-    saveDocument(this.COLLECTION, {
+    await saveDocument(this.COLLECTION, {
       user_idx: userIdx,
       comment,
       iso_time: new Date().toISOString(),
     });
   }
 
-  public async find(userIdx: string): Promise<IComment[]> {
+  // TODO - user가 존재하는지 미리 확인
+  public async findByUserIdx(userIdx: string): Promise<IComment[]> {
     const res = await findCollectionWithCondition(this.COLLECTION, {
       fieldPath: "user_idx",
       opStr: "==",
@@ -27,7 +29,7 @@ export default class CommentModel {
     });
   }
 
-  public async disable(idx: string): Promise<void> {
-    deleteDocument(this.COLLECTION, idx);
+  public async delete(idx: string): Promise<void> {
+    await deleteDocument(this.COLLECTION, idx);
   }
 }
