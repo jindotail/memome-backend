@@ -1,10 +1,10 @@
 export interface IComment {
   idx: string;
-  user_idx: number;
+  user_idx: string;
   comment: string;
-  is_disabled: number;
   iso_time: string;
   created_at: Date;
+  updated_at: Date;
 }
 
 export interface ICommentResponse {

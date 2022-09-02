@@ -4,9 +4,9 @@ export interface IUser {
   password: string;
   nickname: string;
   salt: string;
-  is_disabled: number;
   iso_time: string;
   created_at: Date;
+  updated_at: Date;
 }
 
 export interface IUserSignUpDTO {

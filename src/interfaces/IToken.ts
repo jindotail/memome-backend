@@ -1,5 +1,6 @@
 export interface IToken {
-  user_idx: number;
+  idx: string;
   refresh_token: string;
   created_at: Date;
+  updated_at: Date;
 }
