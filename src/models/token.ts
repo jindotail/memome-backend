@@ -1,9 +1,11 @@
 import { saveDocumentWithId } from "./firebase";
+import config from "@/config";
 
 export default class TokenModel {
-  COLLECTION = "token";
+  COLLECTION = config.node_env == "test" ? "test_token" : "token";
+
 
   public async create(userIdx: string, token: string): Promise<void> {
-    saveDocumentWithId(this.COLLECTION, userIdx, { token });
+    await saveDocumentWithId(this.COLLECTION, userIdx, { token });
   }
 }
