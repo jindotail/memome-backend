@@ -1,71 +1,34 @@
+import { makeIdx } from "@/common/random";
 import { IComment } from "@/interfaces/IComment";
-import { ResultSetHeader } from "mysql2";
-
 export default class CommentModel {
-  commentList: IComment[] = [];
-  idx = 1;
+  commentMap = new Map<string, any>();
 
-  public async create(
-    userIdx: number,
-    comment: string
-  ): Promise<ResultSetHeader> {
+  public create(userIdx: string, comment: string): void {
     console.log(
       `[MockCommentModel] create userIdx: ${userIdx} comment: ${comment}`
     );
 
-    this.commentList.push({
-      idx: this.idx++,
+    this.commentMap.set(makeIdx(21), {
       user_idx: userIdx,
       comment: comment,
-      is_disabled: 0,
       iso_time: new Date().toISOString(),
       created_at: new Date(),
+      updated_at: new Date(),
     });
-    return {
-      fieldCount: 0,
-      affectedRows: 1,
-      insertId: this.idx,
-      info: "",
-      serverStatus: 2,
-      warningStatus: 0,
-    } as ResultSetHeader;
   }
 
-  public async find(userIdx: number): Promise<IComment[]> {
+  public findByUserIdx(userIdx: string): IComment[] {
     console.log(`[MockCommentModel] find userIdx: ${userIdx}`);
 
-    return this.commentList.filter(
-      (e) => e.user_idx == userIdx && e.is_disabled == 0
-    );
+    const result: IComment[] = [];
+    for (const key of this.commentMap.keys()) {
+      if (this.commentMap.get(key).user_idx !== userIdx) continue;
+      result.push({ idx: key, ...this.commentMap.get(key) });
+    }
+    return result;
   }
 
-  public async disable(idx: number): Promise<ResultSetHeader> {
-    this.commentList = this.commentList.map((e) => {
-      if (e.idx == idx)
-        return {
-          ...e,
-          is_disabled: 1,
-        };
-      return e;
-    });
-
-    return {
-      fieldCount: 0,
-      affectedRows: 0,
-      insertId: 0,
-      info: "Rows matched: 0  Changed: 0  Warnings: 0",
-      serverStatus: 16386,
-      warningStatus: 0,
-      stateChanges: {
-        systemVariables: {
-          character_set_results: "utf8",
-          character_set_connection: "utf8",
-          character_set_client: "utf8",
-        },
-        schema: null,
-        trackStateChange: null,
-      },
-      changedRows: 0,
-    } as ResultSetHeader;
+  public delete(idx: string): void {
+    this.commentMap.delete(idx);
   }
 }
