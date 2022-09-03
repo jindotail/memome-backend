@@ -1,3 +1,5 @@
+import { HttpStatusCode } from "@/common/http";
+import APIError from "@/errors/APIError";
 import { IComment, ICommentResponse } from "@/interfaces/IComment";
 import { Inject, Service } from "typedi";
 import { Logger } from "winston";
@@ -36,9 +38,18 @@ export default class CommentService {
     return this.convertCommentToCommentResponse(res);
   }
 
-  public async deleteCommentByIdx(idx: string) {
+  public async deleteCommentByIdx(idx: string): Promise<void> {
     this.logger.silly(`[CommentService] deleteCommentByIdx: ${idx}`);
-    const res = await this.commentModel.delete(idx);
-    return res;
+
+    const comment = await this.commentModel.find(idx);
+    if (comment === undefined) {
+      throw new APIError(
+        "CommentService",
+        HttpStatusCode.BAD_REQUEST,
+        "comment not found"
+      );
+    }
+
+    await this.commentModel.delete(idx);
   }
 }

@@ -88,11 +88,10 @@ export default (app: Router) => {
         );
 
       try {
-        commentServiceInstance.deleteCommentByIdx(req.params.commentIdx);
+        await commentServiceInstance.deleteCommentByIdx(req.params.commentIdx);
 
         return res.status(200).json({
-          body: req.params.userId,
-          idx: req.params.commentIdx,
+          body: "SUCCESS",
         });
       } catch (err) {
         return next(err);
