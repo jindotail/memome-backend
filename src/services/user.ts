@@ -14,14 +14,14 @@ export default class UserService {
   public async getUserIdxById(userId: string): Promise<string> {
     this.logger.silly(`[UserService] getUserIdxById ${userId}`);
 
-    const user = await this.UserModel.findById(userId);
-    if (user[0]?.idx === undefined)
+    const idxList = await this.UserModel.findById(userId);
+    if (idxList.length === 0)
       throw new APIError(
         "UserService",
         HttpStatusCode.BAD_REQUEST,
         "user not found"
       );
-    return user[0]?.idx;
+    return idxList[0].idx;
   }
 
   public async getUserInfo(

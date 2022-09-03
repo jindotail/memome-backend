@@ -32,13 +32,13 @@ export default class CommentService {
 
   public async getComments(userIdx: string): Promise<ICommentResponse[]> {
     this.logger.silly(`[CommentService] getComments userIdx: ${userIdx}`);
-    const res = await this.commentModel.find(userIdx);
+    const res = await this.commentModel.findByUserIdx(userIdx);
     return this.convertCommentToCommentResponse(res);
   }
 
   public async deleteCommentByIdx(idx: string) {
     this.logger.silly(`[CommentService] deleteCommentByIdx: ${idx}`);
-    const res = await this.commentModel.disable(idx);
+    const res = await this.commentModel.delete(idx);
     return res;
   }
 }
