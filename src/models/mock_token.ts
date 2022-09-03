@@ -1,29 +1,17 @@
 import { IToken } from "@/interfaces/IToken";
 
-export default class CommentModel {
-  tokenList: IToken[] = [];
+export default class TokenModel {
+  tokenMap: Map<string, any> = new Map<string, IToken>();
 
-  public async create(userIdx: number, refreshToken: string) {
+  public create(userIdx: string, refreshToken: string): void {
     console.log(
-      `[MockCommentModel] create userIdx: ${userIdx} comment: ${refreshToken}`
+      `[MockTokenModel] create userIdx: ${userIdx} comment: ${refreshToken}`
     );
 
-    const filteredList = this.tokenList.filter((e) => e.user_idx == userIdx);
-
-    if (filteredList.length === 0)
-      this.tokenList.push({
-        user_idx: userIdx,
-        refresh_token: refreshToken,
-        created_at: new Date(),
-      });
-    else
-      this.tokenList = this.tokenList.map((e) => {
-        if (e.user_idx !== userIdx) return e;
-        return {
-          user_idx: userIdx,
-          refresh_token: refreshToken,
-          created_at: new Date(),
-        };
-      });
+    this.tokenMap.set(userIdx, {
+      refresh_token: refreshToken,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
   }
 }
