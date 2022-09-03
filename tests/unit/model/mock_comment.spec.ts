@@ -49,6 +49,12 @@ describe("MockCommentModel", () => {
     expect(commentList[0].idx).toEqual(comment.idx);
   });
 
+  test("find - 존재하지 않는 경우", () => {
+    const comment: IComment = commentModel.find("not existing idx");
+
+    expect(comment).toEqual(undefined);
+  });
+
   test("delete", () => {
     commentModel.create(userIdx1, comment1);
     const commentList: IComment[] = commentModel.findByUserIdx(userIdx1);

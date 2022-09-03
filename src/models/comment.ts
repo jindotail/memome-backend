@@ -28,8 +28,10 @@ export default class CommentModel {
     });
   }
 
-  public async find(idx: string): Promise<IComment> {
-    return { idx, ...(await findDocument(this.collection, idx)) };
+  public async find(idx: string): Promise<IComment | undefined> {
+    const result = await findDocument(this.collection, idx);
+    if (result !== undefined) return { idx, ...result };
+    return result;
   }
 
   public async delete(idx: string): Promise<void> {

@@ -50,6 +50,12 @@ describe("CommentModel", () => {
     expect(commentList[0].idx).toEqual(comment.idx);
   });
 
+  test("find - 존재하지 않는 경우", async () => {
+    const comment: IComment = await commentModel.find("not existing idx");
+
+    expect(comment).toEqual(undefined);
+  });
+
   test("delete", async () => {
     await commentModel.create(userIdx1, comment1);
     const commentList: IComment[] = await commentModel.findByUserIdx(userIdx1);
