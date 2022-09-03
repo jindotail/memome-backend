@@ -3,7 +3,7 @@ import * as db from "../../../src/models/firebase";
 import UserModel from "../../../src/models/user";
 
 describe("UserModel", () => {
-  const userModel = new UserModel();
+  const userModel = new UserModel("test_user");
 
   const salt = "salt";
   const userSignUpDTO1: IUserSignUpDTO = {

@@ -39,7 +39,16 @@ describe("MockCommentModel", () => {
     expect(commentList[1].user_idx).toEqual(userIdx1);
   });
 
-  // TODO - 없는 걸 삭제하는 경우
+  test("find", () => {
+    commentModel.create(userIdx1, comment1);
+
+    const commentList: IComment[] = commentModel.findByUserIdx(userIdx1);
+
+    const comment: IComment = commentModel.find(commentList[0].idx);
+
+    expect(commentList[0].idx).toEqual(comment.idx);
+  });
+
   test("delete", () => {
     commentModel.create(userIdx1, comment1);
     const commentList: IComment[] = commentModel.findByUserIdx(userIdx1);

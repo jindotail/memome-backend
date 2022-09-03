@@ -3,7 +3,7 @@ import CommentModel from "../../../src/models/comment";
 import * as db from "../../../src/models/firebase";
 
 describe("CommentModel", () => {
-  const commentModel = new CommentModel();
+  const commentModel = new CommentModel("test_comment");
 
   const userIdx1: string = "userIdx1";
   const userIdx2: string = "userIdx2";
@@ -38,6 +38,16 @@ describe("CommentModel", () => {
     expect(commentList.length).toEqual(2);
     expect(commentList[0].user_idx).toEqual(userIdx1);
     expect(commentList[1].user_idx).toEqual(userIdx1);
+  });
+
+  test("find", async () => {
+    await commentModel.create(userIdx1, comment1);
+
+    const commentList: IComment[] = await commentModel.findByUserIdx(userIdx1);
+
+    const comment: IComment = await commentModel.find(commentList[0].idx);
+
+    expect(commentList[0].idx).toEqual(comment.idx);
   });
 
   test("delete", async () => {

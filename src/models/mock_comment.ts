@@ -28,6 +28,10 @@ export default class CommentModel {
     return result;
   }
 
+  public find(idx: string): IComment {
+    return { idx, ...this.commentMap.get(idx) };
+  }
+
   public delete(idx: string): void {
     this.commentMap.delete(idx);
   }

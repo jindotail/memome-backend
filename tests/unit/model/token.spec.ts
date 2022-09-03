@@ -2,7 +2,7 @@ import * as db from "../../../src/models/firebase";
 import TokenModel from "../../../src/models/token";
 
 describe("TokenModel", () => {
-  const tokenModel = new TokenModel();
+  const tokenModel = new TokenModel("test_token");
 
   const userIdx1: string = "userIdx1";
   const token1: string = "token1";

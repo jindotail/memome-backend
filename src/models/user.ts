@@ -25,7 +25,7 @@ export default class UserModel {
   }
 
   public async find(idx: string): Promise<IUser> {
-    return findDocument(this.collection, idx);
+    return { idx, ...(await findDocument(this.collection, idx)) };
   }
 
   public async findById(id: string): Promise<IUser[]> {

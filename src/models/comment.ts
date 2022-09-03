@@ -2,7 +2,8 @@ import { IComment } from "@/interfaces/IComment";
 import {
   deleteDocument,
   findCollectionWithCondition,
-  saveDocument
+  findDocument,
+  saveDocument,
 } from "./firebase";
 
 export default class CommentModel {
@@ -25,6 +26,10 @@ export default class CommentModel {
     return res.map((e) => {
       return { idx: e.id, ...e.data };
     });
+  }
+
+  public async find(idx: string): Promise<IComment> {
+    return { idx, ...(await findDocument(this.collection, idx)) };
   }
 
   public async delete(idx: string): Promise<void> {
