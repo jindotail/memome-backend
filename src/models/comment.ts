@@ -1,10 +1,10 @@
+import config from "@/config";
 import { IComment } from "@/interfaces/IComment";
 import {
   deleteDocument,
   findCollectionWithCondition,
   saveDocument,
 } from "./firebase";
-import config from "@/config";
 
 export default class CommentModel {
   COLLECTION = config.node_env == "test" ? "test_comment" : "comment";

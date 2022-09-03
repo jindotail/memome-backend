@@ -1,4 +1,3 @@
-// import "reflect-metadata";
 import { IUser, IUserSignUpDTO } from "../../../src/interfaces/IUser";
 import * as db from "../../../src/models/firebase";
 import UserModel from "../../../src/models/user";

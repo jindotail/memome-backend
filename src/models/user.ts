@@ -1,13 +1,13 @@
 import { shuffle } from "@/common/random";
+import config from "@/config";
 import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
 import {
   deleteDocument,
   findCollection,
   findCollectionWithCondition,
-  saveDocument,
   findDocument,
+  saveDocument,
 } from "./firebase";
-import config from "@/config";
 
 export default class UserModel {
   COLLECTION = config.node_env == "test" ? "test_user" : "user";

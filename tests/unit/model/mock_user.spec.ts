@@ -1,4 +1,3 @@
-// import "reflect-metadata";
 import { IUser, IUserSignUpDTO } from "../../../src/interfaces/IUser";
 import UserModel from "../../../src/models/mock_user";
 

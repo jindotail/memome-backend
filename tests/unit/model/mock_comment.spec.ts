@@ -1,5 +1,3 @@
-// import "reflect-metadata";
-
 import { IComment } from "../../../src/interfaces/IComment";
 import CommentModel from "../../../src/models/mock_comment";
 

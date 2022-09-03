@@ -1,4 +1,3 @@
-// import "reflect-metadata";
 import * as db from "../../../src/models/firebase";
 
 beforeAll(async () => {});

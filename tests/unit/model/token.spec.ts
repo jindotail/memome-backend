@@ -1,6 +1,5 @@
-import { IComment } from "../../../src/interfaces/IComment";
-import TokenModel from "../../../src/models/token";
 import * as db from "../../../src/models/firebase";
+import TokenModel from "../../../src/models/token";
 
 describe("TokenModel", () => {
   const tokenModel = new TokenModel();
