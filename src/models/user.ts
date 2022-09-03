@@ -12,7 +12,6 @@ import {
 export default class UserModel {
   COLLECTION = config.node_env == "test" ? "test_user" : "user";
 
-  // TODO - id가 중복인지 확인 필요
   public async create(
     userSignUpDTO: IUserSignUpDTO,
     slat: string

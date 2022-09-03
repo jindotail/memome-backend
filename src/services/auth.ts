@@ -19,6 +19,14 @@ export default class AuthService {
   ) {}
 
   public async signUp(userSignUpDTO: IUserSignUpDTO): Promise<void> {
+    const userList = await this.UserModel.findById(userSignUpDTO.id);
+    if (userList[0] !== undefined)
+      throw new APIError(
+        "AuthService",
+        HttpStatusCode.BAD_REQUEST,
+        "duplicate user id"
+      );
+
     this.logger.silly(`[AuthService] signUp ${JSON.stringify(userSignUpDTO)}`);
     const salt = randomBytes(10);
     this.logger.silly("Hashing password");

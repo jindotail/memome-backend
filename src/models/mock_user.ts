@@ -72,25 +72,10 @@ export default class UserModel {
     ],
   ]);
 
-  private isIdExist(id: string): boolean {
-    for (const key of this.userMap.keys()) {
-      if (this.userMap.get(key).id === id) return true;
-    }
-    return false;
-  }
-
   public create(userSignUpDTO: IUserSignUpDTO, slat: string): void {
     console.log(
       `[MockUserModel] create id: ${userSignUpDTO.id} nickname: ${userSignUpDTO.nickname}`
     );
-
-    // TODO - 서비스 쪽에서 처리
-    if (this.isIdExist(userSignUpDTO.id))
-      throw new APIError(
-        "MockUserModel",
-        HttpStatusCode.BAD_REQUEST,
-        "duplicate user id"
-      );
 
     this.userMap.set(makeIdx(21), {
       id: userSignUpDTO.id,
