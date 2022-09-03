@@ -1,18 +1,18 @@
+import config from "@/config";
+import TokenModel from "@/models/token";
 import CommentModel from "../models/comment";
-import UserModel from "../models/user";
 import MockCommentModel from "../models/mock_comment";
-import MockUserModel from "../models/mock_user";
 import MockTokenModel from "../models/mock_token";
+import MockUserModel from "../models/mock_user";
+import UserModel from "../models/user";
 import dependencyInjectorLoader from "./dependencyInjector";
 import expressLoader from "./express";
 import Logger from "./logger";
-import config from "@/config";
-import TokenModel from "@/models/token";
 
 const getModelList = (
-  userModel: any,
-  commentModel: any,
-  tokenModel: any
+  userModel: MockUserModel | UserModel,
+  commentModel: MockCommentModel | CommentModel,
+  tokenModel: MockTokenModel | TokenModel
 ): { name: string; model: any }[] => {
   return [
     {
@@ -30,15 +30,34 @@ const getModelList = (
   ];
 };
 
+const getModelListByEnv = (nodeEnv: string) => {
+  if (nodeEnv === "local")
+    return getModelList(
+      new MockUserModel(),
+      new MockCommentModel(),
+      new MockTokenModel()
+    );
+  if (nodeEnv === "test")
+    return getModelList(
+      new UserModel("test_user"),
+      new CommentModel("test_comment"),
+      new TokenModel("test_token")
+    );
+  if (nodeEnv === "dev")
+    return getModelList(
+      new UserModel("dev_user"),
+      new CommentModel("dev_comment"),
+      new TokenModel("dev_token")
+    );
+  return getModelList(
+    new UserModel("user"),
+    new CommentModel("comment"),
+    new TokenModel("token")
+  );
+};
+
 export default async ({ expressApp }) => {
-  const modelList =
-    config.node_env === "local"
-      ? getModelList(
-          new MockUserModel(),
-          new MockCommentModel(),
-          new MockTokenModel()
-        )
-      : getModelList(new UserModel(), new CommentModel(), new TokenModel());
+  const modelList = getModelListByEnv(config.node_env);
 
   dependencyInjectorLoader({
     models: modelList,

@@ -1,5 +1,4 @@
 import { shuffle } from "@/common/random";
-import config from "@/config";
 import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
 import {
   deleteDocument,
@@ -10,13 +9,13 @@ import {
 } from "./firebase";
 
 export default class UserModel {
-  COLLECTION = config.node_env == "test" ? "test_user" : "user";
+  constructor(private collection: string) {}
 
   public async create(
     userSignUpDTO: IUserSignUpDTO,
     slat: string
   ): Promise<void> {
-    await saveDocument(this.COLLECTION, {
+    await saveDocument(this.collection, {
       id: userSignUpDTO.id,
       password: userSignUpDTO.password,
       nickname: userSignUpDTO.nickname,
@@ -26,11 +25,11 @@ export default class UserModel {
   }
 
   public async find(idx: string): Promise<IUser> {
-    return findDocument(this.COLLECTION, idx);
+    return findDocument(this.collection, idx);
   }
 
   public async findById(id: string): Promise<IUser[]> {
-    const res = await findCollectionWithCondition(this.COLLECTION, {
+    const res = await findCollectionWithCondition(this.collection, {
       fieldPath: "id",
       opStr: "==",
       value: id,
@@ -42,7 +41,7 @@ export default class UserModel {
   }
 
   public async findRandomUser(count: number): Promise<IUser[]> {
-    const users = await findCollection(this.COLLECTION);
+    const users = await findCollection(this.collection);
 
     shuffle(users);
 
@@ -52,6 +51,6 @@ export default class UserModel {
   }
 
   public async delete(idx: string): Promise<void> {
-    await deleteDocument(this.COLLECTION, idx);
+    await deleteDocument(this.collection, idx);
   }
 }
