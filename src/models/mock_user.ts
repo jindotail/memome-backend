@@ -1,80 +1,90 @@
 import { HttpStatusCode } from "@/common/http";
+import { makeIdx } from "@/common/random";
 import APIError from "@/errors/APIError";
-import e from "express";
-import { ResultSetHeader } from "mysql2";
 import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
 
 export default class UserModel {
-  idx = 1;
-  userList: IUser[] = [
-    {
-      idx: this.idx++,
-      id: "jindo",
-      password:
-        "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
-      nickname: "진도",
-      salt: "salt",
-      is_disabled: 0,
-      iso_time: new Date().toISOString(),
-      created_at: new Date(),
-    },
-    {
-      idx: this.idx++,
-      id: "tail",
-      password:
-        "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
-      nickname: "Tail",
-      salt: "salt",
-      is_disabled: 0,
-      iso_time: new Date().toISOString(),
-      created_at: new Date(),
-    },
-    {
-      idx: this.idx++,
-      id: "aa",
-      password:
-        "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
-      nickname: "aa",
-      salt: "salt",
-      is_disabled: 0,
-      iso_time: new Date().toISOString(),
-      created_at: new Date(),
-    },
-    {
-      idx: this.idx++,
-      id: "bb",
-      password:
-        "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
-      nickname: "bb",
-      salt: "salt",
-      is_disabled: 0,
-      iso_time: new Date().toISOString(),
-      created_at: new Date(),
-    },
-    {
-      idx: this.idx++,
-      id: "cc",
-      password:
-        "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
-      nickname: "cc",
-      salt: "salt",
-      is_disabled: 0,
-      iso_time: new Date().toISOString(),
-      created_at: new Date(),
-    },
-  ];
+  userMap: Map<string, any> = new Map<string, any>([
+    [
+      makeIdx(21),
+      {
+        id: "jindo",
+        password:
+          "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
+        nickname: "진도",
+        salt: "salt",
+        iso_time: new Date().toISOString(),
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ],
+    [
+      makeIdx(21),
+      {
+        id: "tail",
+        password:
+          "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
+        nickname: "Tail",
+        salt: "salt",
+        iso_time: new Date().toISOString(),
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ],
+    [
+      makeIdx(21),
+      {
+        id: "aa",
+        password:
+          "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
+        nickname: "aa",
+        salt: "salt",
+        iso_time: new Date().toISOString(),
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ],
+    [
+      makeIdx(21),
+      {
+        id: "bb",
+        password:
+          "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
+        nickname: "bb",
+        salt: "salt",
+        iso_time: new Date().toISOString(),
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ],
+    [
+      makeIdx(21),
+      {
+        id: "cc",
+        password:
+          "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
+        nickname: "cc",
+        salt: "salt",
+        iso_time: new Date().toISOString(),
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ],
+  ]);
 
   private isIdExist(id: string): boolean {
-    const result = this.userList.filter((user) => user.id === id && user.is_disabled == 0);
-    if (result.length > 0) return true;
+    for (const key of this.userMap.keys()) {
+      if (this.userMap.get(key).id === id) return true;
+    }
     return false;
   }
 
-  public async create(userSignUpDTO: IUserSignUpDTO): Promise<ResultSetHeader> {
+  public create(userSignUpDTO: IUserSignUpDTO, slat: string): void {
     console.log(
       `[MockUserModel] create id: ${userSignUpDTO.id} nickname: ${userSignUpDTO.nickname}`
     );
 
+    // TODO - 서비스 쪽에서 처리
     if (this.isIdExist(userSignUpDTO.id))
       throw new APIError(
         "MockUserModel",
@@ -82,66 +92,47 @@ export default class UserModel {
         "duplicate user id"
       );
 
-    this.userList.push({
-      idx: this.idx++,
+    this.userMap.set(makeIdx(21), {
       id: userSignUpDTO.id,
       password: userSignUpDTO.password,
       nickname: userSignUpDTO.nickname,
-      salt: "salt",
-      is_disabled: 0,
+      salt: slat,
       iso_time: new Date().toISOString(),
       created_at: new Date(),
+      updated_at: new Date(),
     });
-    return {
-      fieldCount: 0,
-      affectedRows: 1,
-      insertId: this.idx,
-      info: "",
-      serverStatus: 2,
-      warningStatus: 0,
-    } as ResultSetHeader;
   }
 
-  public async findById(id: string) {
-    return this.userList.filter((e) => e.id == id && e.is_disabled == 0);
+  public find(idx: string): IUser {
+    return this.userMap.get(idx);
+  }
+
+  public findById(id: string): IUser[] {
+    const result: IUser[] = [];
+    for (const key of this.userMap.keys()) {
+      const user = this.userMap.get(key);
+      if (user.id !== id) continue;
+      result.push({ idx: key, ...user });
+    }
+    return result;
   }
 
   private shuffleList(list: IUser[]) {
     return list.sort(() => Math.random() - 0.5);
   }
 
-  public async findRandomUser(count: number): Promise<IUser[]> {
-    const shuffledList = this.shuffleList(this.userList.slice());
+  public findRandomUser(count: number): IUser[] {
+    const userList: IUser[] = [];
+    for (const key of this.userMap.keys()) {
+      const user = this.userMap.get(key);
+      userList.push({ idx: key, ...user });
+    }
+
+    const shuffledList = this.shuffleList(userList);
     return shuffledList.slice(-count);
   }
 
-  public async disable(id: string): Promise<ResultSetHeader> {
-    this.userList = this.userList.map((e) => {
-      if (e.id == id)
-        return {
-          ...e,
-          is_disabled: 1,
-        };
-      return e;
-    });
-
-    return {
-      fieldCount: 0,
-      affectedRows: 1,
-      insertId: 0,
-      info: "Rows matched: 1  Changed: 1  Warnings: 0",
-      serverStatus: 16386,
-      warningStatus: 0,
-      stateChanges: {
-        systemVariables: {
-          character_set_results: "utf8",
-          character_set_connection: "utf8",
-          character_set_client: "utf8",
-        },
-        schema: null,
-        trackStateChange: null,
-      },
-      changedRows: 1,
-    } as ResultSetHeader;
+  public delete(idx: string): void {
+    this.userMap.delete(idx);
   }
 }
