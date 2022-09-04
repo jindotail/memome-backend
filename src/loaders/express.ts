@@ -9,8 +9,11 @@ export default ({ app }: { app: express.Application }) => {
   app.get("/status", (req, res) => {
     res.status(200).end();
   });
-  app.head("/status", (req, res) => {
-    res.status(200).end();
+  // TODO - 없는 페이지 404 처리
+  app.get("/", (req, res) => {
+    res.status(200).json({
+      message: "Hello",
+    });
   });
 
   app.use(bodyParser.json());
