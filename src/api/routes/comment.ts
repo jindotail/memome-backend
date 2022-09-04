@@ -77,16 +77,6 @@ export default (app: Router) => {
         `Calling delete /comment/${req.params.userId}/${req.params.commentIdx} endpoint`
       );
 
-      if (
-        isNaN(Number(req.params.commentIdx)) === true ||
-        Number(req.params.commentIdx) < 0
-      )
-        throw new APIError(
-          "CommentRouter",
-          HttpStatusCode.BAD_REQUEST,
-          "invalid comment id"
-        );
-
       try {
         await commentServiceInstance.deleteCommentByIdx(req.params.commentIdx);
 
