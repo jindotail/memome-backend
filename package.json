@@ -8,8 +8,9 @@
     "build": "yarn clean && PHASE=prod NODE_ENV=production webpack",
     "build:local": "cross-env PHASE=local NODE_ENV=development webpack --watch",
     "build:dev": "cross-env PHASE=dev NODE_ENV=development webpack --watch",
-    "start": "node dist/app.js",
-    "start:local": "nodemon dist/app.js",
+    "start": "cross-env PHASE=prod node dist/app.js",
+    "start:local": "cross-env PHASE=local nodemon dist/app.js",
+    "start:dev": "cross-env PHASE=dev nodemon dist/app.js",
     "test": "cross-env PHASE=test jest"
   },
   "repository": {
