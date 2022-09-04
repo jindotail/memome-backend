@@ -1,4 +1,4 @@
-import { IComment } from "@/interfaces/IComment";
+import { IComment } from "../interfaces/IComment";
 import {
   deleteDocument,
   findCollectionWithCondition,

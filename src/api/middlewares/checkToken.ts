@@ -1,5 +1,5 @@
-import { verifyToken } from "@/common/jwt";
 import { NextFunction, Request, Response } from "express";
+import { verifyToken } from "../../common/jwt";
 
 export const checkToken = async (
   req: Request,

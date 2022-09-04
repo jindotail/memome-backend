@@ -1,4 +1,4 @@
-import { IToken } from "@/interfaces/IToken";
+import { IToken } from "../interfaces/IToken";
 
 export default class TokenModel {
   tokenMap: Map<string, any> = new Map<string, IToken>();

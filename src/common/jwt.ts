@@ -1,6 +1,6 @@
-import config from "@/config";
-import APIError from "@/errors/APIError";
 import * as jwt from "jsonwebtoken";
+import config from "../config";
+import APIError from "../errors/APIError";
 import { HttpStatusCode } from "./http";
 
 export const verifyToken = (token: string) => {

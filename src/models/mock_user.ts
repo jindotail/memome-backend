@@ -1,6 +1,4 @@
-import { HttpStatusCode } from "@/common/http";
-import { makeIdx } from "@/common/random";
-import APIError from "@/errors/APIError";
+import { makeIdx } from "../common/random";
 import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
 
 export default class UserModel {

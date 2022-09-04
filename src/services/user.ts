@@ -1,5 +1,5 @@
-import { HttpStatusCode } from "@/common/http";
-import APIError from "@/errors/APIError";
+import { HttpStatusCode } from "../common/http";
+import APIError from "../errors/APIError";
 import { Inject, Service } from "typedi";
 import { Logger } from "winston";
 import UserModel from "../models/user";

@@ -1,9 +1,9 @@
-import CommentService from "@/services/comment";
-import UserService from "@/services/user";
 import { celebrate, Joi } from "celebrate";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
+import CommentService from "../../services/comment";
+import UserService from "../../services/user";
 import middlewares from "../middlewares";
 
 const route = Router();

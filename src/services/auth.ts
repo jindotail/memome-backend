@@ -1,11 +1,11 @@
-import { HttpStatusCode } from "@/common/http";
-import { generateToken } from "@/common/jwt";
-import config from "@/config";
-import APIError from "@/errors/APIError";
 import * as argon2 from "argon2";
 import { randomBytes } from "crypto";
 import { Inject, Service } from "typedi";
 import { Logger } from "winston";
+import { HttpStatusCode } from "../common/http";
+import { generateToken } from "../common/jwt";
+import config from "../config";
+import APIError from "../errors/APIError";
 import { IUserLoginDTO, IUserSignUpDTO } from "../interfaces/IUser";
 import TokenModel from "../models/token";
 import UserModel from "../models/user";

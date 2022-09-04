@@ -1,11 +1,11 @@
-import { HttpStatusCode } from "@/common/http";
-import { generateToken, verifyToken } from "@/common/jwt";
-import config from "@/config";
-import APIError from "@/errors/APIError";
 import { celebrate, Joi } from "celebrate";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
+import { HttpStatusCode } from "../../common/http";
+import { generateToken, verifyToken } from "../../common/jwt";
+import config from "../../config";
+import APIError from "../../errors/APIError";
 import { IUserLoginDTO, IUserSignUpDTO } from "../../interfaces/IUser";
 import AuthService from "../../services/auth";
 import middlewares from "../middlewares";

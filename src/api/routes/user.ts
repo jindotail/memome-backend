@@ -1,9 +1,9 @@
-import { HttpStatusCode } from "@/common/http";
-import APIError from "@/errors/APIError";
-import UserService from "@/services/user";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
+import { HttpStatusCode } from "../../common/http";
+import APIError from "../../errors/APIError";
+import UserService from "../../services/user";
 import middlewares from "../middlewares";
 
 const route = Router();

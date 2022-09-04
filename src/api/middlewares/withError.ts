@@ -1,8 +1,8 @@
-import { HttpStatusCode } from "@/common/http";
-import BaseError from "@/errors/baseError";
-import logger from "@/loaders/logger";
 import { isCelebrateError } from "celebrate";
 import { NextFunction, Request, Response } from "express";
+import { HttpStatusCode } from "../../common/http";
+import BaseError from "../../errors/baseError";
+import logger from "../../loaders/logger";
 
 export const withError = async (
   err: Error,

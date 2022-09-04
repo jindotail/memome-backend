@@ -1,5 +1,5 @@
-import { makeIdx } from "@/common/random";
-import { IComment } from "@/interfaces/IComment";
+import { makeIdx } from "../common/random";
+import { IComment } from "../interfaces/IComment";
 export default class CommentModel {
   commentMap = new Map<string, any>();
 

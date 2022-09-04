@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "@/common/http";
+import { HttpStatusCode } from "../common/http";
 import BaseError from "./baseError";
 
 export default class APIError extends BaseError {

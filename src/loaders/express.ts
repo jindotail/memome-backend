@@ -1,9 +1,9 @@
-import routes from "@/api";
-import config from "@/config";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import routes from "../api";
+import config from "../config";
 
 export default ({ app }: { app: express.Application }) => {
   app.get("/status", (req, res) => {
@@ -19,7 +19,7 @@ export default ({ app }: { app: express.Application }) => {
   app.use(express.json());
   app.use(config.api.prefix, routes());
 
-  app.use((err, req, res, next) => {
+  app.use((err: any, req: any, res: any, next: any) => {
     res.status(err.status || 500);
     res.json({
       errors: {

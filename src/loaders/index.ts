@@ -1,9 +1,9 @@
-import config from "@/config";
-import TokenModel from "@/models/token";
+import config from "../config";
 import CommentModel from "../models/comment";
 import MockCommentModel from "../models/mock_comment";
 import MockTokenModel from "../models/mock_token";
 import MockUserModel from "../models/mock_user";
+import TokenModel from "../models/token";
 import UserModel from "../models/user";
 import dependencyInjectorLoader from "./dependencyInjector";
 import expressLoader from "./express";
@@ -57,13 +57,13 @@ const getModelListByEnv = (nodeEnv: string) => {
 };
 
 export default async ({ expressApp }) => {
-  const modelList = getModelListByEnv(config.node_env);
+  const modelList = getModelListByEnv(config.phase);
 
   dependencyInjectorLoader({
     models: modelList,
   });
 
-  Logger.info(`✌️ NODE_ENV: ${config.node_env}`);
+  Logger.info(`✌️ PHASE: ${config.phase}`);
   Logger.info("✌️ Dependency Injector loaded");
 
   expressLoader({ app: expressApp });

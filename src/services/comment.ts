@@ -1,8 +1,8 @@
-import { HttpStatusCode } from "@/common/http";
-import APIError from "@/errors/APIError";
-import { IComment, ICommentResponse } from "@/interfaces/IComment";
 import { Inject, Service } from "typedi";
 import { Logger } from "winston";
+import { HttpStatusCode } from "../common/http";
+import APIError from "../errors/APIError";
+import { IComment, ICommentResponse } from "../interfaces/IComment";
 import CommentModel from "../models/comment";
 
 @Service()

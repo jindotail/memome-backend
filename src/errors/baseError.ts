@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "@/common/http";
+import { HttpStatusCode } from "../common/http";
 
 export default class BaseError extends Error {
   public readonly name: string;
