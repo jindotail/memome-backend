@@ -59,8 +59,6 @@ export default (app: Router) => {
     }
   });
 
-  
-
   route.delete(
     "/:id",
     middlewares.checkToken,
@@ -71,9 +69,7 @@ export default (app: Router) => {
         await userServiceInstance.deleteUserById(req.params.id as string);
         res.clearCookie("accessToken");
         res.clearCookie("refreshToken");
-        return res.status(200).json({
-          body: "SUCCESS",
-        });
+        return res.status(200).send();
       } catch (err) {
         return next(err);
       }

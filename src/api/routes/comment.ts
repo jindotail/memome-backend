@@ -1,5 +1,3 @@
-import { HttpStatusCode } from "@/common/http";
-import APIError from "@/errors/APIError";
 import CommentService from "@/services/comment";
 import UserService from "@/services/user";
 import { celebrate, Joi } from "celebrate";
@@ -35,13 +33,8 @@ export default (app: Router) => {
         const userIdx = await userServiceInstance.getUserIdxById(
           req.params.userId as string
         );
-        const result = await commentServiceInstance.create(
-          userIdx,
-          req.body.comment
-        );
-        res.status(201).json({
-          body: result,
-        });
+        await commentServiceInstance.create(userIdx, req.body.comment);
+        res.status(201).send();
       } catch (err) {
         next(err);
       }
@@ -80,9 +73,7 @@ export default (app: Router) => {
       try {
         await commentServiceInstance.deleteCommentByIdx(req.params.commentIdx);
 
-        return res.status(200).json({
-          body: "SUCCESS",
-        });
+        return res.status(200).send();
       } catch (err) {
         return next(err);
       }

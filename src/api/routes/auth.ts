@@ -70,9 +70,7 @@ export default (app: Router) => {
         validationLength(nickname, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH);
 
         await authServiceInstance.signUp(req.body as IUserSignUpDTO);
-        return res.status(201).json({
-          body: "SUCCESS",
-        });
+        return res.status(201).send();
       } catch (err) {
         return next(err);
       }
@@ -94,10 +92,13 @@ export default (app: Router) => {
         const { accessToken, refreshToken } = await authServiceInstance.login(
           req.body as IUserLoginDTO
         );
+
+        res.cookie("accessToken", accessToken);
+        res.cookie("refreshToken", refreshToken);
+
         return res.status(200).json({
           accessToken: accessToken,
           refreshToken: refreshToken,
-          body: "SUCCESS",
         });
       } catch (err) {
         return next(err);
@@ -112,9 +113,7 @@ export default (app: Router) => {
 
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
-      return res.status(200).json({
-        body: "SUCCESS",
-      });
+      return res.status(200).send();
     }
   );
 
@@ -144,7 +143,6 @@ export default (app: Router) => {
 
       return res.status(200).json({
         accessToken: accessToken,
-        body: "SUCCESS",
       });
     }
   );
