@@ -74,7 +74,7 @@ export const findCollectionWithCondition = async (
     .where(condition.fieldPath, condition.opStr, condition.value)
     .get();
 
-  const res = [];
+  const res: any[] = [];
   snapshot.forEach((doc) => {
     res.push({
       id: doc.id,
@@ -111,7 +111,7 @@ export const deleteCollection = async (
   });
 };
 
-async function deleteQueryBatch(db, query, resolve) {
+async function deleteQueryBatch(db: any, query: any, resolve: any) {
   const snapshot = await query.get();
 
   const batchSize = snapshot.size;
@@ -121,7 +121,7 @@ async function deleteQueryBatch(db, query, resolve) {
   }
 
   const batch = db.batch();
-  snapshot.docs.forEach((doc) => {
+  snapshot.docs.forEach((doc: any) => {
     batch.delete(doc.ref);
   });
   await batch.commit();

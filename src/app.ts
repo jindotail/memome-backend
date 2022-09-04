@@ -16,7 +16,7 @@ async function startServer() {
       ################################################
     `);
     })
-    .on("error", (err) => {
+    .on("error", (err: any) => {
       Logger.error(err);
       process.exit(1);
     });
