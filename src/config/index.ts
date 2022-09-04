@@ -33,12 +33,7 @@ export default {
   accessTokenExpire: process.env.ACCESS_TOKEN_EXPIRE || "15m",
   refreshTokenExpire: process.env.REFRESH_TOKEN_EXPIRE || "15d",
 
-  apiKey: process.env.APIKEY,
-  authDomain: process.env.AUTH_DOMAIN,
+  privateKey: process.env.PRIVATE_KEY,
+  clientEmail: process.env.CLIENT_EMAIL,
   projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-  messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID,
-  measurementId: process.env.MEASUREMENT_ID,
-  databaseURL: process.env.DATABASE_URL,
 };

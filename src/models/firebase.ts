@@ -5,10 +5,14 @@ import {
   getFirestore,
   WhereFilterOp,
 } from "firebase-admin/firestore";
-import serviceAccount from "../../serviceAccountKey.json";
+import config from "../config";
 
 initializeApp({
-  credential: cert(serviceAccount),
+  credential: cert({
+    projectId: config.projectId,
+    privateKey: config.privateKey,
+    clientEmail: config.clientEmail,
+  }),
 });
 
 const db = getFirestore();
