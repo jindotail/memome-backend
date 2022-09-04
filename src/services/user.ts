@@ -63,7 +63,7 @@ export default class UserService {
         "user not found"
       );
 
-    const res = await this.UserModel.delete(userId);
+    const res = await this.UserModel.delete(user[0].idx);
     return res;
   }
 }
