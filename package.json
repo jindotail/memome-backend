@@ -4,11 +4,13 @@
   "description": "방명록 프로젝트 백엔드",
   "main": "src/app.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "cross-env NODE_ENV=dev nodemon",
-    "start:local": "cross-env NODE_ENV=local nodemon",
-    "start:dev": "cross-env NODE_ENV=dev nodemon",
-    "test": "cross-env NODE_ENV=test jest"
+    "clean": "rm -rf dist",
+    "build": "yarn clean && PHASE=prod NODE_ENV=production webpack",
+    "build:local": "cross-env PHASE=local NODE_ENV=development webpack --watch",
+    "build:dev": "cross-env PHASE=dev NODE_ENV=development webpack --watch",
+    "start": "node dist/app.js",
+    "start:local": "nodemon dist/app.js",
+    "test": "cross-env PHASE=test jest"
   },
   "repository": {
     "type": "git",
@@ -26,14 +28,18 @@
     "@types/express": "^4.17.13",
     "@types/jest": "^27.5.1",
     "@types/jsonwebtoken": "^8.5.8",
-    "@types/mysql": "^2.15.21",
     "@types/node": "^17.0.35",
     "@types/supertest": "^2.0.12",
     "jest": "^28.1.0",
     "nodemon": "^2.0.16",
     "supertest": "^6.2.3",
     "ts-jest": "^28.0.2",
-    "tsconfig-paths": "^4.0.0"
+    "ts-loader": "^9.3.1",
+    "tsconfig-paths": "^4.0.0",
+    "typescript": "^4.8.2",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
     "argon2": "^0.28.5",
@@ -48,12 +54,8 @@
     "firebase": "^9.9.3",
     "firebase-admin": "^11.0.1",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
-    "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
-    "ts-node": "^10.7.0",
     "typedi": "^0.10.0",
-    "typescript": "^4.6.4",
     "winston": "^3.7.2"
   }
 }

@@ -1,14 +1,14 @@
 import dotenv from "dotenv";
 
-process.env.NODE_ENV = process.env.NODE_ENV || "local";
+process.env.PHASE = process.env.PHASE || "local";
 
 const envFound = dotenv.config({ path: "./env/.env" });
-if (process.env.NODE_ENV == "local" && envFound.error) {
+if (process.env.PHASE == "local" && envFound.error) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
 
 export default {
-  node_env: process.env.NODE_ENV,
+  phase: process.env.PHASE,
 
   port: parseInt(process.env.API_PORT, 10),
 

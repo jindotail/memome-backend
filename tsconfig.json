@@ -1,38 +1,21 @@
 {
-    "compilerOptions": {
-      "target": "es2017",
-      "lib": [
-        "es2017",
-        "esnext.asynciterable"
-      ],
-      "typeRoots": [
-        "./node_modules/@types",
-        "./src/types"
-      ],
-      "allowSyntheticDefaultImports": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "forceConsistentCasingInFileNames": true,
-      "moduleResolution": "node",
-      "module": "commonjs",
-      "pretty": true,
-      "sourceMap": true,
-      "outDir": "./build",
-      "allowJs": true,
-      "noEmit": false,
-      "resolveJsonModule": true,
-      "esModuleInterop": true,
-      "baseUrl": ".",
-      "paths": {
-        "@/*": ["./src/*"]
-      }
-    },
-    "include": [
-      "./src/**/*"
-    ],
-    "exclude": [
-      "node_modules",
-      "tests"
-    ]
-  }
-  
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es6",
+    "allowJs": true,
+    "strict": false,
+    "moduleResolution": "node",
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": false,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules", "tests"]
+}
