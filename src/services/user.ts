@@ -54,6 +54,15 @@ export default class UserService {
 
   public async deleteUserById(userId: string) {
     this.logger.silly(`[UserService] deleteUserById: ${userId}`);
+
+    const user = await this.UserModel.findById(userId);
+    if (user[0]?.idx === undefined)
+      throw new APIError(
+        "UserService",
+        HttpStatusCode.BAD_REQUEST,
+        "user not found"
+      );
+
     const res = await this.UserModel.delete(userId);
     return res;
   }
