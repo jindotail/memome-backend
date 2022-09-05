@@ -10,7 +10,7 @@ if (process.env.PHASE == "local" && envFound.error) {
 export default {
   phase: process.env.PHASE,
 
-  port: parseInt(process.env.API_PORT, 10),
+  port: parseInt(process.env.PORT, 10) || 8080,
 
   db: {
     rootPassword: process.env.MYSQL_ROOT_PASSWORD,
