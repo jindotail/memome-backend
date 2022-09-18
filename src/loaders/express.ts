@@ -18,7 +18,7 @@ export default ({ app }: { app: express.Application }) => {
 
   app.use(bodyParser.json());
   app.use(cookieParser());
-  app.use(cors({ credentials: true, origin: "http://localhost:3000/" }));
+  app.use(cors({ credentials: true, origin: ["http://localhost:3000/", "https://jindotail.github.io/"] }));
   app.use(express.json());
   app.use(config.api.prefix, routes());
 
