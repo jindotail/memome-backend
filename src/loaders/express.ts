@@ -20,12 +20,9 @@ export default ({ app }: { app: express.Application }) => {
   app.use(cookieParser());
   app.use(
     cors({
+      origin: "https://memome.be/",
+      methods: "OPTION, GET, POST, DELETE, PUT",
       credentials: true,
-      origin: [
-        "http://localhost:3000/",
-        "https://jindotail.github.io/",
-        "https://memome.be/",
-      ],
     })
   );
   app.use(express.json());
