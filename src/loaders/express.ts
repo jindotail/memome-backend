@@ -20,7 +20,7 @@ export default ({ app }: { app: express.Application }) => {
   app.use(cookieParser());
   app.use(
     cors({
-      origin: "https://memome.be",
+      origin: ["https://memome.be", "http://localhost:3000"],
       methods: "OPTION, GET, POST, DELETE, PUT",
       credentials: true,
     })
