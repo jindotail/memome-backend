@@ -93,8 +93,14 @@ export default (app: Router) => {
           req.body as IUserLoginDTO
         );
 
-        res.cookie("accessToken", accessToken);
-        res.cookie("refreshToken", refreshToken);
+        res.cookie("accessToken", accessToken, {
+          sameSite: "none",
+          secure: true,
+        });
+        res.cookie("refreshToken", refreshToken, {
+          sameSite: "none",
+          secure: true,
+        });
 
         return res.status(200).json({
           accessToken: accessToken,
