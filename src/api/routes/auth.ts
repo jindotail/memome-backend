@@ -102,10 +102,7 @@ export default (app: Router) => {
         res.cookie("accessToken", accessToken, sess);
         res.cookie("refreshToken", refreshToken, sess);
 
-        return res.status(200).json({
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        });
+        return res.status(200).send();
       } catch (err) {
         return next(err);
       }
@@ -146,9 +143,11 @@ export default (app: Router) => {
         config.accessTokenExpire
       );
 
-      return res.status(200).json({
-        accessToken: accessToken,
-      });
+      const sess: CookieOptions =
+        config.phase === "prod" ? { sameSite: "none", secure: true } : {};
+      res.cookie("accessToken", accessToken, sess);
+
+      return res.status(200).send();
     }
   );
 };
