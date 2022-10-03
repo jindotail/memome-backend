@@ -1,8 +1,10 @@
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 
 process.env.PHASE = process.env.PHASE || "local";
 
-const envFound = dotenv.config({ path: "./env/.env" });
+const envPath =
+  process.env.PHASE == "test" ? __dirname + "/../../env/.env" : "./env/.env";
+const envFound = dotenv.config({ path: envPath });
 if (process.env.PHASE == "local" && envFound.error) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️");
 }
