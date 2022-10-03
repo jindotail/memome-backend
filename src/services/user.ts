@@ -39,9 +39,7 @@ export default class UserService {
     return { id: user[0].id, nickname: user[0].nickname };
   }
 
-  public async getUserPasswordQuestion(
-    userId: string
-  ): Promise<{ passwordQuestion: string }> {
+  public async getUserPasswordQuestion(userId: string): Promise<string> {
     this.logger.silly(`[UserService] getUserPasswordQuestion ${userId}`);
 
     const user = await this.UserModel.findById(userId);
@@ -51,7 +49,26 @@ export default class UserService {
         HttpStatusCode.BAD_REQUEST,
         "user not found"
       );
-    return { passwordQuestion: user[0].passwordQuestion };
+    return user[0].passwordQuestion;
+  }
+
+  public async matchPasswordQuestionAndAnswer(
+    userId: string,
+    passwordAnswer: string
+  ): Promise<boolean> {
+    this.logger.silly(`[UserService] getUserPasswordQuestion ${userId}`);
+
+    const user = await this.UserModel.findById(userId);
+    if (user[0]?.idx === undefined)
+      throw new APIError(
+        "UserService",
+        HttpStatusCode.BAD_REQUEST,
+        "user not found"
+      );
+    this.logger.debug(
+      `답변: ${passwordAnswer}, 실제 답변: ${user[0].passwordAnswer}`
+    );
+    return passwordAnswer === user[0].passwordAnswer;
   }
 
   public async getRandomUserId(

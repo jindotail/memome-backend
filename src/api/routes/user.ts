@@ -85,12 +85,41 @@ export default (app: Router) => {
       );
 
       try {
-        const user = await userServiceInstance.getUserPasswordQuestion(
-          req.params.id as string
-        );
+        const passwordQuestion =
+          await userServiceInstance.getUserPasswordQuestion(
+            req.params.id as string
+          );
         return res.status(200).json({
-          passwordQuestion: user.passwordQuestion,
+          passwordQuestion,
         });
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  route.post(
+    "/:id/password_question",
+    middlewares.checkToken,
+    celebrate({
+      body: Joi.object({
+        passwordAnswer: Joi.string().required(),
+      }),
+    }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug(
+        `Calling post /user/${req.params.id}/password_question endpoint`
+      );
+
+      try {
+        const matched =
+          await userServiceInstance.matchPasswordQuestionAndAnswer(
+            req.params.id as string,
+            req.body.passwordAnswer
+          );
+        logger.debug(`비밀번호 찾기 확인 결과: ${matched}`);
+        if (matched) return res.status(200).send();
+        return res.status(400).send();
       } catch (err) {
         return next(err);
       }
