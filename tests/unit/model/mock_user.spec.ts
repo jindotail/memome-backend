@@ -9,11 +9,15 @@ describe("UserModel", () => {
     id: "id1",
     password: "password1",
     nickname: "nickname1",
+    passwordQuestion: "passwordQuestion",
+    passwordAnswer: "passwordAnswer",
   };
   const userSignUpDTO2: IUserSignUpDTO = {
     id: "id2",
     password: "password2",
     nickname: "nickname2",
+    passwordQuestion: "passwordQuestion",
+    passwordAnswer: "passwordAnswer",
   };
 
   beforeEach(async () => {
@@ -85,6 +89,8 @@ describe("UserModel", () => {
         id: "id" + i,
         password: "password" + i,
         nickname: "nickname" + i,
+        passwordQuestion: "passwordQuestion",
+        passwordAnswer: "passwordAnswer",
       });
     }
     return list;
