@@ -5,7 +5,8 @@ import {
   findCollection,
   findCollectionWithCondition,
   findDocument,
-  saveDocument
+  saveDocument,
+  updateDocument,
 } from "./firebase";
 
 export default class UserModel {
@@ -39,6 +40,12 @@ export default class UserModel {
 
     return res.map((e) => {
       return { idx: e.id, ...e.data };
+    });
+  }
+
+  public async update(idx: string, nickname: string): Promise<void> {
+    await updateDocument(this.collection, idx, {
+      nickname,
     });
   }
 

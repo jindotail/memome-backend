@@ -96,6 +96,12 @@ export default class UserModel {
     });
   }
 
+  public async update(idx: string, nickname: string): Promise<void> {
+    const user = { ...this.userMap.get(idx), nickname: nickname };
+
+    this.userMap.set(idx, user);
+  }
+
   public find(idx: string): IUser {
     return this.userMap.get(idx);
   }
