@@ -3,6 +3,8 @@ export interface IUser {
   id: string;
   password: string;
   nickname: string;
+  passwordQuestion: string;
+  passwordAnswer: string;
   salt: string;
   iso_time: string;
   created_at: Date;

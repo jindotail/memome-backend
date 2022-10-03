@@ -10,6 +10,8 @@ export default class UserModel {
         password:
           "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
         nickname: "진도",
+        passwordQuestion: "저의 고앵이 이름은 무엇일까요?",
+        passwordAnswer: "김야옹",
         salt: "salt",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
@@ -23,6 +25,8 @@ export default class UserModel {
         password:
           "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
         nickname: "Tail",
+        passwordQuestion: "저의 이름은 무엇일까요?",
+        passwordAnswer: "꼬리입니다",
         salt: "salt",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
@@ -36,6 +40,8 @@ export default class UserModel {
         password:
           "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
         nickname: "aa",
+        passwordQuestion: "passwordQuestion",
+        passwordAnswer: "passwordAnswer",
         salt: "salt",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
@@ -49,6 +55,8 @@ export default class UserModel {
         password:
           "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
         nickname: "bb",
+        passwordQuestion: "passwordQuestion",
+        passwordAnswer: "passwordAnswer",
         salt: "salt",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
@@ -62,6 +70,8 @@ export default class UserModel {
         password:
           "$argon2i$v=19$m=4096,t=3,p=1$B4jXISk08Tzy7A$aezhxwLzrBatQGS7D4GWhTF/S+k4A7nKaPsIJ/jeiZg",
         nickname: "cc",
+        passwordQuestion: "passwordQuestion",
+        passwordAnswer: "passwordAnswer",
         salt: "salt",
         iso_time: new Date().toISOString(),
         created_at: new Date(),

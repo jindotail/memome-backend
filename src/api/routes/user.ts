@@ -1,3 +1,4 @@
+import { celebrate, Joi } from "celebrate";
 import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
@@ -70,6 +71,26 @@ export default (app: Router) => {
         res.clearCookie("accessToken");
         res.clearCookie("refreshToken");
         return res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  route.get(
+    "/:id/password_question",
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug(
+        `Calling get /user/${req.params.id}/password_question endpoint`
+      );
+
+      try {
+        const user = await userServiceInstance.getUserPasswordQuestion(
+          req.params.id as string
+        );
+        return res.status(200).json({
+          passwordQuestion: user.passwordQuestion,
+        });
       } catch (err) {
         return next(err);
       }
