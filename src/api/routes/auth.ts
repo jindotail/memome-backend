@@ -10,6 +10,16 @@ import { Container } from "typedi";
 import { Logger } from "winston";
 import { generateToken, verifyToken } from "../../common/jwt";
 import {
+  ID_MAX_LENGTH,
+  ID_MIN_LENGTH,
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MIN_LENGTH,
+  PW_ANSWER_MAX_LENGTH,
+  PW_ANSWER_MIN_LENGTH,
+  PW_MAX_LENGTH,
+  PW_MIN_LENGTH,
+  PW_QUESTION_MAX_LENGTH,
+  PW_QUESTION_MIN_LENGTH,
   validAlphabetOrNumber,
   validationLength,
 } from "../../common/vallidation";
@@ -26,16 +36,6 @@ export default (app: Router) => {
 
   const logger: Logger = Container.get("logger");
   const authServiceInstance = Container.get(AuthService);
-  const ID_MIN_LENGTH = 3;
-  const ID_MAX_LENGTH = 10;
-  const PW_MIN_LENGTH = 3;
-  const PW_MAX_LENGTH = 20;
-  const NICKNAME_MIN_LENGTH = 1;
-  const NICKNAME_MAX_LENGTH = 10;
-  const PW_QUESTION_MIN_LENGTH = 1;
-  const PW_QUESTION_MAX_LENGTH = 30;
-  const PW_ANSWER_MIN_LENGTH = 1;
-  const PW_ANSWER_MAX_LENGTH = 30;
 
   route.post(
     "/signup",
