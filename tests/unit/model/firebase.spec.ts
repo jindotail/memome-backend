@@ -41,7 +41,12 @@ describe("Firebase", () => {
     const collection = "test update document";
 
     await db.saveDocumentWithId(collection, id1, { name: name1 });
+    const result1 = await db.findDocument(collection, id1);
+    expect(result1.name).toEqual(name1);
+
     await db.updateDocument(collection, id1, { name: name2 });
+    const result2 = await db.findDocument(collection, id1);
+    expect(result2.name).toEqual(name2);
     await db.deleteCollection(collection);
   });
 
