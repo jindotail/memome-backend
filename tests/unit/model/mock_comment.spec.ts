@@ -44,13 +44,13 @@ describe("MockCommentModel", () => {
 
     const commentList: IComment[] = commentModel.findByUserIdx(userIdx1);
 
-    const comment: IComment = commentModel.find(commentList[0].idx);
+    const comment: IComment | undefined = commentModel.find(commentList[0].idx);
 
-    expect(commentList[0].idx).toEqual(comment.idx);
+    expect(commentList[0].idx).toEqual(comment?.idx);
   });
 
   test("find - 존재하지 않는 경우", () => {
-    const comment: IComment = commentModel.find("not existing idx");
+    const comment: IComment | undefined = commentModel.find("not existing idx");
 
     expect(comment).toEqual(undefined);
   });
