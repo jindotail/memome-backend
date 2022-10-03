@@ -3,7 +3,9 @@ import config from "../config";
 import APIError from "../errors/APIError";
 import { HttpStatusCode } from "./http";
 
-export const verifyToken = (token: string) => {
+
+
+export const verifyToken = (token: string): string | jwt.JwtPayload => {
   if (token === undefined)
     throw new APIError(
       "verifyToken",
@@ -12,7 +14,7 @@ export const verifyToken = (token: string) => {
     );
 
   try {
-    jwt.verify(token, process.env.JWT_SECRET);
+    return jwt.verify(token, process.env.JWT_SECRET);
   } catch (e) {
     if (e.name === "TokenExpiredError") {
       throw new APIError(
