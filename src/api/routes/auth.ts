@@ -1,5 +1,11 @@
 import { celebrate, Joi } from "celebrate";
-import { NextFunction, Request, Response, Router } from "express";
+import {
+  CookieOptions,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+} from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
 import { HttpStatusCode } from "../../common/http";
@@ -28,7 +34,6 @@ export default (app: Router) => {
   const PW_QUESTION_MAX_LENGTH = 30;
   const PW_ANSWER_MIN_LENGTH = 1;
   const PW_ANSWER_MAX_LENGTH = 30;
-  
 
   function validationLength(
     input: string,
@@ -77,8 +82,16 @@ export default (app: Router) => {
         validAlphabetOrNumber(id);
         validationLength(password, PW_MIN_LENGTH, PW_MAX_LENGTH);
         validationLength(nickname, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH);
-        validationLength(passwordQuestion, PW_QUESTION_MIN_LENGTH, PW_QUESTION_MAX_LENGTH);
-        validationLength(passwordAnswer, PW_ANSWER_MIN_LENGTH, PW_ANSWER_MAX_LENGTH);
+        validationLength(
+          passwordQuestion,
+          PW_QUESTION_MIN_LENGTH,
+          PW_QUESTION_MAX_LENGTH
+        );
+        validationLength(
+          passwordAnswer,
+          PW_ANSWER_MIN_LENGTH,
+          PW_ANSWER_MAX_LENGTH
+        );
 
         await authServiceInstance.signUp(req.body as IUserSignUpDTO);
         return res.status(201).send();
@@ -104,14 +117,10 @@ export default (app: Router) => {
           req.body as IUserLoginDTO
         );
 
-        res.cookie("accessToken", accessToken, {
-          sameSite: "none",
-          secure: true,
-        });
-        res.cookie("refreshToken", refreshToken, {
-          sameSite: "none",
-          secure: true,
-        });
+        const sess: CookieOptions =
+          config.phase === "prod" ? { sameSite: "none", secure: true } : {};
+        res.cookie("accessToken", accessToken, sess);
+        res.cookie("refreshToken", refreshToken, sess);
 
         return res.status(200).json({
           accessToken: accessToken,
