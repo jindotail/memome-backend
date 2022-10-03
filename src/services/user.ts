@@ -1,7 +1,7 @@
-import { HttpStatusCode } from "../common/http";
-import APIError from "../errors/APIError";
 import { Inject, Service } from "typedi";
 import { Logger } from "winston";
+import { HttpStatusCode } from "../common/http";
+import APIError from "../errors/APIError";
 import UserModel from "../models/user";
 
 @Service()
@@ -56,7 +56,7 @@ export default class UserService {
     userId: string,
     passwordAnswer: string
   ): Promise<boolean> {
-    this.logger.silly(`[UserService] getUserPasswordQuestion ${userId}`);
+    this.logger.silly(`[UserService] matchPasswordQuestionAndAnswer ${userId}`);
 
     const user = await this.UserModel.findById(userId);
     if (user[0]?.idx === undefined)
@@ -69,6 +69,22 @@ export default class UserService {
       `답변: ${passwordAnswer}, 실제 답변: ${user[0].passwordAnswer}`
     );
     return passwordAnswer === user[0].passwordAnswer;
+  }
+
+  public async updateUser(userId: string, nickname: string): Promise<void> {
+    this.logger.silly(
+      `[UserService] updateUser ${userId}, nickname: ${nickname}`
+    );
+
+    const user = await this.UserModel.findById(userId);
+    if (user[0]?.idx === undefined)
+      throw new APIError(
+        "UserService",
+        HttpStatusCode.BAD_REQUEST,
+        "user not found"
+      );
+
+    await this.UserModel.update(user[0].idx, nickname);
   }
 
   public async getRandomUserId(

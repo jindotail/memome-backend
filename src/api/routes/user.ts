@@ -3,6 +3,11 @@ import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
 import { HttpStatusCode } from "../../common/http";
+import {
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MIN_LENGTH,
+  validationLength
+} from "../../common/vallidation";
 import APIError from "../../errors/APIError";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
@@ -120,6 +125,34 @@ export default (app: Router) => {
         logger.debug(`비밀번호 찾기 확인 결과: ${matched}`);
         if (matched) return res.status(200).send();
         return res.status(400).send();
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  // TODO - user 자체를 받아서 nickname 외의 것들도 변경 가능하게 하기
+  route.patch(
+    "/:id",
+    middlewares.checkToken,
+    celebrate({
+      body: Joi.object({
+        nickname: Joi.string().required(),
+      }),
+    }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug(
+        `Calling post /user/${req.params.id} endpoint, body: ${req.body}`
+      );
+
+      try {
+        const nickname: string = req.body.nickname;
+        validationLength(nickname, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH);
+
+        await userServiceInstance.updateUser(req.params.id as string, nickname);
+        logger.debug(`닉네임 변경 결과: ${nickname}`);
+
+        return res.status(200).send();
       } catch (err) {
         return next(err);
       }
