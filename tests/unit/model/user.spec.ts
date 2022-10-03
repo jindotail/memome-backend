@@ -25,6 +25,18 @@ describe("UserModel", () => {
     await db.deleteCollection("test_user");
   });
 
+  test("update", async () => {
+    const newNickname = "newNickname";
+    await userModel.create(userSignUpDTO1, salt);
+
+    const userList: IUser[] = await userModel.findById(userSignUpDTO1.id);
+    expect(userList[0].nickname).toEqual(userSignUpDTO1.nickname);
+    await userModel.update(userList[0].idx, newNickname);
+
+    const result: IUser[] = await userModel.findById(userSignUpDTO1.id);
+    expect(result[0].nickname).toEqual(newNickname);
+  });
+
   test("find", async () => {
     await userModel.create(userSignUpDTO1, salt);
     await userModel.create(userSignUpDTO2, salt);

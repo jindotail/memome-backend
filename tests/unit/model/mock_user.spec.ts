@@ -24,6 +24,18 @@ describe("UserModel", () => {
     userModel.userMap = new Map();
   });
 
+  test("update", () => {
+    const newNickname = "newNickname";
+    userModel.create(userSignUpDTO1, salt);
+
+    const userList: IUser[] = userModel.findById(userSignUpDTO1.id);
+    expect(userList[0].nickname).toEqual(userSignUpDTO1.nickname);
+    userModel.update(userList[0].idx, newNickname);
+
+    const result: IUser[] = userModel.findById(userSignUpDTO1.id);
+    expect(result[0].nickname).toEqual(newNickname);
+  });
+
   test("find", () => {
     userModel.create(userSignUpDTO1, salt);
     userModel.create(userSignUpDTO2, salt);
