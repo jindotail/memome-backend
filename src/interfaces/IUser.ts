@@ -13,6 +13,8 @@ export interface IUserSignUpDTO {
   id: string;
   password: string;
   nickname: string;
+  passwordQuestion: string;
+  passwordAnswer: string;
 }
 
 export interface IUserLoginDTO {

@@ -24,6 +24,11 @@ export default (app: Router) => {
   const PW_MAX_LENGTH = 20;
   const NICKNAME_MIN_LENGTH = 1;
   const NICKNAME_MAX_LENGTH = 10;
+  const PW_QUESTION_MIN_LENGTH = 1;
+  const PW_QUESTION_MAX_LENGTH = 30;
+  const PW_ANSWER_MIN_LENGTH = 1;
+  const PW_ANSWER_MAX_LENGTH = 30;
+  
 
   function validationLength(
     input: string,
@@ -54,6 +59,8 @@ export default (app: Router) => {
         id: Joi.string().required(),
         password: Joi.string().required(),
         nickname: Joi.string().required(),
+        passwordQuestion: Joi.string().required(),
+        passwordAnswer: Joi.string().required(),
       }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
@@ -63,11 +70,15 @@ export default (app: Router) => {
         const id: string = req.body.id;
         const password: string = req.body.password;
         const nickname: string = req.body.nickname;
+        const passwordQuestion: string = req.body.password;
+        const passwordAnswer: string = req.body.password;
 
         validationLength(id, ID_MIN_LENGTH, ID_MAX_LENGTH);
         validAlphabetOrNumber(id);
         validationLength(password, PW_MIN_LENGTH, PW_MAX_LENGTH);
         validationLength(nickname, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH);
+        validationLength(passwordQuestion, PW_QUESTION_MIN_LENGTH, PW_QUESTION_MAX_LENGTH);
+        validationLength(passwordAnswer, PW_ANSWER_MIN_LENGTH, PW_ANSWER_MAX_LENGTH);
 
         await authServiceInstance.signUp(req.body as IUserSignUpDTO);
         return res.status(201).send();
