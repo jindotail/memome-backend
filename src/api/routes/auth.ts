@@ -8,10 +8,12 @@ import {
 } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
-import { HttpStatusCode } from "../../common/http";
 import { generateToken, verifyToken } from "../../common/jwt";
+import {
+  validAlphabetOrNumber,
+  validationLength,
+} from "../../common/vallidation";
 import config from "../../config";
-import APIError from "../../errors/APIError";
 import { IUserLoginDTO, IUserSignUpDTO } from "../../interfaces/IUser";
 import AuthService from "../../services/auth";
 import middlewares from "../middlewares";
@@ -34,28 +36,6 @@ export default (app: Router) => {
   const PW_QUESTION_MAX_LENGTH = 30;
   const PW_ANSWER_MIN_LENGTH = 1;
   const PW_ANSWER_MAX_LENGTH = 30;
-
-  function validationLength(
-    input: string,
-    minLength: number,
-    maxLength: number
-  ): void {
-    if (input.length < minLength || maxLength < input.length)
-      throw new APIError(
-        "AuthRouter",
-        HttpStatusCode.BAD_REQUEST,
-        "invalid length"
-      );
-  }
-
-  function validAlphabetOrNumber(input: string): void {
-    if (!input.match(/^[0-9a-z]+$/))
-      throw new APIError(
-        "AuthRouter",
-        HttpStatusCode.BAD_REQUEST,
-        "not alphanumeric"
-      );
-  }
 
   route.post(
     "/signup",
