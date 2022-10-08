@@ -6,7 +6,7 @@ import { HttpStatusCode } from "../../common/http";
 import {
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
-  validationLength
+  validationLength,
 } from "../../common/vallidation";
 import APIError from "../../errors/APIError";
 import UserService from "../../services/user";
@@ -67,7 +67,7 @@ export default (app: Router) => {
 
   route.delete(
     "/:id",
-    middlewares.checkToken,
+    middlewares.checkToken("params id"),
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug(`Calling delete /user/${req.params.id} endpoint`);
 
@@ -105,7 +105,7 @@ export default (app: Router) => {
 
   route.post(
     "/:id/password_question",
-    middlewares.checkToken,
+    middlewares.checkToken("params id"),
     celebrate({
       body: Joi.object({
         passwordAnswer: Joi.string().required(),
@@ -134,7 +134,7 @@ export default (app: Router) => {
   // TODO - user 자체를 받아서 nickname 외의 것들도 변경 가능하게 하기
   route.patch(
     "/:id",
-    middlewares.checkToken,
+    middlewares.checkToken("params id"),
     celebrate({
       body: Joi.object({
         nickname: Joi.string().required(),

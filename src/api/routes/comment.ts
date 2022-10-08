@@ -64,7 +64,7 @@ export default (app: Router) => {
 
   route.delete(
     "/:userId/:commentIdx",
-    middlewares.checkToken,
+    middlewares.checkToken("params userId"),
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug(
         `Calling delete /comment/${req.params.userId}/${req.params.commentIdx} endpoint`

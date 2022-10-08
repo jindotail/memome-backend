@@ -4,7 +4,7 @@ import {
   NextFunction,
   Request,
   Response,
-  Router,
+  Router
 } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
@@ -21,7 +21,7 @@ import {
   PW_QUESTION_MAX_LENGTH,
   PW_QUESTION_MIN_LENGTH,
   validAlphabetOrNumber,
-  validationLength,
+  validationLength
 } from "../../common/vallidation";
 import config from "../../config";
 import { IUserLoginDTO, IUserSignUpDTO } from "../../interfaces/IUser";
@@ -122,12 +122,12 @@ export default (app: Router) => {
 
   route.post(
     "/token",
-    middlewares.checkToken,
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
       }),
     }),
+    middlewares.checkToken("body id"),
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug("Calling token endpoint");
 
