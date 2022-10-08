@@ -5,6 +5,7 @@ import { Logger } from "winston";
 import CommentService from "../../services/comment";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
+import requestIp from "request-ip";
 
 const route = Router();
 
@@ -30,10 +31,11 @@ export default (app: Router) => {
       );
 
       try {
+        // TODO - client ip 들고오는 부분 미들웨어로 빼면 좋을 것 같음
         const userIdx = await userServiceInstance.getUserIdxById(
           req.params.userId as string
         );
-        await commentServiceInstance.create(userIdx, req.body.comment);
+        await commentServiceInstance.create(userIdx, req.body.comment, requestIp.getClientIp(req));
         res.status(201).send();
       } catch (err) {
         next(err);

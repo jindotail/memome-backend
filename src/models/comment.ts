@@ -9,10 +9,15 @@ import {
 export default class CommentModel {
   constructor(private collection: string) {}
 
-  public async create(userIdx: string, comment: string): Promise<void> {
+  public async create(
+    userIdx: string,
+    comment: string,
+    ip: string
+  ): Promise<void> {
     await saveDocument(this.collection, {
       user_idx: userIdx,
       comment,
+      ip,
       iso_time: new Date().toISOString(),
     });
   }

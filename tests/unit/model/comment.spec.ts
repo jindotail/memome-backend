@@ -9,16 +9,17 @@ describe("CommentModel", () => {
   const userIdx2: string = "userIdx2";
   const comment1: string = "comment1";
   const comment2: string = "comment2";
+  const ip1: string = "ip1";
 
   afterEach(async () => {
     await db.deleteCollection("test_comment");
   });
 
   test("findByUserIdx - 댓글이 존재하지 않는 경우", async () => {
-    await commentModel.create(userIdx1, comment1);
-    await commentModel.create(userIdx1, comment2);
-    await commentModel.create(userIdx2, comment1);
-    await commentModel.create(userIdx2, comment2);
+    await commentModel.create(userIdx1, comment1, ip1);
+    await commentModel.create(userIdx1, comment2, ip1);
+    await commentModel.create(userIdx2, comment1, ip1);
+    await commentModel.create(userIdx2, comment2, ip1);
 
     const commentList: IComment[] = await commentModel.findByUserIdx(
       "not existing user idx"
@@ -28,10 +29,10 @@ describe("CommentModel", () => {
   });
 
   test("findByUserIdx - 댓글이 존재하는 경우", async () => {
-    await commentModel.create(userIdx1, comment1);
-    await commentModel.create(userIdx1, comment2);
-    await commentModel.create(userIdx2, comment1);
-    await commentModel.create(userIdx2, comment2);
+    await commentModel.create(userIdx1, comment1, ip1);
+    await commentModel.create(userIdx1, comment2, ip1);
+    await commentModel.create(userIdx2, comment1, ip1);
+    await commentModel.create(userIdx2, comment2, ip1);
 
     const commentList: IComment[] = await commentModel.findByUserIdx(userIdx1);
 
@@ -41,23 +42,27 @@ describe("CommentModel", () => {
   });
 
   test("find", async () => {
-    await commentModel.create(userIdx1, comment1);
+    await commentModel.create(userIdx1, comment1, ip1);
 
     const commentList: IComment[] = await commentModel.findByUserIdx(userIdx1);
 
-    const comment: IComment | undefined = await commentModel.find(commentList[0].idx);
+    const comment: IComment | undefined = await commentModel.find(
+      commentList[0].idx
+    );
 
     expect(commentList[0].idx).toEqual(comment?.idx);
   });
 
   test("find - 존재하지 않는 경우", async () => {
-    const comment: IComment | undefined = await commentModel.find("not existing idx");
+    const comment: IComment | undefined = await commentModel.find(
+      "not existing idx"
+    );
 
     expect(comment).toEqual(undefined);
   });
 
   test("delete", async () => {
-    await commentModel.create(userIdx1, comment1);
+    await commentModel.create(userIdx1, comment1, ip1);
     const commentList: IComment[] = await commentModel.findByUserIdx(userIdx1);
 
     expect(commentList.length).toEqual(1);

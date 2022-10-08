@@ -3,7 +3,7 @@ import { IComment } from "../interfaces/IComment";
 export default class CommentModel {
   commentMap = new Map<string, any>();
 
-  public create(userIdx: string, comment: string): void {
+  public create(userIdx: string, comment: string, ip: string): void {
     console.log(
       `[MockCommentModel] create userIdx: ${userIdx} comment: ${comment}`
     );
@@ -11,6 +11,7 @@ export default class CommentModel {
     this.commentMap.set(makeIdx(21), {
       user_idx: userIdx,
       comment: comment,
+      ip: ip,
       iso_time: new Date().toISOString(),
       created_at: new Date(),
       updated_at: new Date(),

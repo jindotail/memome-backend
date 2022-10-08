@@ -8,16 +8,17 @@ describe("MockCommentModel", () => {
   const userIdx2: string = "userIdx2";
   const comment1: string = "comment1";
   const comment2: string = "comment2";
+  const ip1: string = "ip1";
 
   beforeEach(() => {
     commentModel.commentMap = new Map<string, any>();
   });
 
   test("findByUserIdx - 댓글이 존재하지 않는 경우", () => {
-    commentModel.create(userIdx1, comment1);
-    commentModel.create(userIdx1, comment2);
-    commentModel.create(userIdx2, comment1);
-    commentModel.create(userIdx2, comment2);
+    commentModel.create(userIdx1, comment1, ip1);
+    commentModel.create(userIdx1, comment2, ip1);
+    commentModel.create(userIdx2, comment1, ip1);
+    commentModel.create(userIdx2, comment2, ip1);
 
     const commentList: IComment[] = commentModel.findByUserIdx(
       "not existing user idx"
@@ -27,10 +28,10 @@ describe("MockCommentModel", () => {
   });
 
   test("findByUserIdx - 댓글이 존재하는 경우", () => {
-    commentModel.create(userIdx1, comment1);
-    commentModel.create(userIdx1, comment2);
-    commentModel.create(userIdx2, comment1);
-    commentModel.create(userIdx2, comment2);
+    commentModel.create(userIdx1, comment1, ip1);
+    commentModel.create(userIdx1, comment2, ip1);
+    commentModel.create(userIdx2, comment1, ip1);
+    commentModel.create(userIdx2, comment2, ip1);
 
     const commentList: IComment[] = commentModel.findByUserIdx(userIdx1);
 
@@ -40,7 +41,7 @@ describe("MockCommentModel", () => {
   });
 
   test("find", () => {
-    commentModel.create(userIdx1, comment1);
+    commentModel.create(userIdx1, comment1, ip1);
 
     const commentList: IComment[] = commentModel.findByUserIdx(userIdx1);
 
@@ -56,7 +57,7 @@ describe("MockCommentModel", () => {
   });
 
   test("delete", () => {
-    commentModel.create(userIdx1, comment1);
+    commentModel.create(userIdx1, comment1, ip1);
     const commentList: IComment[] = commentModel.findByUserIdx(userIdx1);
 
     expect(commentList.length).toEqual(1);
