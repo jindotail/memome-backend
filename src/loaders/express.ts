@@ -21,7 +21,7 @@ export default ({ app }: { app: express.Application }) => {
   app.use(
     cors({
       origin: ["https://memome.be", "http://localhost:3000"],
-      methods: "OPTION, GET, POST, DELETE, PUT",
+      methods: "OPTION, GET, POST, DELETE, PUT, PATCH",
       credentials: true,
     })
   );
