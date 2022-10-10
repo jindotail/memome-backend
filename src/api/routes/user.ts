@@ -105,7 +105,6 @@ export default (app: Router) => {
 
   route.post(
     "/:id/password_question",
-    middlewares.checkToken("params id"),
     celebrate({
       body: Joi.object({
         passwordAnswer: Joi.string().required(),
@@ -149,6 +148,7 @@ export default (app: Router) => {
         const nickname: string = req.body.nickname;
         validationLength(nickname, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH);
 
+        // TODO - nickname, password 검증만 하고 바로 인자로 넘기자, type은 any로. 이게 더 깔끔할 것 같음
         await userServiceInstance.updateUser(req.params.id as string, nickname);
         logger.debug(`닉네임 변경 결과: ${nickname}`);
 
