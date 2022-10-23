@@ -3,11 +3,6 @@ import { NextFunction, Request, Response, Router } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
 import { HttpStatusCode } from "../../common/http";
-import {
-  NICKNAME_MAX_LENGTH,
-  NICKNAME_MIN_LENGTH,
-  validationLength,
-} from "../../common/vallidation";
 import APIError from "../../errors/APIError";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
@@ -130,13 +125,13 @@ export default (app: Router) => {
     }
   );
 
-  // TODO - user 자체를 받아서 nickname 외의 것들도 변경 가능하게 하기
   route.patch(
     "/:id",
     middlewares.checkToken("params id"),
     celebrate({
       body: Joi.object({
-        nickname: Joi.string().required(),
+        nickname: Joi.string(),
+        password: Joi.string(),
       }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
@@ -145,12 +140,7 @@ export default (app: Router) => {
       );
 
       try {
-        const nickname: string = req.body.nickname;
-        validationLength(nickname, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH);
-
-        // TODO - nickname, password 검증만 하고 바로 인자로 넘기자, type은 any로. 이게 더 깔끔할 것 같음
-        await userServiceInstance.updateUser(req.params.id as string, nickname);
-        logger.debug(`닉네임 변경 결과: ${nickname}`);
+        await userServiceInstance.updateUser(req.params.id as string, req.body);
 
         return res.status(200).send();
       } catch (err) {

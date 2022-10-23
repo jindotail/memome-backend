@@ -11,6 +11,11 @@ export interface IUser {
   updated_at: Date;
 }
 
+export interface IUpdateUser {
+  password?: string;
+  nickname?: string;
+}
+
 export interface IUserSignUpDTO {
   id: string;
   password: string;

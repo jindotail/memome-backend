@@ -1,7 +1,16 @@
+import * as argon2 from "argon2";
 import { Inject, Service } from "typedi";
 import { Logger } from "winston";
 import { HttpStatusCode } from "../common/http";
+import {
+  NICKNAME_MAX_LENGTH,
+  NICKNAME_MIN_LENGTH,
+  PW_MAX_LENGTH,
+  PW_MIN_LENGTH,
+  validationLength
+} from "../common/vallidation";
 import APIError from "../errors/APIError";
+import { IUpdateUser } from "../interfaces/IUser";
 import UserModel from "../models/user";
 
 @Service()
@@ -71,10 +80,35 @@ export default class UserService {
     return passwordAnswer === user[0].passwordAnswer;
   }
 
-  public async updateUser(userId: string, nickname: string): Promise<void> {
-    this.logger.silly(
-      `[UserService] updateUser ${userId}, nickname: ${nickname}`
-    );
+  private async updateUserObj(body: any, salt: string): Promise<IUpdateUser> {
+    let updateUser = {};
+    this.logger.debug(`before updateUser: ${JSON.stringify(body)}`);
+
+    const nickname = body.nickname;
+    if (nickname !== undefined) {
+      validationLength(nickname, NICKNAME_MIN_LENGTH, NICKNAME_MAX_LENGTH);
+      updateUser = {
+        ...updateUser,
+        nickname,
+      };
+    }
+    const password = body.password;
+    if (password !== undefined) {
+      validationLength(password, PW_MIN_LENGTH, PW_MAX_LENGTH);
+      const hashedPassword = await argon2.hash(password, {
+        salt: Buffer.from(salt, "hex"),
+      });
+      updateUser = {
+        ...updateUser,
+        password: hashedPassword,
+      };
+    }
+    this.logger.debug(`updateUser: ${JSON.stringify(updateUser)}`);
+    return updateUser;
+  }
+
+  public async updateUser(userId: string, body: any): Promise<void> {
+    this.logger.silly(`[UserService] updateUser ${userId}, nickname: ${body}`);
 
     const user = await this.UserModel.findById(userId);
     if (user[0]?.idx === undefined)
@@ -83,8 +117,9 @@ export default class UserService {
         HttpStatusCode.BAD_REQUEST,
         "user not found"
       );
+    const updateUser = await this.updateUserObj(body, user[0]?.salt);
 
-    await this.UserModel.update(user[0].idx, nickname);
+    await this.UserModel.update(user[0].idx, updateUser);
   }
 
   public async getRandomUserId(

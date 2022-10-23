@@ -1,12 +1,12 @@
 import { shuffle } from "../common/random";
-import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
+import { IUpdateUser, IUser, IUserSignUpDTO } from "../interfaces/IUser";
 import {
   deleteDocument,
   findCollection,
   findCollectionWithCondition,
   findDocument,
   saveDocument,
-  updateDocument,
+  updateDocument
 } from "./firebase";
 
 export default class UserModel {
@@ -43,10 +43,8 @@ export default class UserModel {
     });
   }
 
-  public async update(idx: string, nickname: string): Promise<void> {
-    await updateDocument(this.collection, idx, {
-      nickname,
-    });
+  public async update(idx: string, updateUser: IUpdateUser): Promise<void> {
+    await updateDocument(this.collection, idx, updateUser);
   }
 
   public async findRandomUser(count: number): Promise<IUser[]> {
