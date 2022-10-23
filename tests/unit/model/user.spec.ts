@@ -25,16 +25,53 @@ describe("UserModel", () => {
     await db.deleteCollection("test_user");
   });
 
-  test("update", async () => {
+  test("update nickname", async () => {
     const newNickname = "newNickname";
     await userModel.create(userSignUpDTO1, salt);
 
     const userList: IUser[] = await userModel.findById(userSignUpDTO1.id);
     expect(userList[0].nickname).toEqual(userSignUpDTO1.nickname);
-    await userModel.update(userList[0].idx, newNickname);
+    expect(userList[0].password).toEqual(userSignUpDTO1.password);
+
+    await userModel.update(userList[0].idx, { nickname: newNickname });
 
     const result: IUser[] = await userModel.findById(userSignUpDTO1.id);
     expect(result[0].nickname).toEqual(newNickname);
+    expect(result[0].password).toEqual(userSignUpDTO1.password);
+  });
+
+  test("update password", async () => {
+    const newPassword = "newPassword";
+    await userModel.create(userSignUpDTO1, salt);
+
+    const userList: IUser[] = await userModel.findById(userSignUpDTO1.id);
+    expect(userList[0].nickname).toEqual(userSignUpDTO1.nickname);
+    expect(userList[0].password).toEqual(userSignUpDTO1.password);
+
+    await userModel.update(userList[0].idx, { password: newPassword });
+
+    const result: IUser[] = await userModel.findById(userSignUpDTO1.id);
+    expect(result[0].nickname).toEqual(userSignUpDTO1.nickname);
+    expect(result[0].password).toEqual(newPassword);
+  });
+
+  test("update nickname and password", async () => {
+    const newNickname = "newNickname";
+    const newPassword = "newPassword";
+    await userModel.create(userSignUpDTO1, salt);
+
+    const userList: IUser[] = await userModel.findById(userSignUpDTO1.id);
+    expect(userList[0].nickname).toEqual(userSignUpDTO1.nickname);
+    expect(userList[0].password).toEqual(userSignUpDTO1.password);
+
+    await userModel.update(userList[0].idx, {
+      nickname: newNickname,
+      password: newPassword,
+    });
+
+    const result: IUser[] = await userModel.findById(userSignUpDTO1.id);
+    expect(result[0].nickname).toEqual(newNickname);
+    expect(result[0].password).toEqual(newPassword);
   });
 
   test("find", async () => {
