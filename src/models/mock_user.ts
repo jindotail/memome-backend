@@ -1,5 +1,5 @@
 import { makeIdx } from "../common/random";
-import { IUser, IUserSignUpDTO } from "../interfaces/IUser";
+import { IUpdateUser, IUser, IUserSignUpDTO } from "../interfaces/IUser";
 
 export default class UserModel {
   userMap: Map<string, any> = new Map<string, any>([
@@ -12,7 +12,7 @@ export default class UserModel {
         nickname: "진도",
         passwordQuestion: "저의 고앵이 이름은 무엇일까요?",
         passwordAnswer: "김야옹",
-        salt: "salt",
+        salt: "5e20a8822c55e25923ee",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
         updated_at: new Date(),
@@ -27,7 +27,7 @@ export default class UserModel {
         nickname: "Tail",
         passwordQuestion: "저의 이름은 무엇일까요?",
         passwordAnswer: "꼬리입니다",
-        salt: "salt",
+        salt: "5e20a8822c55e25923ee",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
         updated_at: new Date(),
@@ -42,7 +42,7 @@ export default class UserModel {
         nickname: "aa",
         passwordQuestion: "passwordQuestion",
         passwordAnswer: "passwordAnswer",
-        salt: "salt",
+        salt: "5e20a8822c55e25923ee",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
         updated_at: new Date(),
@@ -57,7 +57,7 @@ export default class UserModel {
         nickname: "bb",
         passwordQuestion: "passwordQuestion",
         passwordAnswer: "passwordAnswer",
-        salt: "salt",
+        salt: "5e20a8822c55e25923ee",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
         updated_at: new Date(),
@@ -72,7 +72,7 @@ export default class UserModel {
         nickname: "cc",
         passwordQuestion: "passwordQuestion",
         passwordAnswer: "passwordAnswer",
-        salt: "salt",
+        salt: "5e20a8822c55e25923ee",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
         updated_at: new Date(),
@@ -96,8 +96,8 @@ export default class UserModel {
     });
   }
 
-  public async update(idx: string, nickname: string): Promise<void> {
-    const user = { ...this.userMap.get(idx), nickname: nickname };
+  public async update(idx: string, updateUser: IUpdateUser): Promise<void> {
+    const user = { ...this.userMap.get(idx), ...updateUser };
 
     this.userMap.set(idx, user);
   }
