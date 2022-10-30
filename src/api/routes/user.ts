@@ -131,8 +131,7 @@ export default (app: Router) => {
           config.passwordTokenExpire
         );
 
-        const sess: CookieOptions =
-          config.phase === "prod" ? { sameSite: "none", secure: true } : {};
+        const sess: CookieOptions = { sameSite: "none", secure: true };
         res.cookie("passwordToken", passwordToken, sess);
 
         if (matched) return res.status(200).send();

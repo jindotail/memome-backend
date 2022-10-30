@@ -4,7 +4,7 @@ import {
   NextFunction,
   Request,
   Response,
-  Router
+  Router,
 } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
@@ -21,7 +21,7 @@ import {
   PW_QUESTION_MAX_LENGTH,
   PW_QUESTION_MIN_LENGTH,
   validAlphabetOrNumber,
-  validationLength
+  validationLength,
 } from "../../common/vallidation";
 import config from "../../config";
 import { IUserLoginDTO, IUserSignUpDTO } from "../../interfaces/IUser";
@@ -99,8 +99,7 @@ export default (app: Router) => {
           req.body as IUserLoginDTO
         );
 
-        const sess: CookieOptions =
-          config.phase === "prod" ? { sameSite: "none", secure: true } : {};
+        const sess: CookieOptions = { sameSite: "none", secure: true };
         res.cookie("accessToken", accessToken, sess);
         res.cookie("refreshToken", refreshToken, sess);
 
@@ -145,8 +144,7 @@ export default (app: Router) => {
         config.accessTokenExpire
       );
 
-      const sess: CookieOptions =
-        config.phase === "prod" ? { sameSite: "none", secure: true } : {};
+      const sess: CookieOptions = { sameSite: "none", secure: true };
       res.cookie("accessToken", accessToken, sess);
 
       return res.status(200).send();
