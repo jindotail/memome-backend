@@ -34,6 +34,7 @@ export default {
   jwtSecret: process.env.JWT_SECRET,
   accessTokenExpire: process.env.ACCESS_TOKEN_EXPIRE || "15m",
   refreshTokenExpire: process.env.REFRESH_TOKEN_EXPIRE || "15d",
+  passwordTokenExpire: process.env.PASSWORD_TOKEN_EXPIRE || "10m",
 
   privateKey: process.env.PRIVATE_KEY,
   clientEmail: process.env.CLIENT_EMAIL,

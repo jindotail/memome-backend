@@ -13,7 +13,8 @@ const checkTokenId = (id: string, tokenId: string) => {
     );
 };
 
-const getIdFromRequest = (apiType: string, req: Request) => {
+// TODO - 이게 아닌 것 같은데 방법을 모르겠다
+const getIdFromRequest = (req: Request, apiType: string) => {
   switch (apiType) {
     case "body id":
       return req.body.id;
@@ -25,17 +26,33 @@ const getIdFromRequest = (apiType: string, req: Request) => {
       throw new APIError(
         "getIdFromRequest",
         HttpStatusCode.INTERNAL_SERVER,
-        "token에서 userId를 들고오지 못했습니다"
+        "invalid token"
       );
   }
 };
 
-export const checkToken = (apiType: string) => {
+const getTokenFromRequest = (req: Request, tokenType: string) => {
+  switch (tokenType) {
+    case "accessToken":
+      return req.cookies.accessToken;
+    case "passwordToken":
+      return req.cookies.passwordToken;
+    default:
+      throw new APIError(
+        "getTokenFromRequest",
+        HttpStatusCode.INTERNAL_SERVER,
+        "invalid token"
+      );
+  }
+};
+
+export const checkToken = (apiType: string, tokenType: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = verifyToken(req.cookies.accessToken) as JwtPayload;
-      const id = getIdFromRequest(apiType, req);
-      checkTokenId(id, token.id);
+      const token = getTokenFromRequest(req, tokenType);
+      const varifiedToken = verifyToken(token) as JwtPayload;
+      const id = getIdFromRequest(req, apiType);
+      checkTokenId(id, varifiedToken.id);
     } catch (e) {
       next(e);
       return;

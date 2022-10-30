@@ -26,6 +26,7 @@ import {
 import config from "../../config";
 import { IUserLoginDTO, IUserSignUpDTO } from "../../interfaces/IUser";
 import AuthService from "../../services/auth";
+import UserService from "../../services/user";
 import middlewares from "../middlewares";
 
 const route = Router();
@@ -36,6 +37,7 @@ export default (app: Router) => {
 
   const logger: Logger = Container.get("logger");
   const authServiceInstance = Container.get(AuthService);
+  const userServiceInstance = Container.get(UserService);
 
   route.post(
     "/signup",
@@ -127,7 +129,7 @@ export default (app: Router) => {
         id: Joi.string().required(),
       }),
     }),
-    middlewares.checkToken("body id"),
+    middlewares.checkToken("body id", "accessToken"),
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug("Calling token endpoint");
 
@@ -148,6 +150,33 @@ export default (app: Router) => {
       res.cookie("accessToken", accessToken, sess);
 
       return res.status(200).send();
+    }
+  );
+
+  route.post(
+    "/change_password",
+    celebrate({
+      body: Joi.object({
+        id: Joi.string().required(),
+        password: Joi.string().required(),
+      }),
+    }),
+    middlewares.checkToken("body id", "passwordToken"),
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug("change password");
+
+      try {
+        validationLength(
+          req.body.password as string,
+          PW_MIN_LENGTH,
+          PW_MAX_LENGTH
+        );
+        await userServiceInstance.updateUser(req.body.id as string, req.body);
+        res.clearCookie("passwordToken");
+        return res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
     }
   );
 };

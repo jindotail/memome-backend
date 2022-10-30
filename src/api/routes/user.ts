@@ -1,8 +1,16 @@
 import { celebrate, Joi } from "celebrate";
-import { NextFunction, Request, Response, Router } from "express";
+import {
+  CookieOptions,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+} from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
 import { HttpStatusCode } from "../../common/http";
+import { generateToken } from "../../common/jwt";
+import config from "../../config";
 import APIError from "../../errors/APIError";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
@@ -62,7 +70,7 @@ export default (app: Router) => {
 
   route.delete(
     "/:id",
-    middlewares.checkToken("params id"),
+    middlewares.checkToken("params id", "accessToken"),
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug(`Calling delete /user/${req.params.id} endpoint`);
 
@@ -117,6 +125,16 @@ export default (app: Router) => {
             req.body.passwordAnswer
           );
         logger.debug(`비밀번호 찾기 확인 결과: ${matched}`);
+
+        const passwordToken = generateToken(
+          req.params.id as string,
+          config.passwordTokenExpire
+        );
+
+        const sess: CookieOptions =
+          config.phase === "prod" ? { sameSite: "none", secure: true } : {};
+        res.cookie("passwordToken", passwordToken, sess);
+
         if (matched) return res.status(200).send();
         return res.status(400).send();
       } catch (err) {
@@ -127,11 +145,10 @@ export default (app: Router) => {
 
   route.patch(
     "/:id",
-    middlewares.checkToken("params id"),
+    middlewares.checkToken("params id", "accessToken"),
     celebrate({
       body: Joi.object({
         nickname: Joi.string(),
-        password: Joi.string(),
       }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {

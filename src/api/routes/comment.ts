@@ -1,11 +1,11 @@
 import { celebrate, Joi } from "celebrate";
 import { NextFunction, Request, Response, Router } from "express";
+import requestIp from "request-ip";
 import { Container } from "typedi";
 import { Logger } from "winston";
 import CommentService from "../../services/comment";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
-import requestIp from "request-ip";
 
 const route = Router();
 
@@ -35,7 +35,11 @@ export default (app: Router) => {
         const userIdx = await userServiceInstance.getUserIdxById(
           req.params.userId as string
         );
-        await commentServiceInstance.create(userIdx, req.body.comment, requestIp.getClientIp(req));
+        await commentServiceInstance.create(
+          userIdx,
+          req.body.comment,
+          requestIp.getClientIp(req)
+        );
         res.status(201).send();
       } catch (err) {
         next(err);
@@ -66,7 +70,7 @@ export default (app: Router) => {
 
   route.delete(
     "/:userId/:commentIdx",
-    middlewares.checkToken("params userId"),
+    middlewares.checkToken("params userId", "accessToken"),
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug(
         `Calling delete /comment/${req.params.userId}/${req.params.commentIdx} endpoint`
