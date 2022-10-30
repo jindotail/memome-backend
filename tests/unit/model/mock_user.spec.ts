@@ -30,7 +30,7 @@ describe("UserModel", () => {
 
     const userList: IUser[] = userModel.findById(userSignUpDTO1.id);
     expect(userList[0].nickname).toEqual(userSignUpDTO1.nickname);
-    userModel.update(userList[0].idx, newNickname);
+    userModel.update(userList[0].idx, { nickname: newNickname });
 
     const result: IUser[] = userModel.findById(userSignUpDTO1.id);
     expect(result[0].nickname).toEqual(newNickname);
