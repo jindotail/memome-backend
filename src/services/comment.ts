@@ -32,10 +32,31 @@ export default class CommentService {
     });
   }
 
-  public async getComments(userIdx: string): Promise<ICommentResponse[]> {
+  private createTimeSort(a: IComment, b: IComment): number {
+    if (a.created_at > b.created_at) return -1;
+    else if (a.created_at < b.created_at) return 1;
+    return 0;
+  }
+
+  private sliceComment(
+    comment: IComment[],
+    size: undefined | number
+  ): IComment[] {
+    if (size == undefined) return comment;
+    return comment.splice(0, size);
+  }
+
+  public async getComments(
+    userIdx: string,
+    size: undefined | number
+  ): Promise<ICommentResponse[]> {
     this.logger.silly(`[CommentService] getComments userIdx: ${userIdx}`);
-    const res = await this.commentModel.findByUserIdx(userIdx);
-    return this.convertCommentToCommentResponse(res);
+    const comment = await this.commentModel.findByUserIdx(userIdx);
+    const sortedComment = comment.sort((a, b) => this.createTimeSort(a, b));
+
+    return this.convertCommentToCommentResponse(
+      this.sliceComment(sortedComment, size)
+    );
   }
 
   public async deleteCommentByIdx(idx: string): Promise<void> {

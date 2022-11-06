@@ -55,7 +55,12 @@ export default (app: Router) => {
         const userIdx = await userServiceInstance.getUserIdxById(
           req.params.userId as string
         );
-        const result = await commentServiceInstance.getComments(userIdx);
+
+        const size: undefined | number =
+          isNaN(Number(req.query.size)) === true || Number(req.query.size) < 0
+            ? undefined
+            : Number(req.query.size);
+        const result = await commentServiceInstance.getComments(userIdx, size);
         logger.silly(
           `[CommentRoute] getComments result: ${JSON.stringify(result)}`
         );

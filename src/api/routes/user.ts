@@ -29,17 +29,17 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug(`Calling get /user/${req.query.count} endpoint`);
 
-      if (
-        isNaN(Number(req.query.count)) === true ||
-        Number(req.query.count) < 0
-      )
-        throw new APIError(
-          "CommentRouter",
-          HttpStatusCode.BAD_REQUEST,
-          "invalid user count"
-        );
-
       try {
+        if (
+          isNaN(Number(req.query.count)) === true ||
+          Number(req.query.count) < 0
+        )
+          throw new APIError(
+            "CommentRouter",
+            HttpStatusCode.BAD_REQUEST,
+            "invalid user count"
+          );
+
         const { users } = await userServiceInstance.getRandomUserId(
           Number(req.query.count)
         );
