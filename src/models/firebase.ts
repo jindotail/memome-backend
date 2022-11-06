@@ -73,8 +73,8 @@ export const findCollectionWithCondition = async (
   collection: string,
   condition: { fieldPath: string | FieldPath; opStr: WhereFilterOp; value: any }
 ): Promise<{ id: string; data: any }[]> => {
-  const citiesRef = db.collection(collection);
-  const snapshot = await citiesRef
+  const snapshot = await db
+    .collection(collection)
     .where(condition.fieldPath, condition.opStr, condition.value)
     .get();
 
@@ -107,8 +107,9 @@ export const deleteCollection = async (
   collection: string,
   batchSize: number = 1000
 ): Promise<void> => {
-  const collectionRef = db.collection(collection);
-  const query = collectionRef.orderBy("__name__").limit(batchSize);
+  const query = db.collection(collection)
+  .orderBy("__name__")
+  .limit(batchSize);
 
   return new Promise((resolve, reject) => {
     deleteQueryBatch(db, query, resolve).catch(reject);
