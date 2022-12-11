@@ -166,7 +166,7 @@ export default (app: Router) => {
     }),
     middlewares.checkToken("body id", "passwordToken"),
     async (req: Request, res: Response, next: NextFunction) => {
-      logger.debug("change password");
+      logger.debug("change  password");
 
       try {
         validationLength(
