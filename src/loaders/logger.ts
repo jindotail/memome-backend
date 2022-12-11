@@ -2,7 +2,7 @@ import * as winston from "winston";
 import config from "../config";
 
 const transports = [];
-if (process.env.PHASE === "prod") {
+if (process.env.PHASE === "") {
   transports.push(new winston.transports.Console());
 } else {
   transports.push(
