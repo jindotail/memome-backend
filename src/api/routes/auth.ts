@@ -99,7 +99,8 @@ export default (app: Router) => {
           req.body as IUserLoginDTO
         );
 
-        const sess: CookieOptions = { sameSite: "none", secure: true };
+        const sess: CookieOptions =
+          config.phase == "prod" ? { sameSite: "none", secure: true } : {};
         res.cookie("accessToken", accessToken, sess);
         res.cookie("refreshToken", refreshToken, sess);
 
@@ -129,7 +130,12 @@ export default (app: Router) => {
       }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
-      logger.debug("Calling token endpoint");
+      logger.debug(`Calling cookies endpoint`);
+
+      logger.debug("accessToken");
+      logger.debug(req.cookies.accessToken);
+      logger.debug("refreshToken");
+      logger.debug(req.cookies.refreshToken);
 
       try {
         verifyToken(req.cookies.refreshToken);
