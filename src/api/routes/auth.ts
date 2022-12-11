@@ -99,8 +99,7 @@ export default (app: Router) => {
           req.body as IUserLoginDTO
         );
 
-        const sess: CookieOptions =
-          config.phase == "prod" ? { sameSite: "none", secure: true } : {};
+        const sess: CookieOptions = {};
         res.cookie("accessToken", accessToken, sess);
         res.cookie("refreshToken", refreshToken, sess);
 
