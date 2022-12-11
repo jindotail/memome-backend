@@ -128,7 +128,6 @@ export default (app: Router) => {
         id: Joi.string().required(),
       }),
     }),
-    middlewares.checkToken("body id", "accessToken"),
     async (req: Request, res: Response, next: NextFunction) => {
       logger.debug("Calling token endpoint");
 
@@ -146,6 +145,7 @@ export default (app: Router) => {
 
       const sess: CookieOptions = { sameSite: "none", secure: true };
       res.cookie("accessToken", accessToken, sess);
+      logger.debug(`accessToken: ${accessToken}`);
 
       return res.status(200).send();
     }
