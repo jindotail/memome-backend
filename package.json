@@ -39,6 +39,7 @@
     "ts-loader": "^9.3.1",
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.8.2",
+    "webpack-cli": "^4.10.0",
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
@@ -55,7 +56,6 @@
     "firebase-admin": "^11.0.1",
     "jsonwebtoken": "^8.5.1",
     "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
     "reflect-metadata": "^0.1.13",
     "request-ip": "^3.3.0",
     "typedi": "^0.10.0",
