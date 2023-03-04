@@ -57,8 +57,8 @@ export default (app: Router) => {
         const id: string = req.body.id;
         const password: string = req.body.password;
         const nickname: string = req.body.nickname;
-        const passwordQuestion: string = req.body.password;
-        const passwordAnswer: string = req.body.password;
+        const passwordQuestion: string = req.body.passwordQuestion;
+        const passwordAnswer: string = req.body.passwordAnswer;
 
         validationLength(id, ID_MIN_LENGTH, ID_MAX_LENGTH);
         validAlphabetOrNumber(id);
