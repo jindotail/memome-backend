@@ -76,6 +76,15 @@ export default (app: Router) => {
         );
 
         await authServiceInstance.signUp(req.body as IUserSignUpDTO);
+
+        const { accessToken, refreshToken } = await authServiceInstance.login({
+          id,
+          password,
+        });
+
+        res.cookie("accessToken", accessToken, {});
+        res.cookie("refreshToken", refreshToken, {});
+
         return res.status(201).send();
       } catch (err) {
         return next(err);
@@ -99,9 +108,8 @@ export default (app: Router) => {
           req.body as IUserLoginDTO
         );
 
-        const sess: CookieOptions = {};
-        res.cookie("accessToken", accessToken, sess);
-        res.cookie("refreshToken", refreshToken, sess);
+        res.cookie("accessToken", accessToken, {});
+        res.cookie("refreshToken", refreshToken, {});
 
         return res.status(200).send();
       } catch (err) {
