@@ -62,7 +62,7 @@ export default (app: Router) => {
       return res.status(200).json({
         id: user.id,
         nickname: user.nickname,
-        theme: user.theme
+        theme: user.theme,
       });
     } catch (err) {
       return next(err);
@@ -149,6 +149,8 @@ export default (app: Router) => {
     celebrate({
       body: Joi.object({
         nickname: Joi.string(),
+        password: Joi.string(),
+        themeId: Joi.number(),
       }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {

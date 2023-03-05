@@ -12,6 +12,19 @@ export const PW_QUESTION_MAX_LENGTH = 30;
 export const PW_ANSWER_MIN_LENGTH = 1;
 export const PW_ANSWER_MAX_LENGTH = 30;
 
+export const validationRange = (
+  input: number,
+  minLength: number,
+  maxLength: number
+): void => {
+  if (input < minLength || maxLength < input)
+    throw new APIError(
+      "AuthRouter",
+      HttpStatusCode.BAD_REQUEST,
+      "invalid range"
+    );
+};
+
 export const validationLength = (
   input: string,
   minLength: number,

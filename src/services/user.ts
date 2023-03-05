@@ -8,12 +8,13 @@ import {
   PW_MAX_LENGTH,
   PW_MIN_LENGTH,
   validationLength,
+  validationRange,
 } from "../common/vallidation";
 import APIError from "../errors/APIError";
 import { ITheme } from "../interfaces/ITheme";
 import { IUpdateUser } from "../interfaces/IUser";
 import UserModel from "../models/user";
-import { themeById } from "../services/theme";
+import { themeById, maxId } from "../services/theme";
 
 @Service()
 export default class UserService {
@@ -97,6 +98,7 @@ export default class UserService {
         nickname,
       };
     }
+
     const password = body.password;
     if (password !== undefined) {
       validationLength(password, PW_MIN_LENGTH, PW_MAX_LENGTH);
@@ -108,6 +110,16 @@ export default class UserService {
         password: hashedPassword,
       };
     }
+
+    const themeId = body.themeId;
+    if (themeId !== undefined) {
+      validationRange(themeId, 1, maxId());
+      updateUser = {
+        ...updateUser,
+        theme_id: themeId,
+      };
+    }
+
     this.logger.debug(`updateUser: ${JSON.stringify(updateUser)}`);
     return updateUser;
   }

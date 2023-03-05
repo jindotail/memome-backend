@@ -1,4 +1,4 @@
-import { themeById } from "../../../src/services/theme";
+import { themeById, maxId } from "../../../src/services/theme";
 
 describe("Theme", () => {
   test("not existing id - get default id", async () => {
@@ -19,5 +19,9 @@ describe("Theme", () => {
     const theme = themeById(2);
 
     expect(theme.id).toEqual(2);
+  });
+
+  test("max id", async () => {
+    expect(maxId()).toEqual(2);
   });
 });
