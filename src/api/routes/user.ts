@@ -62,6 +62,7 @@ export default (app: Router) => {
       return res.status(200).json({
         id: user.id,
         nickname: user.nickname,
+        theme: user.theme
       });
     } catch (err) {
       return next(err);
