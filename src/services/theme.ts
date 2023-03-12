@@ -2,26 +2,26 @@ import { ITheme } from "../interfaces/ITheme";
 
 const defaultTheme: ITheme = {
   id: 1,
-  backgroundColor: { start: "#8B008B", middle: "#C71585", end: "#FF69B4" },
-  commentColor: { start: "#0000CD", end: "#0000FF" },
+  backgroundColor: { start: "#dfe8ff", middle: "#f3c6f1", end: "#ffcfd1" },
+  commentColor: { start: "#eb93f7", end: "#d398fd" },
 };
 
 const themes: ITheme[] = [
   defaultTheme,
   {
     id: 2,
-    backgroundColor: { start: "#000000", middle: "#000000", end: "#000000" },
-    commentColor: { start: "#000000", end: "#000000" },
+    backgroundColor: { start: "#F4EEFF", middle: "#DCD6F7", end: "#A6B1E1" },
+    commentColor: { start: "#A6B1E1", end: "#97a9f6" },
   },
   {
     id: 3,
-    backgroundColor: { start: "#8B008B", middle: "#000000", end: "#000000" },
-    commentColor: { start: "#8B008B", end: "#000000" },
+    backgroundColor: { start: "#FFB200", middle: "#FFCB42", end: "#FFF4CF" },
+    commentColor: { start: "#FFE69A", end: "#FFD24C" },
   },
   {
     id: 4,
-    backgroundColor: { start: "#000000", middle: "#000000", end: "#C71585" },
-    commentColor: { start: "#000000", end: "#C71585" },
+    backgroundColor: { start: "#9EB23B", middle: "#C7D36F", end: "#FCF9C6" },
+    commentColor: { start: "#FCF9C6", end: "#FFE69A" },
   },
 ];
 
