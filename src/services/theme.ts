@@ -13,6 +13,16 @@ const themes: ITheme[] = [
     backgroundColor: { start: "#000000", middle: "#000000", end: "#000000" },
     commentColor: { start: "#000000", end: "#000000" },
   },
+  {
+    id: 3,
+    backgroundColor: { start: "#8B008B", middle: "#000000", end: "#000000" },
+    commentColor: { start: "#8B008B", end: "#000000" },
+  },
+  {
+    id: 4,
+    backgroundColor: { start: "#000000", middle: "#000000", end: "#C71585" },
+    commentColor: { start: "#000000", end: "#C71585" },
+  },
 ];
 
 export const themeById = (id: number | undefined): ITheme => {
