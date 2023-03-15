@@ -7,11 +7,14 @@ import {
   NICKNAME_MIN_LENGTH,
   PW_MAX_LENGTH,
   PW_MIN_LENGTH,
-  validationLength
+  validationLength,
+  validationRange,
 } from "../common/vallidation";
 import APIError from "../errors/APIError";
+import { ITheme } from "../interfaces/ITheme";
 import { IUpdateUser } from "../interfaces/IUser";
 import UserModel from "../models/user";
+import { themeById, maxId } from "../services/theme";
 
 @Service()
 export default class UserService {
@@ -35,7 +38,7 @@ export default class UserService {
 
   public async getUserInfo(
     userId: string
-  ): Promise<{ id: string; nickname: string }> {
+  ): Promise<{ id: string; nickname: string; theme: ITheme }> {
     this.logger.silly(`[UserService] getUserInfo ${userId}`);
 
     const user = await this.UserModel.findById(userId);
@@ -45,7 +48,9 @@ export default class UserService {
         HttpStatusCode.BAD_REQUEST,
         "user not found"
       );
-    return { id: user[0].id, nickname: user[0].nickname };
+    const theme = themeById(user[0].theme_id);
+
+    return { id: user[0].id, nickname: user[0].nickname, theme };
   }
 
   public async getUserPasswordQuestion(userId: string): Promise<string> {
@@ -92,6 +97,7 @@ export default class UserService {
         nickname,
       };
     }
+
     const password = body.password;
     if (password !== undefined) {
       validationLength(password, PW_MIN_LENGTH, PW_MAX_LENGTH);
@@ -103,6 +109,15 @@ export default class UserService {
         password: hashedPassword,
       };
     }
+    const themeId = body.themeId;
+    if (themeId !== undefined) {
+      validationRange(themeId, 1, maxId());
+      updateUser = {
+        ...updateUser,
+        theme_id: themeId,
+      };
+    }
+
     this.logger.debug(`updateUser: ${JSON.stringify(updateUser)}`);
     return updateUser;
   }

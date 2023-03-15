@@ -6,6 +6,7 @@ export interface IUser {
   passwordQuestion: string;
   passwordAnswer: string;
   salt: string;
+  theme_id?: number;
   iso_time: string;
   created_at: Date;
   updated_at: Date;

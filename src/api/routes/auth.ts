@@ -57,8 +57,8 @@ export default (app: Router) => {
         const id: string = req.body.id;
         const password: string = req.body.password;
         const nickname: string = req.body.nickname;
-        const passwordQuestion: string = req.body.password;
-        const passwordAnswer: string = req.body.password;
+        const passwordQuestion: string = req.body.passwordQuestion;
+        const passwordAnswer: string = req.body.passwordAnswer;
 
         validationLength(id, ID_MIN_LENGTH, ID_MAX_LENGTH);
         validAlphabetOrNumber(id);
@@ -76,6 +76,14 @@ export default (app: Router) => {
         );
 
         await authServiceInstance.signUp(req.body as IUserSignUpDTO);
+        const { accessToken, refreshToken } = await authServiceInstance.login({
+          id,
+          password,
+        });
+
+        res.cookie("accessToken", accessToken, {});
+        res.cookie("refreshToken", refreshToken, {});
+
         return res.status(201).send();
       } catch (err) {
         return next(err);
@@ -99,9 +107,8 @@ export default (app: Router) => {
           req.body as IUserLoginDTO
         );
 
-        const sess: CookieOptions = {};
-        res.cookie("accessToken", accessToken, sess);
-        res.cookie("refreshToken", refreshToken, sess);
+        res.cookie("accessToken", accessToken, {});
+        res.cookie("refreshToken", refreshToken, {});
 
         return res.status(200).send();
       } catch (err) {
