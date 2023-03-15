@@ -48,7 +48,6 @@ export default class UserService {
         HttpStatusCode.BAD_REQUEST,
         "user not found"
       );
-
     const theme = themeById(user[0].theme_id);
 
     return { id: user[0].id, nickname: user[0].nickname, theme };
@@ -110,7 +109,6 @@ export default class UserService {
         password: hashedPassword,
       };
     }
-
     const themeId = body.themeId;
     if (themeId !== undefined) {
       validationRange(themeId, 1, maxId());
