@@ -93,7 +93,7 @@ export default (app: Router) => {
   );
 
   route.post(
-    "/login",
+    "/default/login",
     celebrate({
       body: Joi.object({
         id: Joi.string().required(),
