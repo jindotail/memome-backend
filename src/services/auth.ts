@@ -20,7 +20,7 @@ export default class AuthService {
 
   public async signUp(userSignUpDTO: IUserSignUpDTO): Promise<void> {
     const userList = await this.UserModel.findById(userSignUpDTO.id);
-    if (userList[0] !== undefined)
+    if (userList.length !== 0)
       throw new APIError(
         "AuthService",
         HttpStatusCode.BAD_REQUEST,
