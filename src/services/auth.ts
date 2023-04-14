@@ -3,7 +3,7 @@ import { randomBytes } from "crypto";
 import { Inject, Service } from "typedi";
 import { Logger } from "winston";
 import { HttpStatusCode } from "../common/http";
-import { generateToken } from "../common/jwt";
+import * as jwt from "../common/jwt";
 import config from "../config";
 import APIError from "../errors/APIError";
 import { IUserLoginDTO, IUserSignUpDTO } from "../interfaces/IUser";
@@ -38,21 +38,9 @@ export default class AuthService {
     );
   }
 
-  public async login(userLoginDTO: IUserLoginDTO) {
-    const userList = await this.UserModel.findById(userLoginDTO.id);
-    if (userList[0] === undefined)
-      throw new APIError(
-        "AuthService",
-        HttpStatusCode.UNAUTHORIZED,
-        "login failed"
-      );
-    const user = userList[0];
-
+  private async validatePassword(password: string, inputPassword: string) {
     this.logger.silly("Checking password");
-    const validPassword = await argon2.verify(
-      user.password,
-      userLoginDTO.password
-    );
+    const validPassword = await argon2.verify(password, inputPassword);
     if (validPassword === false) {
       throw new APIError(
         "AuthService",
@@ -60,10 +48,24 @@ export default class AuthService {
         "login failed"
       );
     }
+  }
+
+  public async login(userLoginDTO: IUserLoginDTO) {
+    const userList = await this.UserModel.findById(userLoginDTO.id);
+    const user = userList[0];
+
+    if (user === undefined)
+      throw new APIError(
+        "AuthService",
+        HttpStatusCode.UNAUTHORIZED,
+        "login failed"
+      );
+    await this.validatePassword(user.password, userLoginDTO.password);
+
     this.logger.silly("Password is valid!");
     this.logger.silly("Generating JWT");
-    const accessToken = generateToken(user.id, config.accessTokenExpire);
-    const refreshToken = generateToken(user.id, config.refreshTokenExpire);
+    const accessToken = jwt.generateToken(user.id, config.accessTokenExpire);
+    const refreshToken = jwt.generateToken(user.id, config.refreshTokenExpire);
     this.TokenModel.create(user.idx, refreshToken);
 
     return { accessToken, refreshToken };
