@@ -62,6 +62,7 @@ export default (app: Router) => {
         const passwordQuestion: string = req.body.passwordQuestion;
         const passwordAnswer: string = req.body.passwordAnswer;
 
+        // TODO - 어떻게 좀 해봐........
         validationLength(id, ID_MIN_LENGTH, ID_MAX_LENGTH);
         validAlphabetOrNumber(id);
         validationLength(password, PW_MIN_LENGTH, PW_MAX_LENGTH);
@@ -133,8 +134,8 @@ export default (app: Router) => {
             "invalid user count"
           );
 
-          // const accessToken = generateToken(user.id, config.accessTokenExpire);
-          // const refreshToken = generateToken(user.id, config.refreshTokenExpire);
+        // const accessToken = generateToken(user.id, config.accessTokenExpire);
+        // const refreshToken = generateToken(user.id, config.refreshTokenExpire);
 
         return res.status(200).json({
           users: "users",
