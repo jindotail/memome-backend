@@ -1,3 +1,4 @@
+import axios from "axios";
 import { celebrate, Joi } from "celebrate";
 import {
   CookieOptions,
@@ -6,6 +7,7 @@ import {
   Response,
   Router,
 } from "express";
+import qs from "qs";
 import { Container } from "typedi";
 import { Logger } from "winston";
 import { HttpStatusCode } from "../../common/http";
@@ -124,23 +126,37 @@ export default (app: Router) => {
   route.get(
     "/kakao/login",
     async (req: Request, res: Response, next: NextFunction) => {
-      logger.debug("Calling Login endpoint with body: %o", req.body);
+      logger.debug(
+        "Calling Kakao Login endpoint with code: %o",
+        req.query.code
+      );
 
       try {
         if (req.query.code === undefined)
           throw new APIError(
-            "CommentRouter",
+            "AuthRouter",
             HttpStatusCode.BAD_REQUEST,
-            "invalid user count"
+            "code is empty"
           );
 
-        // const accessToken = generateToken(user.id, config.accessTokenExpire);
-        // const refreshToken = generateToken(user.id, config.refreshTokenExpire);
+        const response = await axios.post(
+          "https://kauth.kakao.com/oauth/token",
+          qs.stringify({
+            grant_type: "authorization_code",
+            client_id: config.kakao.client_id,
+            redirect_uri: config.kakao.redirect_uri,
+            code: req.query.code,
+            client_secret: config.kakao.client_secret,
+          })
+        );
+        console.log(response.data);
 
         return res.status(200).json({
-          users: "users",
+          users: "user",
         });
       } catch (err) {
+        // TODO - axios의 경우 에러 따로 던지기 err.response.data 를 확인해야 편하다
+        console.log(err.response.data);
         return next(err);
       }
     }
