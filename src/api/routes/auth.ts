@@ -1,4 +1,3 @@
-import axios from "axios";
 import { celebrate, Joi } from "celebrate";
 import {
   CookieOptions,
@@ -7,7 +6,6 @@ import {
   Response,
   Router,
 } from "express";
-import qs from "qs";
 import { Container } from "typedi";
 import { Logger } from "winston";
 import { HttpStatusCode } from "../../common/http";
@@ -32,6 +30,7 @@ import { IUserLoginDTO, IUserSignUpDTO } from "../../interfaces/IUser";
 import AuthService from "../../services/auth";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
+import * as kakao from "../../services/kakao";
 
 const route = Router();
 
@@ -139,17 +138,7 @@ export default (app: Router) => {
             "code is empty"
           );
 
-        const response = await axios.post(
-          "https://kauth.kakao.com/oauth/token",
-          qs.stringify({
-            grant_type: "authorization_code",
-            client_id: config.kakao.client_id,
-            redirect_uri: config.kakao.redirect_uri,
-            code: req.query.code,
-            client_secret: config.kakao.client_secret,
-          })
-        );
-        console.log(response.data);
+        kakao.getToken(req.query.code as string);
 
         return res.status(200).json({
           users: "user",
