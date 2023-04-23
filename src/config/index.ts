@@ -44,5 +44,7 @@ export default {
     client_id: process.env.KAKAO_CLIENT_ID,
     redirect_uri: process.env.KAKAO_REDIRECT_URI,
     client_secret: process.env.KAKAO_CLIENT_SECRET,
-  }
+  },
+
+  defaultPassword: process.env.PASSWORD
 };
