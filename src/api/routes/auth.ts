@@ -31,7 +31,6 @@ import AuthService from "../../services/auth";
 import UserService from "../../services/user";
 import middlewares from "../middlewares";
 import * as kakao from "../../services/kakao";
-import axios, { AxiosResponse } from "axios";
 
 const route = Router();
 
@@ -123,21 +122,6 @@ export default (app: Router) => {
     }
   );
 
-  interface UserResponse {
-    id: number;
-    connected_at: string;
-    properties: { nickname: string };
-    kakao_account: {
-      profile_nickname_needs_agreement: boolean;
-      profile: { nickname: string };
-      has_email: boolean;
-      email_needs_agreement: boolean;
-      is_email_valid: boolean;
-      is_email_verified: boolean;
-      email: string;
-    };
-  }
-
   route.get(
     "/kakao/login",
     async (req: Request, res: Response, next: NextFunction) => {
@@ -154,43 +138,7 @@ export default (app: Router) => {
             "code is empty"
           );
 
-        const token = await kakao.getToken(req.query.code as string);
-
-        const userResponse: AxiosResponse<UserResponse> = await axios.post(
-          "https://kapi.kakao.com/v2/user/me",
-          {},
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        const email = userResponse.data.kakao_account.email;
-        const nickname = userResponse.data.kakao_account.profile.nickname;
-        const id = email.split("@")[0];
-    
-        console.log(id);
-    
-        const userSignUpDTO: IUserSignUpDTO = {
-          id: id,
-          password: config.defaultPassword,
-          nickname: nickname,
-          passwordQuestion: config.defaultPassword,
-          passwordAnswer: config.defaultPassword,
-        };
-
-        await authServiceInstance.signUp(userSignUpDTO)
-
-        const userList = await userServiceInstance.findById(userLoginDTO.id);
-        const user = userList[0];
-        if (user === undefined)
-          throw new APIError(
-            "AuthService",
-            HttpStatusCode.UNAUTHORIZED,
-            "login failed"
-          );
-        const { accessToken, refreshToken } = authServiceInstance.generateToken(id, id);
-
-        res.cookie("accessToken", accessToken, {});
-        res.cookie("refreshToken", refreshToken, {});
+        kakao.getToken(req.query.code as string);
 
         return res.status(200).json({
           users: "user",
