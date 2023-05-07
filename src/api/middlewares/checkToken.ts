@@ -51,7 +51,7 @@ const getTokenFromRequest = (req: Request, tokenType: string) => {
 export const checkToken = (apiType: string, tokenType: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (isUserIdTokenIdSame(req, apiType, tokenType))
+      if (!isUserIdTokenIdSame(req, apiType, tokenType))
         throw new APIError(
           "verifyToken",
           HttpStatusCode.UNAUTHORIZED,
