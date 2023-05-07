@@ -12,11 +12,16 @@ export default class CommentService {
     @Inject("logger") private logger: Logger
   ) {}
 
-  public async create(userIdx: string, comment: string, ip: string) {
+  public async create(
+    userIdx: string,
+    comment: string,
+    ip: string,
+    myComment: boolean
+  ): Promise<void> {
     this.logger.silly(
       `[CommentService] create userIdx: ${userIdx}, comment: ${comment}`
     );
-    const res = await this.commentModel.create(userIdx, comment, ip);
+    const res = await this.commentModel.create(userIdx, comment, ip, myComment);
     return res;
   }
 
@@ -27,6 +32,7 @@ export default class CommentService {
       return {
         idx: comment.idx,
         comment: comment.comment,
+        my_comment: comment.my_comment,
         iso_time: comment.iso_time,
       };
     });
