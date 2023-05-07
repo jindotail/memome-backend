@@ -30,10 +30,10 @@ export default (app: Router) => {
         req.body
       );
 
-      let myComment = false;
+      let owner = false;
       try {
         // 본인이 댓글 작성한 경우
-        myComment = middlewares.isUserIdTokenIdSame(
+        owner = middlewares.isUserIdTokenIdSame(
           req,
           "params userId",
           "accessToken"
@@ -53,7 +53,7 @@ export default (app: Router) => {
           userIdx,
           req.body.comment,
           requestIp.getClientIp(req),
-          myComment
+          owner
         );
         res.status(201).send();
       } catch (err) {

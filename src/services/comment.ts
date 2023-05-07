@@ -16,12 +16,12 @@ export default class CommentService {
     userIdx: string,
     comment: string,
     ip: string,
-    myComment: boolean
+    owner: boolean
   ): Promise<void> {
     this.logger.silly(
       `[CommentService] create userIdx: ${userIdx}, comment: ${comment}`
     );
-    const res = await this.commentModel.create(userIdx, comment, ip, myComment);
+    const res = await this.commentModel.create(userIdx, comment, ip, owner);
     return res;
   }
 
@@ -32,7 +32,7 @@ export default class CommentService {
       return {
         idx: comment.idx,
         comment: comment.comment,
-        my_comment: comment.my_comment,
+        owner: comment.owner,
         iso_time: comment.iso_time,
       };
     });
