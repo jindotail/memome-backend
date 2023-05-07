@@ -12,6 +12,7 @@ export default class UserModel {
         nickname: "진도",
         passwordQuestion: "저의 고앵이 이름은 무엇일까요?",
         passwordAnswer: "김야옹",
+        theme_id: 2,
         salt: "5e20a8822c55e25923ee",
         iso_time: new Date().toISOString(),
         created_at: new Date(),
