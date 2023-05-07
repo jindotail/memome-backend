@@ -5,8 +5,12 @@ import { HttpStatusCode } from "../common/http";
 import {
   NICKNAME_MAX_LENGTH,
   NICKNAME_MIN_LENGTH,
+  PW_ANSWER_MAX_LENGTH,
+  PW_ANSWER_MIN_LENGTH,
   PW_MAX_LENGTH,
   PW_MIN_LENGTH,
+  PW_QUESTION_MAX_LENGTH,
+  PW_QUESTION_MIN_LENGTH,
   validationLength,
   validationRange,
 } from "../common/vallidation";
@@ -14,7 +18,7 @@ import APIError from "../errors/APIError";
 import { ITheme } from "../interfaces/ITheme";
 import { IUpdateUser } from "../interfaces/IUser";
 import UserModel from "../models/user";
-import { themeById, maxId } from "../services/theme";
+import * as themes from "../services/theme";
 
 @Service()
 export default class UserService {
@@ -49,7 +53,7 @@ export default class UserService {
         "user not found"
       );
 
-    const theme = themeById(user[0].theme_id);
+    const theme = themes.themeById(user[0].theme_id);
 
     return { id: user[0].id, nickname: user[0].nickname, theme };
   }
@@ -64,7 +68,7 @@ export default class UserService {
         HttpStatusCode.BAD_REQUEST,
         "user not found"
       );
-    return user[0].passwordQuestion;
+    return user[0].password_question;
   }
 
   public async matchPasswordQuestionAndAnswer(
@@ -81,9 +85,9 @@ export default class UserService {
         "user not found"
       );
     this.logger.debug(
-      `답변: ${passwordAnswer}, 실제 답변: ${user[0].passwordAnswer}`
+      `답변: ${passwordAnswer}, 실제 답변: ${user[0].password_answer}`
     );
-    return passwordAnswer === user[0].passwordAnswer;
+    return passwordAnswer === user[0].password_answer;
   }
 
   private async updateUserObj(body: any, salt: string): Promise<IUpdateUser> {
@@ -113,10 +117,30 @@ export default class UserService {
 
     const themeId = body.themeId;
     if (themeId !== undefined) {
-      validationRange(themeId, 1, maxId());
+      validationRange(themeId, 1, themes.maxId());
       updateUser = {
         ...updateUser,
         theme_id: themeId,
+      };
+    }
+
+    const passwordQuestion = body.passwordQuestion;
+    const passwordAnswer = body.passwordAnswer;
+    if (passwordQuestion !== undefined && passwordAnswer !== undefined) {
+      validationLength(
+        passwordQuestion,
+        PW_QUESTION_MIN_LENGTH,
+        PW_QUESTION_MAX_LENGTH
+      );
+      validationLength(
+        passwordAnswer,
+        PW_ANSWER_MIN_LENGTH,
+        PW_ANSWER_MAX_LENGTH
+      );
+      updateUser = {
+        ...updateUser,
+        password_question: passwordQuestion,
+        password_answer: passwordAnswer,
       };
     }
 
