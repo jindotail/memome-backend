@@ -4,7 +4,11 @@ import { HttpStatusCode } from "../../common/http";
 import { verifyToken } from "../../common/jwt";
 import APIError from "../../errors/APIError";
 
-export const checkTokenId = (req: Request, apiType: string, tokenType: string) => {
+export const isUserIdTokenIdSame = (
+  req: Request,
+  apiType: string,
+  tokenType: string
+) => {
   const token = getTokenFromRequest(req, tokenType);
   const varifiedToken = verifyToken(token) as JwtPayload;
   const id = getIdFromRequest(req, apiType);
@@ -47,7 +51,7 @@ const getTokenFromRequest = (req: Request, tokenType: string) => {
 export const checkToken = (apiType: string, tokenType: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (checkTokenId(req, apiType, tokenType))
+      if (isUserIdTokenIdSame(req, apiType, tokenType))
         throw new APIError(
           "verifyToken",
           HttpStatusCode.UNAUTHORIZED,
