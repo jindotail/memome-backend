@@ -99,7 +99,7 @@ export default class UserModel {
 
   public async update(idx: string, updateUser: IUpdateUser): Promise<void> {
     const user = { ...this.userMap.get(idx), ...updateUser };
-    
+
     this.userMap.set(idx, user);
   }
 

@@ -79,7 +79,6 @@ export default (app: Router) => {
         );
 
         await authServiceInstance.signUp(req.body as IUserSignUpDTO);
-
         const { accessToken, refreshToken } = await authServiceInstance.login({
           id,
           password,
