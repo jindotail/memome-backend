@@ -151,6 +151,8 @@ export default (app: Router) => {
         nickname: Joi.string(),
         password: Joi.string(),
         themeId: Joi.number(),
+        passwordQuestion: Joi.string(),
+        passwordAnswer: Joi.string(),
       }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {

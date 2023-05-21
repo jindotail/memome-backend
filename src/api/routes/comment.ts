@@ -30,15 +30,30 @@ export default (app: Router) => {
         req.body
       );
 
+      let owner = false;
       try {
-        // TODO - client ip 들고오는 부분 미들웨어로 빼면 좋을 것 같음
+        // 본인이 댓글 작성한 경우
+        owner = middlewares.isUserIdTokenIdSame(
+          req,
+          "params userId",
+          "accessToken"
+        );
+      } catch (err) {
+        // do nothing
+        // 에러를 던졌지만 그냥 본인이 작성한 댓글이 아닌 것으로 처리
+        // TODO - 좀 더 잘 짜보자
+      }
+
+      try {
         const userIdx = await userServiceInstance.getUserIdxById(
           req.params.userId as string
         );
+        // TODO - client ip 들고오는 부분 미들웨어로 빼면 좋을 것 같음
         await commentServiceInstance.create(
           userIdx,
           req.body.comment,
-          requestIp.getClientIp(req)
+          requestIp.getClientIp(req),
+          owner
         );
         res.status(201).send();
       } catch (err) {

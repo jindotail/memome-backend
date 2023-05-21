@@ -3,7 +3,12 @@ import { IComment } from "../interfaces/IComment";
 export default class CommentModel {
   commentMap = new Map<string, any>();
 
-  public create(userIdx: string, comment: string, ip: string): void {
+  public create(
+    userIdx: string,
+    comment: string,
+    ip: string,
+    owner: boolean
+  ): void {
     console.log(
       `[MockCommentModel] create userIdx: ${userIdx} comment: ${comment}`
     );
@@ -12,6 +17,7 @@ export default class CommentModel {
       user_idx: userIdx,
       comment: comment,
       ip: ip,
+      owner,
       iso_time: new Date().toISOString(),
       created_at: new Date(),
       updated_at: new Date(),
@@ -24,13 +30,20 @@ export default class CommentModel {
     const result: IComment[] = [];
     for (const key of this.commentMap.keys()) {
       if (this.commentMap.get(key).user_idx !== userIdx) continue;
-      result.push({ idx: key, ...this.commentMap.get(key) });
+      const data = this.commentMap.get(key);
+      result.push({ idx: key, owner: data.owner === true, ...data });
     }
     return result;
   }
 
   public find(idx: string): IComment | undefined {
-    if (this.commentMap.has(idx)) return { idx, ...this.commentMap.get(idx) };
+    const data = this.commentMap.get(idx);
+    if (this.commentMap.has(idx))
+      return {
+        idx,
+        owner: data.owner === true,
+        ...this.commentMap.get(idx),
+      };
     return undefined;
   }
 

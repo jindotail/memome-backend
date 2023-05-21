@@ -1,4 +1,8 @@
-import { checkToken } from "./checkToken";
+import { checkToken, isUserIdTokenIdSame } from "./checkToken";
 import { withError } from "./withError";
 
-export default { withError, checkToken };
+export default {
+  withError,
+  checkToken,
+  isUserIdTokenIdSame,
+};

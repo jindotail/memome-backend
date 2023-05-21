@@ -12,12 +12,14 @@ export default class CommentModel {
   public async create(
     userIdx: string,
     comment: string,
-    ip: string
+    ip: string,
+    owner: boolean
   ): Promise<void> {
     await saveDocument(this.collection, {
       user_idx: userIdx,
       comment,
       ip,
+      owner,
       iso_time: new Date().toISOString(),
     });
   }
@@ -29,13 +31,14 @@ export default class CommentModel {
       value: userIdx,
     });
     return res.map((e) => {
-      return { idx: e.id, ...e.data };
+      return { idx: e.id, owner: e.data.owner === true, ...e.data };
     });
   }
 
   public async find(idx: string): Promise<IComment | undefined> {
     const result = await findDocument(this.collection, idx);
-    if (result !== undefined) return { idx, ...result };
+    if (result !== undefined)
+      return { idx, owner: result.owner === true, ...result };
     return result;
   }
 

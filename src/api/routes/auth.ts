@@ -8,6 +8,7 @@ import {
 } from "express";
 import { Container } from "typedi";
 import { Logger } from "winston";
+import { HttpStatusCode } from "../../common/http";
 import { generateToken, verifyToken } from "../../common/jwt";
 import {
   ID_MAX_LENGTH,
@@ -24,6 +25,7 @@ import {
   validationLength,
 } from "../../common/vallidation";
 import config from "../../config";
+import APIError from "../../errors/APIError";
 import { IUserLoginDTO, IUserSignUpDTO } from "../../interfaces/IUser";
 import AuthService from "../../services/auth";
 import UserService from "../../services/user";
@@ -60,6 +62,7 @@ export default (app: Router) => {
         const passwordQuestion: string = req.body.passwordQuestion;
         const passwordAnswer: string = req.body.passwordAnswer;
 
+        // TODO - 어떻게 좀 해봐........
         validationLength(id, ID_MIN_LENGTH, ID_MAX_LENGTH);
         validAlphabetOrNumber(id);
         validationLength(password, PW_MIN_LENGTH, PW_MAX_LENGTH);
@@ -111,6 +114,31 @@ export default (app: Router) => {
         res.cookie("refreshToken", refreshToken, {});
 
         return res.status(200).send();
+      } catch (err) {
+        return next(err);
+      }
+    }
+  );
+
+  route.get(
+    "/kakao/login",
+    async (req: Request, res: Response, next: NextFunction) => {
+      logger.debug("Calling Login endpoint with body: %o", req.body);
+
+      try {
+        if (req.query.code === undefined)
+          throw new APIError(
+            "CommentRouter",
+            HttpStatusCode.BAD_REQUEST,
+            "invalid user count"
+          );
+
+        // const accessToken = generateToken(user.id, config.accessTokenExpire);
+        // const refreshToken = generateToken(user.id, config.refreshTokenExpire);
+
+        return res.status(200).json({
+          users: "users",
+        });
       } catch (err) {
         return next(err);
       }

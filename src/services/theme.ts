@@ -15,7 +15,7 @@ const themes: ITheme[] = [
   },
   {
     id: 3,
-    backgroundColor: { start: "#FFB200", middle: "#FFCB42", end: "#FFF4CF" },
+    backgroundColor: { start: "#FFc913", middle: "#FFCB42", end: "#ffef86" },
     commentColor: { start: "#FFE69A", end: "#FFD24C" },
   },
   {
