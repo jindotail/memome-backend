@@ -20,8 +20,8 @@ export default class UserModel {
       id: userSignUpDTO.id,
       password: userSignUpDTO.password,
       nickname: userSignUpDTO.nickname,
-      passwordQuestion: userSignUpDTO.passwordQuestion,
-      passwordAnswer: userSignUpDTO.passwordAnswer,
+      password_question: userSignUpDTO.passwordQuestion,
+      password_answer: userSignUpDTO.passwordAnswer,
       iso_time: new Date().toISOString(),
       salt: slat,
     });
