@@ -20,7 +20,7 @@ export default ({ app }: { app: express.Application }) => {
   app.use(cookieParser());
   app.use(
     cors({
-      origin: ["https://memome.be", "http://localhost:3000"],
+      origin: ["https://memome.be", "http://localhost:3000", "http://memome-frontend.s3-website.ap-northeast-2.amazonaws.com"],
       methods: "OPTION, GET, POST, DELETE, PUT, PATCH",
       credentials: true,
     })
