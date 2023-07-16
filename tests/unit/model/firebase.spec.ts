@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase-admin/firestore";
 import * as db from "../../../src/models/firebase";
 
 beforeAll(async () => {});
@@ -139,15 +140,17 @@ describe("Firebase", () => {
       },
       "created_at",
       2,
-      firstComment.updated_at._seconds,
-      firstComment.updated_at._nanoseconds
+      new Timestamp(
+        firstComment.updated_at._seconds,
+        firstComment.updated_at._nanoseconds
+      )
     );
 
     // 2개의 댓글을 들고와야 한다
     expect(result.length).toEqual(2);
     // 첫 번쨰 댓글 이후인 두 번째 댓글과 세 번째 댓글이 들고와야 한다
-    expect(result[0].data.comment).toEqual("두번째 댓글")
-    expect(result[1].data.comment).toEqual("세번째 댓글")
+    expect(result[0].data.comment).toEqual("두번째 댓글");
+    expect(result[1].data.comment).toEqual("세번째 댓글");
 
     await db.deleteCollection(col);
   });

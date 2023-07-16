@@ -96,14 +96,13 @@ export const findCollectionWithCursor = async (
   },
   orderBy: string,
   limit: number,
-  seconds: number,
-  nanoseconds: number
+  timestamp: Timestamp
 ): Promise<{ id: string; data: any }[]> => {
   const snapshot = await db
     .collection(collection)
     .where(condition.fieldPath, condition.opStr, condition.value)
     .orderBy(orderBy)
-    .startAfter(new Timestamp(seconds, nanoseconds))
+    .startAfter(timestamp)
     .limit(limit)
     .get();
 
@@ -155,9 +154,7 @@ export const deleteCollection = async (
   collection: string,
   batchSize: number = 1000
 ): Promise<void> => {
-  const query = db.collection(collection)
-  .orderBy("__name__")
-  .limit(batchSize);
+  const query = db.collection(collection).orderBy("__name__").limit(batchSize);
 
   return new Promise((resolve, reject) => {
     deleteQueryBatch(db, query, resolve).catch(reject);
