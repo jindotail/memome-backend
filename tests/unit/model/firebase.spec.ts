@@ -92,4 +92,63 @@ describe("Firebase", () => {
     expect(result.name).toEqual(name1);
     await db.deleteCollection(collection);
   });
+
+  test("isoToTimestamp", () => {
+    const { seconds, nanoseconds } = db.isoToTimestamp(
+      "2023-07-16T11:03:26.922Z"
+    );
+
+    expect(seconds).toEqual(1689505406);
+    expect(nanoseconds).toEqual(922000000);
+  });
+
+  test("find collection with cursor", async () => {
+    const col = "test find collection with cursor";
+
+    await db.saveDocumentWithId(col, "D7rakZvFFgIkuFlHtojb", {
+      user_idx: "user_idx",
+      comment: "첫번째 댓글",
+      iso_time: new Date().toISOString(),
+    });
+    await db.saveDocumentWithId(col, "YFoJvQ6l7fOUHLbeYJpd", {
+      user_idx: "user_idx",
+      comment: "두번째 댓글",
+      iso_time: new Date().toISOString(),
+    });
+    await db.saveDocumentWithId(col, "VpdVIZHhlJRwdkUKVrg5", {
+      user_idx: "user_idx",
+      comment: "세번째 댓글",
+      iso_time: new Date().toISOString(),
+    });
+    await db.saveDocumentWithId(col, "AiMrlDTmukHXdvoZN2o4", {
+      user_idx: "user_idx",
+      comment: "네번째 댓글",
+      iso_time: new Date().toISOString(),
+    });
+
+    // 첫 번째 댓글 들고오기
+    const firstComment = await db.findDocument(col, "D7rakZvFFgIkuFlHtojb");
+
+    // 첫 번째 댓글 생성 시간 이후 댓글 2개를 가져온다.
+    const result = await db.findCollectionWithCursor(
+      col,
+      {
+        fieldPath: "user_idx",
+        opStr: "==",
+        value: "user_idx",
+      },
+      "created_at",
+      2,
+      firstComment.updated_at._seconds,
+      firstComment.updated_at._nanoseconds
+    );
+
+    // 2개의 댓글을 들고와야 한다
+    expect(result.length).toEqual(2);
+    // 첫 번쨰 댓글 이후인 두 번째 댓글과 세 번째 댓글이 들고와야 한다
+    expect(result[0].data.comment).toEqual("두번째 댓글")
+    expect(result[1].data.comment).toEqual("세번째 댓글")
+
+    await db.deleteCollection(col);
+  });
 });
