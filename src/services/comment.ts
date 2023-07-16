@@ -44,25 +44,14 @@ export default class CommentService {
     return 0;
   }
 
-  private sliceComment(
-    comment: IComment[],
-    size: undefined | number
-  ): IComment[] {
-    if (size == undefined) return comment;
-    return comment.splice(0, size);
-  }
-
   public async getComments(
-    userIdx: string,
-    size: undefined | number
+    userIdx: string
   ): Promise<ICommentResponse[]> {
     this.logger.silly(`[CommentService] getComments userIdx: ${userIdx}`);
     const comment = await this.commentModel.findByUserIdx(userIdx);
     const sortedComment = comment.sort((a, b) => this.createTimeSort(a, b));
 
-    return this.convertCommentToCommentResponse(
-      this.sliceComment(sortedComment, size)
-    );
+    return this.convertCommentToCommentResponse(sortedComment);
   }
 
   public async deleteCommentByIdx(idx: string): Promise<void> {
