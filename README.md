@@ -1,2 +1,2 @@
-# guest-book-backend
+# memome-backend
 방명록 프로젝트 백엔드
